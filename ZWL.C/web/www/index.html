@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="App">
+	<head>
+		<meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta charset="UTF-8">
+		<title>首页</title>
+		<link rel="stylesheet" href="css/main.css" />
+		<script src="js/jquery-1.7.1.min.js"></script>
+		<script src="js/g.js" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<div class="app has-head has-banner">
+			<div class="app-head">
+				<ul class="row" style="padding-top:5px;">
+					<li class="col v-m" style="padding-top:7px;">
+						<p class="g-userName">姓名：张小雅</p>
+						<p class="g-userNum">学号：5876324</p>
+						<p class="g-major">专业：信息工程15级</p>
+					</li>
+					<li class="col t-r v-b">
+						<img class="face" src="img/face.png"/>
+					</li>
+				</ul>
+				<ul class="row">
+					<li class="col v-t">
+						<a class="btn btn-opatiy btn-conner has-icon c-b" href="subscribe.html"><img align="absmiddle" src="img/ion-clock.png"/>我要预约</a>
+					</li>
+					<li class="col t-r v-t">
+						<a class="btn btn-opatiy btn-conner has-icon c-b" href="#"><img align="absmiddle" src="img/take-code.png"/>扫码就坐</a>
+					</li>
+				</ul>
+			</div>
+			<div class="app-view">
+				<div class="app-view-content">
+					<!--没有预约座位-->
+					<div class="app-null row" style="display:none;">
+						<div class="col">
+							<img src="img/yuyue-no.png" />
+							<p>您尚未预约座位, 快来吧！</p>
+						</div>
+					</div>
+					<!---->
+					<ul class="seat-list" ng-controller="subscribeListCtrl">
+						<li class="seat-item" ng-repeat="sl in subscribeList" >
+							<p class="item-time"><span class="item-num" ng-bind="$index + 1"></span><span ng-bind="sl.time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
+							<p class="item-txt" ng-bind="sl.info">致未来图书馆1层测试自习室 2-8 座</p>
+							<p class="item-txt">距离签到时间<span class="c-p">3小时48分</span></p>
+							<input id="{{$index}}input" type="hidden" value="{'time':'{{sl.time}}','info':'{{sl.info}}','seatNum':'{{sl.seatNum}}'}">
+							<ul class="row mt-1">
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="javaScript:void(0);" inputFlag="{{$index}}input" ng-click="checkSeat()"><img align="absmiddle" src="img/see.png"/>查看座位</a>
+								</li>
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#open-modal1"><img align="absmiddle" src="img/change.png"/>更换座位</a>
+								</li>
+							</ul>
+							<ul class="row top-line">
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#open-modal2"><img align="absmiddle" src="img/cancel.png"/>取消</a>
+								</li>
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/edit.png"/>续约</a>
+								</li>
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/port.png"/>签到</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="app-footer">
+				<div class="nav row">
+					<a class="col active" href="index.html">首页</a>
+					<a class="col" href="subscribe.html">预约</a>
+					<a class="col" href="record.html">记录</a>
+					<a class="col" href="settings.html">设置</a>
+				</div>
+			</div>
+		</div>
+		<div id="open-modal1" class="modal-window">
+		    <div class="row">
+		        <div class="col v-m">
+		        	<div class="modal-title">
+		        		<h2>更换座位</h2>
+		        		<a href="#modal-close" title="Close" class="modal-close"></a>
+		        	</div>
+		        	<img src="img/change-seat.png" />
+		        	<p>请您选择更换的方式</p>
+		        	<a class="btn btn-block btn-conner btn-blue" href="#">手动更换</a>
+		        	<a class="btn btn-block btn-conner btn-pink" href="#">扫码更换</a>
+		        </div>
+		    </div>
+		</div>
+		<div id="open-modal2" class="modal-window">
+		    <div class="row">
+		        <div class="col v-m">
+		        	<div class="modal-title">
+		        		<h2>取消预约</h2>
+		        		<a href="#modal-close" title="Close" class="modal-close"></a>
+		        	</div>
+		        	<img src="img/cancel-seat.png" />
+		        	<h3>2016-06-08     09:45-22:00<br>致未来图书馆1层测试自习室 2-8 座</h3>
+		        	<p>您确定要取消此次预约吗</p>
+		        	<a class="btn btn-block btn-conner btn-blue" href="#">确定</a>
+		        </div>
+		    </div>
+		</div>
+		<script src="js/angular.js" charset="utf-8"></script>
+		<script src="js/index/index.js"></script>
+	</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="App">
+	<head>
+		<meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+		<meta charset="UTF-8">
+		<title>记录</title>
+		<link rel="stylesheet" href="../www/css/main.css" />
+		<script src="../www/js/jquery-1.7.1.min.js"></script>
+		<script src="../www/js/g.js" charset="utf-8"></script>
+		<script src="../www/js/iscroll.js" charset="utf-8"></script>
+<style>
+
+	/*.nav-foot {
+		 width:100%;
+		 margin:0 auto;
+		 position:fixed;
+		 bottom:0;
+	}
+	.nav-foot , .nav-head{
+		z-index: 99999;
+	}
+	.nav-head {
+		width:100%;
+		margin:0 auto;
+		position:fixed;
+		top:0;
+	}
+	.nav-3rm{
+		top: 3rem;
+	}*/
+</style>
+	</head>
+	<body>
+		<div class="app has-head">
+			<div class="app-head "><!--nav-head-->
+				<h1 class="title">记录</h1>
+				<a class="right" href="#"></a>
+			</div>
+			<div class="app-view has-head " ng-controller="recordCtrl">
+				<div class="app-view-head bg-b plr-1 row "><!--nav-head nav-3rm-->
+					<div class="col v-m">
+						<ul class="row">
+							<li class="col v-m">
+								<a class="btn btn-opatiy btn-conner btn-block c-b" href="javaScript:void(0);">自习室记录</a>
+							</li>
+							<li class="col t-r v-m">
+								<a class="btn btn-opatiy btn-conner btn-block c-gray" href="javaScript:void(0);">研修室记录</a>
+							</li>
+						</ul>
+						<p>您本年度已有2次违规<br>请保持良好的诚信记录</p>
+					</div>
+				</div>
+				<div class="app-view-content">
+
+					<ul class="txt-list" ><!--before after-->
+						<li ng-repeat="rl in recordList">
+							<p ng-bind="rl.date + ' ' + rl.time"></p>
+							<h2 ng-bind="rl.info">东区图书馆05自习室15-59-3座位</h2>
+							<span class="right"></span>
+							<div ng-if="rl.leaveFlag == 0 ">
+								<span class="right"></span>
+							</div>
+							<div ng-if="rl.leaveFlag == 1 || rl.leaveFlag == 2 ||rl.leaveFlag == 3 ">
+								<span class="after"></span>
+							</div>
+							<div ng-if="rl.leaveFlag == 4 ">
+								<span class="before"></span>
+							</div>
+						</li>
+
+
+					</ul>
+
+				</div>
+			</div>
+			<div class="app-footer "><!--nav-foot-->
+				<div class="nav row">
+					<a class="col" href="首页.html">首页</a>
+					<a class="col" href="预约.html">预约</a>
+					<a class="col active" href="记录.html">记录</a>
+					<a class="col" href="设置.html">设置</a>
+				</div>
+			</div>
+		</div>
+		<script src="js/angular.js" charset="utf-8"></script>
+		<script src="js/record/record.js"></script>
+	</body>
+</html>
