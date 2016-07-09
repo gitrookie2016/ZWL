@@ -17,3 +17,11 @@ checkSeatApp.controller("checkSeatCtrl",function ($scope) {
     $scope.seatNum = checkSeatInfo.seatNum;
 
 });
+
+checkSeatApp.directive("seats",function (checkSeatService) {
+    return {
+        restrict: 'E',
+        template: SeatService.initSeatInfo(),
+        replace: true
+    };
+});
