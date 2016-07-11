@@ -34,8 +34,12 @@ $(document).ready(function(){
                 bean.userNum = _userInfo.object.userNum;
                 bean.major = _userInfo.object.major;
                 bean.headPortrait = _userInfo.object.headPortrait;
-                $.cookie("userInfo",JSON.stringify(bean), {  path: '/' });
-                window.location="index.html";
+                $("#imgtest").attr("src",bean.headPortrait);
+                var expiresDate= new Date();
+                expiresDate.setTime(expiresDate.getTime() + (30 * 60 * 1000));
+
+                $.cookie("userInfo",JSON.stringify(bean), {  path: '/' ,expires : expiresDate});
+               // window.location="index.html";
 
             }
         }
