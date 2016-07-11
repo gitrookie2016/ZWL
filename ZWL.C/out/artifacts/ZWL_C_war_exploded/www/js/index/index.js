@@ -60,10 +60,12 @@ app.factory("appService",function () {
 
         for(var l = 0 ; l < lists.length ; l++){
             var beginTime = lists[l].sreservationBeginTime;
-            var now = new Date().Format("yyyy/MM/dd hh:ss:mm");
-            var begin = new Date(beginTime).Format("yyyy/MM/dd hh:ss:mm");
-            var Under = (Date.parse(begin) - Date.parse(now)) / 86400000 * 24;
-            console.log(Under);
+            var now = new Date()
+            var begin = new Date(beginTime);
+            var _hm = Math.abs(begin-now)/1000/60;
+            lists[l].h = parseInt(_hm / 60);
+            lists[l].m = parseInt(_hm % 60);
+
         }
         return  lists;
     }
