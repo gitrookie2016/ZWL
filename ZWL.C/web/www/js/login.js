@@ -33,25 +33,24 @@ $(document).ready(function(){
                 bean.campusId = _userInfo.object.campusId;
                 bean.userNum = _userInfo.object.userNum;
                 bean.major = _userInfo.object.major;
-                //bean.headPortrait = _userInfo.object.headPortrait;
-
-                var img = {
-                    headPortrait: _userInfo.object.headPortrait
+                var userPhoto =  _userInfo.object.headPortrait;
+                if(userPhoto.length > 0){
+                    bean.headPortrait = true;
+                    g.localData.set("userPhoto", "data:image/gif;base64," + _userInfo.object.headPortrait);
                 }
 
-                $("#imgtest").attr("src", "data:image/gif;base64," + _userInfo.object.headPortrait);
+                //$("#imgtest").attr("src", "data:image/gif;base64," + _userInfo.object.headPortrait);
 
                 var expiresDate= new Date();
                 expiresDate.setTime(expiresDate.getTime() + (30 * 60 * 1000));
 
                 $.cookie("userInfo",JSON.stringify(bean), {  path: '/' ,expires : expiresDate});
 
-                $.cookie("img",JSON.stringify(img), {  path: '/' ,expires : expiresDate});
-                //window.location="index.html";
+                window.location="index.html";
 
             }
         }
-        
+
     });
 
 

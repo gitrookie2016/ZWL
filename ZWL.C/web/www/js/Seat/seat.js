@@ -14,7 +14,8 @@ $(function(){
 		/*ev.preventDefault();*/
 	});
 	var target = document.getElementById("seat");
-	var dx, dy;
+	var dx = g.dx || 0;
+	var dy = g.dy || 0;
 	var initialScale = 1;
 	var currentScale=1;
 	var total=$('#seat').find(".seat_yes").length;
@@ -66,4 +67,30 @@ $(function(){
 			$("#SeatDataID").val($(this).attr("dataID"));
 		}
 	})
+
+	/*var href = window.location.href;
+
+	if(href.indexOf("checkSeat") > -1){
+		var seat1 = g.seatNum.split("-")[1];
+
+		var num = Math.ceil(seat1 / 4) * 2;
+
+		var seat2 = parseInt(seat1) + parseInt(num);
+
+		var wd = $("#seat li").width();
+		var countNum = parseInt(0-(seat2 * wd - 100));
+		var offx = 0;
+		var offy = 0;
+		var currentScale = 1;
+
+		var _tran = "translate3d(" + offx + "," + offy + ",0) scale("+currentScale+")";
+
+		g.dx = countNum;
+
+		$("#seat").css("transform",_tran);
+
+	}*/
+
+
+
 })

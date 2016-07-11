@@ -46,7 +46,7 @@
 					<!---->
 					<ul class="seat-list" ng-controller="subscribeListCtrl">
 						<li class="seat-item" ng-repeat="sl in subscribeList" >
-							<p class="item-time"><span class="item-num" ng-bind="$index + 1"></span><span ng-bind="sl.time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
+							<p class="item-time"><span class="item-num" ng-bind="subscribeLeng - $index"></span><span ng-bind="sl.time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
 							<p class="item-txt" ng-bind="sl.info">致未来图书馆1层测试自习室 2-8 座</p>
 							<p class="item-txt">距离签到时间<span class="c-p">3小时48分</span></p>
 							<input id="{{$index}}input" type="hidden" value="{'time':'{{sl.time}}','info':'{{sl.info}}','seatNum':'{{sl.seatNum}}'}">

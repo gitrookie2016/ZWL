@@ -16,15 +16,19 @@ $(document).ready(function(){
             $(".g-major").html("专业：");
         }
         if(typeof _ui.headPortrait != "undefined"){
-            $(".face").attr("src",_ui.headPortrait);
+            var userPhoto = _ui.headPortrait;
+            if(userPhoto){
+                $(".face").attr("src",g.localData.get("userPhoto"));
+            }
         }
 
     }
 });
 
 var app = angular.module("App",[]).controller("subscribeListCtrl",function($scope,appService){
-
-    $scope.subscribeList = appService.selectReservationByUser();
+    var subscribeList = appService.selectReservationByUser();
+    $scope.subscribeList = subscribeList;
+    $scope.subscribeLeng = subscribeList.length;
     $scope.checkSeat = function () {
 
         var sl = this.sl;
@@ -33,6 +37,9 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
         var bean = {
             "info"      :   sl.info,
             "time"      :   sl.time,
+            "sreservationBeginTime"      :   sl.sreservationBeginTime,
+            "sreservationEndTime"      :   sl.sreservationEndTime,
+            "classroomId"      :   sl.classroomId,
             "seatNum"   :   sl.seatNum
         }
 
@@ -49,7 +56,16 @@ app.factory("appService",function () {
 
         var list = Api.selectReservationByUser();
 
-        return  list.list;
+        var lists = list.list;
+
+        for(var l = 0 ; l < lists.length ; l++){
+            var beginTime = lists[l].sreservationBeginTime;
+            var now = new Date().Format("yyyy/MM/dd hh:ss:mm");
+            var begin = new Date(beginTime).Format("yyyy/MM/dd hh:ss:mm");
+            var Under = (Date.parse(begin) - Date.parse(now)) / 86400000 * 24;
+            console.log(Under);
+        }
+        return  lists;
     }
 
     return factory;

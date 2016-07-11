@@ -21,7 +21,83 @@ checkSeatApp.controller("checkSeatCtrl",function ($scope) {
 checkSeatApp.directive("seats",function (checkSeatService) {
     return {
         restrict: 'E',
-        template: SeatService.initSeatInfo(),
+        template: checkSeatService.initSeatInfo(),
         replace: true
     };
 });
+
+checkSeatApp.factory("checkSeatService",function(){
+
+    var factory = {};
+
+    factory.initSeatInfo = function() {
+        var checkSeatInfo = g.toJson($.cookie("checkSeatInfo"));
+        var seatNum = checkSeatInfo.seatNum;
+
+        var _html = "<div class=\"seat-wrap\" id=\"seat\" >";
+
+        if (checkSeatInfo) {
+            var SeatInfo = Api.SeatsInfo(checkSeatInfo.classroomId, checkSeatInfo.sreservationBeginTime, checkSeatInfo.sreservationEndTime);
+            if (SeatInfo.success) {
+                var Seats = SeatInfo.list;
+                factory.Seats = Seats;
+                factory.seatsNum = Seats.length;
+                factory.seatColumns = Seats[0].seatColumns;
+                factory.seatRows = Seats[0].seatRows;
+
+                var array = new Array(factory.seatColumns);
+
+                for (var k = 0; k < array.length; k++) {
+                    var temp = {};
+                    temp.num = k + 1;
+                    array[k] = temp;
+                }
+
+                factory.tempArray = array;
+
+                for (var a = 0; a < array.length; a++) {
+                    _html += "<ul>";
+                    for (var s = 0; s < Seats.length; s++) {
+                        if (Seats[s].columnNum == array[a].num) {
+                            var span = "";
+                            var spanClass = "";
+
+                            var state = Seats[s].state;
+
+                            if(state != 0 && seatNum == Seats[s].seatNum){
+                                span = "<span><img src=\""+g.localData.get("userPhoto")+"\"/></span>";//seatNum
+                                spanClass = " active";
+
+                            }
+
+                            switch (state) {
+                                case 0:
+                                    state = "unseat boy-half-hold";//过道
+                                    break;
+                                case 1 :
+                                    state = "";//可预约
+                                    break;
+                                case 2 :
+                                    state = "selected  boy-half"; //有预约
+                                    break;
+                                case 3 :
+                                    state = "unOptional boy-half-hold";//不可预约
+                                    break;
+
+                            }
+
+
+
+                            _html += "<LI class='" + state + spanClass +"' data='" + Seats[s].seatNum + " ' dataID=" + Seats[s].seatId + ">"+span+"</LI>";
+                        }
+                    }
+                    _html += "</ul>";
+                }
+
+
+            }
+        }
+        return _html + "</div>";
+    }
+    return factory;
+})
