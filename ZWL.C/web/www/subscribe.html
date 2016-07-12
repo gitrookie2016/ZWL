@@ -41,26 +41,26 @@
 							<div class="form-line">
 								<span class="tag">自习室</span>
 								<div class="select">
-									<select id="studyLoungeName">
+									<select id="studyLoungeName" >
 										<option ng-repeat="sl in studyLounge" value="{{sl.classroomId}}"ng-bind="sl.classroomNum"> </option>
 									</select>
 								</div>
 							</div>
 						</div>
-						<div class="radio-item">
+						<div class="radio-item" ng-controller="ResearchAndStudiesCtrl" >
 							<div class="form-line">
 								<span class="tag">图书馆</span>
 								<div class="select">
-									<select>
-										<option>致未来图书馆</option>
+									<select ng-model="select_Value" ng-change="V_change(select_Value)">
+										<option ng-repeat="lb in libraryList" value="{{lb.buildingId}}" ng-bind="lb.buildingName"> 致未来图书馆</option>
 									</select>
 								</div>
 							</div>
 							<div class="form-line">
 								<span class="tag">研修室</span>
 								<div class="select">
-									<select>
-										<option>1层测试自习室</option>
+									<select ng-model="select_RR" ng-change="RR_change(select_RR)">
+										<option ng-repeat="RR in ResearchRoom" value="{{RR.id}}" ng-bind="RR.name">1层测试自习室</option>
 									</select>
 								</div>
 							</div>

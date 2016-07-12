@@ -8,7 +8,9 @@
 var subscribeApp = angular.module("App",[]);
 
 
-
+/**
+ * 自习室
+ */
 subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService){
 
 
@@ -26,6 +28,28 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
     }
 
 });
+
+/**
+ * 研修室
+ */
+subscribeApp.controller("ResearchAndStudiesCtrl",function ($scope,subscribeService) {
+    var RR = subscribeService.BuildingResearchRoom();
+
+    if(RR) {
+        $scope.libraryList = RR;
+
+        $scope.V_change = function (V_change) {
+            subscribeService.first_BuildingResearch = V_change;
+            $scope.ResearchRoom = subscribeService.ResearchRoom();
+        }
+    
+        $scope.RR_change = function(arg){
+            console.log(this);
+        }
+
+    }
+})
+
 
 subscribeApp.controller("subscribeDateCtrl",function($scope,subscribeService){
     $scope.subscribeDate = subscribeService.getDate();
@@ -66,7 +90,7 @@ subscribeApp.factory("subscribeService",function () {
             var Campuses = Campus_re.list;
 
             factory.first_Campus = Campuses[0].buildingId;
-
+            factory.Campus_list = Campus_re.list;
             return Campus_re.list;
 
         }
@@ -74,10 +98,27 @@ subscribeApp.factory("subscribeService",function () {
 
     factory.Classroom = function(){
         if(factory.first_Campus){
-            var SEC = Api.selectEachClassroom(factory.first_Campus,"2016-07-05 08:00:00","2016-08-05 08:00:00");
+            var SEC = Api.selectEachClassroom(factory.first_Campus,"2016-07-05 08:00:00","9999-08-05 08:00:00");
             if(SEC.success){
                 var studyLounge = SEC.list;
                return studyLounge;
+            }
+        }
+    }
+
+    factory.BuildingResearchRoom = function(){
+            var RR = Api.BuildingResearchRoom();
+            if(RR.success){
+                var lists = RR.lists;
+                return lists;
+            }
+    }
+
+    factory.ResearchRoom = function(){
+        if(factory.first_BuildingResearch){
+            var RR = Api.ResearchRoom(factory.first_BuildingResearch);
+            if(RR.success){
+                return RR.lists;
             }
         }
     }

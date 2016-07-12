@@ -520,3 +520,82 @@ window["Api"]["ios"] = function (){
 
     return arg;
 }
+
+/**
+ * 查询包含研修室的图书馆列表
+ * @returns {string}
+ * @constructor
+ */
+window["Api"]["BuildingResearchRoom"] = function (){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "selectInfo/selectBuildingContainResearchRoom",
+        "userId":userInfo.userInfoId,
+        "Authorization":userInfo.token
+    };
+
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        } ,
+
+
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+
+    });
+
+    return arg;
+}
+
+/**
+ * 查询研修室信息（根据buildingId和userId得到满足权限的研修室）
+ * @param buildingId
+ * @returns {string}
+ * @constructor
+ */
+window["Api"]["ResearchRoom"] = function (buildingId){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "researchRoom/selectResearchRoom",
+        "buildingId":buildingId,
+        "userId":userInfo.userInfoId,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        } ,
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+
+    });
+
+    return arg;
+}

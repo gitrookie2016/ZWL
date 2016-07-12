@@ -61,7 +61,9 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
             if(apire.success){
                 
                 $scope.$apply(function () {
-                    $scope.subscribeList = appService.selectReservationByUser();
+                    var subscribeListTwo = appService.selectReservationByUser();
+                    $scope.subscribeList = subscribeListTwo;
+                    $scope.subscribeLeng = subscribeListTwo.length;
                 });
 
             }else{

@@ -5,6 +5,9 @@
 
 var settingsApp = angular.module("App",[]);
 
-settingsApp.controller("",function ($scope) {
-    
+settingsApp.controller("settingsCtrl",function ($scope) {
+    $scope.out = function(){
+        $.removeCookie("userInfo",{  path: '/' });
+        window.location = "login.html";
+    }
 })

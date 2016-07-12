@@ -37,9 +37,10 @@ checkSeatApp.factory("checkSeatService",function(){
 
         var sn = seatNum.split("-")[1];
         var seatWidth = $(".seat-content").width();
+        var seatHeight = $(".seat-content").height();
         var countWidth = 0 - ((Math.ceil(sn / 4) * 2 + parseInt(sn)) * parseInt(seatWidth / 9) - parseInt(seatWidth / 2)); //187.5
         g.dx = countWidth;
-        var _html = "<div class=\"seat-wrap\" id=\"seat\"  style='margin:50px 0;transform:translateX("+countWidth+"px);'>";
+        var _html = "<div class=\"seat-wrap\" id=\"seat\"  style='margin:50px 50px;transform:translateX("+countWidth+"px);'>";
 
         if (checkSeatInfo) {
             var SeatInfo = Api.SeatsInfo(checkSeatInfo.classroomId, checkSeatInfo.sreservationBeginTime, checkSeatInfo.sreservationEndTime);
@@ -77,7 +78,7 @@ checkSeatApp.factory("checkSeatService",function(){
 
                             switch (state) {
                                 case 0:
-                                    state = "unseat boy-half-hold";//过道
+                                    state = "unseat null";//过道
                                     break;
                                 case 1 :
                                     state = "";//可预约

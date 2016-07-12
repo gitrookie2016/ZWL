@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="App">
 	<head>
 		<meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -40,10 +40,10 @@
 						</a>
 					</div>
 				</div>
-				<div class="do-area">
+				<div class="do-area" ng-controller="settingsCtrl">
 					<div class="row">
 						<div class="col v-m">
-							<a class="btn btn-block btn-pink btn-conner" href="#">安全退出</a>
+							<a class="btn btn-block btn-pink btn-conner" ng-click="out();" href="javaScript:void(0);">安全退出</a>
 						</div>
 					</div>
 				</div>

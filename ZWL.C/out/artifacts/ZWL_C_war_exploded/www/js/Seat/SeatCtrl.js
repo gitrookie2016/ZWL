@@ -82,7 +82,7 @@ SeatApp.factory("SeatService",function(){
                         if(Seats[s].columnNum == array[a].num   ){
                             var state = Seats[s].state;
                             switch (state){
-                                case 0:state = "unseat boy-half-hold";//过道
+                                case 0:state = "unseat null";//过道
                                     break;
                                 case 1 : state = "seat_yes";//可预约
                                     break;
