@@ -14,7 +14,6 @@ var subscribeApp = angular.module("App",[]);
 subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService){
 
     var nowTime = Api.getSystemTime();
-
     var date = new Date(nowTime);
     $("#start").html(date.getHours() + ":" +date.getMinutes() + ":00");
 
@@ -64,12 +63,21 @@ subscribeApp.controller("ResearchAndStudiesCtrl",function ($scope,subscribeServi
                          reservationDayNumber: 3*/
                     }
                 }
+                subscribeService.y_day =  subscribeService.selectedInfo.reservationDayNumber;
+               
+                var appElement = document.querySelector('[ng-controller=subscribeDateCtrl]');
+                var $scopes = angular.element(appElement).scope();
+                $scopes.$apply(function () {
+                    $scopes.subscribeDate = subscribeService.getDate();
+                });
 
             }
 
         }
 
         $scope.peopleChange = function(arg){
+
+
             subscribeService.peopleNum = arg;
         }
 
@@ -173,7 +181,11 @@ subscribeApp.factory("subscribeService",function () {
 
         var S_Day = subscribeDate.getDay();
 
-        for(var d = 0 ; d < 5 ; d++){
+        var y_day = factory.y_day;
+
+        y_day = y_day ? y_day : 2;
+
+        for(var d = 0 ; d < y_day ; d++){
 
             var D_Date =  subscribeDate.setDate( subscribeDate.getDate() + d);
 
