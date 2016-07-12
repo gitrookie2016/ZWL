@@ -24,7 +24,9 @@ SeatApp.controller("seatsSubmitCtrl",function($scope,SeatService,$http){
 
         var apire = Api.addReservation(userInfoId,seatId,reservationBeginTime,reservationEndTime,null);
 
-        console.log(apire);
+        if(apire.success){
+            window.location = "index.html";
+        }
     }
 
 });

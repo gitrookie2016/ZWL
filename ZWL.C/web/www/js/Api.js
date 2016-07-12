@@ -408,4 +408,115 @@ window["Api"]["selectReservation"] = function (state,nowPage,pageSize){
 }
 
 
+window["Api"]["cancelReservation"] = function (reservationId ){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "reservation/cancelReservation",
+        "reservationId":reservationId,
+        "Authorization":userInfo.token
+    };
 
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        } ,
+
+
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+
+    });
+
+    return arg;
+}
+
+window["Api"]["password"] = function (oldPassword,newPassword){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    $.ajax({
+        type	:	"POST",
+        data    :   {
+            "userInfoId":userInfo.userInfoId,
+            "oldPassword":oldPassword,
+            "newPassword":newPassword
+        },
+        url		:	g.ContextPath + "userInfo/current/password",
+        async	:	false,
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+    });
+
+    return arg;
+}
+
+
+
+//version/android
+/**
+ * 获取最新版本号和下载地址
+ * @returns {string}
+ */
+window["Api"]["android"] = function (){
+    var arg = "" ;
+    $.ajax({
+        type	:	"POST",
+        url		:	g.ContextPath + "version/android",
+        async	:	false,
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+    });
+
+    return arg;
+}
+
+//version/ios
+/**
+ * 获取最新版本号和下载地址
+ * @returns {string}
+ */
+window["Api"]["ios"] = function (){
+    var arg = "" ;
+    $.ajax({
+        type	:	"POST",
+        url		:	g.ContextPath + "version/ios",
+        async	:	false,
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+    });
+
+    return arg;
+}

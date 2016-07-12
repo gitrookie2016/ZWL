@@ -28,6 +28,9 @@ $(document).ready(function(){
 var app = angular.module("App",[]).controller("subscribeListCtrl",function($scope,appService){
     var subscribeList = appService.selectReservationByUser();
     $scope.subscribeList = subscribeList;
+    if(!subscribeList){
+        return ;
+    }
     $scope.subscribeLeng = subscribeList.length;
     $scope.checkSeat = function () {
 
@@ -46,6 +49,28 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
         $.cookie("checkSeatInfo",JSON.stringify(bean), {  path: '/' });
         window.location = "checkSeat.html";
     }
+
+    $scope.cancel = function () {
+
+        var sl = this.sl;
+
+        $("#open-modal2 h3").html(sl.time + "<br>" + sl.info);
+
+        $("#open-modal2 .cancel").click(function(){
+            var apire = Api.cancelReservation(sl.reservationId);
+            if(apire.success){
+                
+                $scope.$apply(function () {
+                    $scope.subscribeList = appService.selectReservationByUser();
+                });
+
+            }else{
+                console.log(apire.message);
+            }
+        });
+
+    }
+
 })
 
 app.factory("appService",function () {
@@ -55,7 +80,10 @@ app.factory("appService",function () {
     factory.selectReservationByUser = function () {
 
         var list = Api.selectReservationByUser();
-
+        if(!list.success){
+            $(".app-null").show();
+            return null;
+        }
         var lists = list.list;
 
         for(var l = 0 ; l < lists.length ; l++){
@@ -65,6 +93,7 @@ app.factory("appService",function () {
             var _hm = Math.abs(begin-now)/1000/60;
             lists[l].h = parseInt(_hm / 60);
             lists[l].m = parseInt(_hm % 60);
+            lists[l].hm = parseInt(_hm / 60) +"小时"+parseInt(_hm % 60)+"分钟";
 
         }
         return  lists;

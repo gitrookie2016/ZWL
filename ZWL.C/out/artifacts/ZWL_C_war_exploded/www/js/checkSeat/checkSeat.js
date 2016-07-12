@@ -33,8 +33,13 @@ checkSeatApp.factory("checkSeatService",function(){
     factory.initSeatInfo = function() {
         var checkSeatInfo = g.toJson($.cookie("checkSeatInfo"));
         var seatNum = checkSeatInfo.seatNum;
+        var ss = 150; //style='transform:translateX("+ss+"px);'
 
-        var _html = "<div class=\"seat-wrap\" id=\"seat\" >";
+        var sn = seatNum.split("-")[1];
+        var seatWidth = $(".seat-content").width();
+        var countWidth = 0 - ((Math.ceil(sn / 4) * 2 + parseInt(sn)) * parseInt(seatWidth / 9) - parseInt(seatWidth / 2)); //187.5
+        g.dx = countWidth;
+        var _html = "<div class=\"seat-wrap\" id=\"seat\"  style='margin:50px 0;transform:translateX("+countWidth+"px);'>";
 
         if (checkSeatInfo) {
             var SeatInfo = Api.SeatsInfo(checkSeatInfo.classroomId, checkSeatInfo.sreservationBeginTime, checkSeatInfo.sreservationEndTime);

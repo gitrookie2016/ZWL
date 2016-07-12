@@ -45,6 +45,20 @@ Date.prototype.Format = function(formatStr){
 }
 
 
+window["g"]["openmodal2"] = function(msg){
+    var op = $("#open-modal2 p");
+    op.html(msg);
+    op.css("color","red");
+    window.location = "#open-modal2";
+}
+window["g"]["openmodal"] = function(msg){
+    var op = $("#open-modal2 p");
+    $("#open-modal2 h2").html("提示");
+    op.html(msg);
+    window.location = "#open-modal2";
+}
+
+
 /**
  * 获取路径后面的参数
  */

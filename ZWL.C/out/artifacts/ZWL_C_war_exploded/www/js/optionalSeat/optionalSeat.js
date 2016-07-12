@@ -2,6 +2,10 @@
  * Created by Lix on 2016-7-7.
  */
 
+/**
+ *
+ *  @type {angular.Module}
+ */
 var optionalApp = angular.module("App",[]);
 
 optionalApp.controller("optionalCtrl",function($scope,optionalService){
@@ -33,8 +37,8 @@ optionalApp.controller("seatsSubmitCtrl",function($scope,optionalService){
         var reservationBeginTime = optionalService.reservationBeginTime ;
         var reservationEndTime = optionalService.reservationEndTime ;
         var apire = Api.addReservation(userInfoId,seatId,reservationBeginTime,reservationEndTime,null);
+       
 
-        console.log(apire);
     }
 
 
