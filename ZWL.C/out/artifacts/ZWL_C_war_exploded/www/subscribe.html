@@ -67,7 +67,7 @@
 							<div class="form-line">
 								<span class="tag">总人数</span>
 								<div>
-									<input type="text" class="input" />
+									<input type="text" ng-change="peopleChange(peopleValue)" ng-model="peopleValue" class="input" />
 								</div>
 							</div>
 						</div>
@@ -89,12 +89,12 @@
 								<tr>
 									<td><div class="date"><a href="#open-modal1" class="pickdate" id="start">12:30:00</a></div></td>
 									<td>—</td>
-									<td><div class="date"><a href="#open-modal1" class="pickdate" id="end">13:30:00</a></div></td>
+									<td><div class="date"><a href="#open-modal1" class="pickdate" id="end">22:00:00</a></div></td>
 								</tr>
 							</table>
 						</div>
 					</div>
-					<div class="app-banel">
+					<div class="app-banel"style="display: none">
 						<p class="tips">07:00之后可以预约次日座位</p>
 					</div>
 				</div>
@@ -107,7 +107,7 @@
 							<a class="btn btn-conner btn-blue btn-block" href="javaScript:void(0);" ng-click="ChooseSeat('optionalSeat')">自选座位</a>
 						</div>
 						<div id="qd" class="col v-m" style="display: none;">
-							<a class="btn btn-conner btn-blue btn-block" href="预约-确定.html">确定</a>
+							<a class="btn btn-conner btn-blue btn-block" href="javaScript:void(0);" ng-click="RRChooseSeat()">确定</a>
 						</div>
 					</div>
 				</div>

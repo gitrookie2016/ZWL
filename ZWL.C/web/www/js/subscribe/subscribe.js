@@ -13,6 +13,10 @@ var subscribeApp = angular.module("App",[]);
  */
 subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService){
 
+    var nowTime = Api.getSystemTime();
+
+    var date = new Date(nowTime);
+    $("#start").html(date.getHours() + ":" +date.getMinutes() + ":00");
 
     $scope.subscribeList = subscribeService.Campuses();
 
@@ -42,13 +46,36 @@ subscribeApp.controller("ResearchAndStudiesCtrl",function ($scope,subscribeServi
             subscribeService.first_BuildingResearch = V_change;
             $scope.ResearchRoom = subscribeService.ResearchRoom();
         }
-    
+
         $scope.RR_change = function(arg){
-            console.log(this);
+            if(arg){
+                var ResearchRoom = this.ResearchRoom;
+                for(var r = 0 ; r < ResearchRoom.length ; r++){
+                    if(ResearchRoom[r].id == arg){
+                        subscribeService.selectedInfo = ResearchRoom[r];
+                        /*
+                         dayBeginTime: "08:00:00"
+                         dayEndTime: "22:00:00"
+                         floor: 2
+                         id: 2
+                         maxPeople: 5
+                         minPeople: 1
+                         name: "请输入 研修室名研修室4"
+                         reservationDayNumber: 3*/
+                    }
+                }
+
+            }
+
+        }
+
+        $scope.peopleChange = function(arg){
+            subscribeService.peopleNum = arg;
         }
 
     }
 })
+
 
 
 subscribeApp.controller("subscribeDateCtrl",function($scope,subscribeService){
@@ -70,6 +97,12 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
             }
         }
 
+    }
+    
+    $scope.RRChooseSeat = function () {
+
+        window.location = "subscribeConfirm.html";
+        // Api.addReservationResearch();
     }
 })
 

@@ -202,7 +202,7 @@ window["Api"]["selectResearchRoom"] = function (buildingId,userId){
  * @param endTime
  * @returns {string}
  */
-window["Api"]["addReservation"] = function (userId,roomed,totalPeople,reservationDate,beginTime,endTime){
+/*window["Api"]["addReservation"] = function (userId,roomed,totalPeople,reservationDate,beginTime,endTime){
     var arg = "" ;
 
     $.ajax({
@@ -229,7 +229,7 @@ window["Api"]["addReservation"] = function (userId,roomed,totalPeople,reservatio
     });
 
     return arg;
-}
+}*/
 
 /**
  * 查询某教室匹配的座位
@@ -585,6 +585,67 @@ window["Api"]["ResearchRoom"] = function (buildingId){
         data    : {
             "data" : JSON.stringify(dataS)
         } ,
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+
+    });
+
+    return arg;
+}
+
+//
+window["Api"]["addReservationResearch"] = function (roomed,totalPeople,reservationDate,beginTime,endTime){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "researchRoom/addReservation",
+        "userId":userInfo.userInfoId,
+        "roomed":roomed,
+        "totalPeople":totalPeople,
+        "reservationDate":reservationDate,
+        "beginTime":beginTime,
+        "endTime":endTime,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        } ,
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return;
+        }
+
+    });
+
+    return arg;
+}
+
+//getTime/getSystemTime
+
+window["Api"]["getSystemTime"] = function(){
+    var arg = "" ;
+    $.ajax({
+        type: "get",
+        url		:	 g.ContextPath + "getTime/getSystemTime",
+        async	:	false,
         success	:	function(res){
             if(res){
                 arg = res;
