@@ -127,7 +127,7 @@ html{font-size:3.75vw;}/*iphone 6*/
 .date input{height:2.5rem;line-height:2.5rem;border:1px solid #C9CACA;width:100%;color:#666666;font-size:1rem;background:#fff;}
 .time-pick th{text-align:center;color:#359DD9;font-size:1.15rem;height:2rem;font-weight:normal;}
 .time-pick td{text-align:center;color:#666666;}
-.tips{font-size:1.15rem;color:#EFBC32;padding-left:1.5rem;background:url(../img/ion-tips.png) no-repeat left center;height:2rem;line-height:2rem;background-size:1.2rem;margin:0 0.5rem;}
+.tips{font-size:1rem;color:#EFBC32;padding-left:1.5rem;background:url(../img/ion-tips.png) no-repeat left center;height:2rem;line-height:2rem;background-size:1.2rem;margin:0;}
 /*二级*/
 .app-view-content{height:100%;overflow:auto;}
 .do-area{height:4rem;padding:0 0.7rem;}

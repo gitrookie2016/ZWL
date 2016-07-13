@@ -600,14 +600,23 @@ window["Api"]["ResearchRoom"] = function (buildingId){
     return arg;
 }
 
-//
+/**
+ * 预约研修室
+ * @param roomed
+ * @param totalPeople
+ * @param reservationDate
+ * @param beginTime
+ * @param endTime
+ * @returns {string}
+ */
 window["Api"]["addReservationResearch"] = function (roomed,totalPeople,reservationDate,beginTime,endTime){
     var arg = "" ;
     var userInfo = g.userInfo();
+
     var dataS = {
-        "url":g.ContextPath + "researchRoom/addReservation",
+        "url":g.ContextPath + "researchRoomReservation/addReservation",
         "userId":userInfo.userInfoId,
-        "roomed":roomed,
+        "roomId":roomed,
         "totalPeople":totalPeople,
         "reservationDate":reservationDate,
         "beginTime":beginTime,

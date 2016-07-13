@@ -17,9 +17,9 @@
 			<div class="app-head">
 				<ul class="row" style="padding-top:5px;">
 					<li class="col v-m" style="padding-top:7px;">
-						<p class="g-userName">姓名：张小雅</p>
-						<p class="g-userNum">学号：5876324</p>
-						<p class="g-major">专业：信息工程15级</p>
+						<p class="g-userName"></p>
+						<p class="g-userNum"></p>
+						<p class="g-major"></p>
 					</li>
 					<li class="col t-r v-b">
 						<img class="face" src="img/face.png"/>
@@ -45,6 +45,36 @@
 					</div>
 					<!---->
 					<ul class="seat-list" ng-controller="subscribeListCtrl">
+
+						<li class="seat-item">
+							<p class="item-time"><span class="item-num" ng-bind="roomReservationLeng">1</span><span ng-bind="roomReservation.roomReservationList[0].time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
+							<p class="item-txt" ng-bind="roomReservation.info">致未来图书馆1层测试自习室 2-8 座</p>
+							<p class="item-txt">预约人数<span ng-bind="roomReservation.totalPeople"></span>人,已签到<span ng-bind="roomReservation.roomReservationList[0].arrivalPeopleNumber"></span>人</p>
+							<p class="item-txt">预约码：<span ng-bind="roomReservation.roomReservationList[0].identifyCode"></span></p>
+							<p class="item-txt">距离签到时间<span class="c-p"ng-bind="roomReservation.roomReservationList[0].ct">3小时48分</span></p>
+
+
+							<ul class="row mt-1">
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="javaScript:void(0);"><img align="absmiddle" src="img/see.png"/>查看</a>
+								</li>
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/port.png"/>签到</a>
+								</li>
+							</ul>
+							<!--<ul class="row top-line">
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#open-modal2"><img align="absmiddle" src="img/cancel.png"/>取消</a>
+								</li>
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/edit.png"/>续约</a>
+								</li>
+								<li class="col t-c">
+									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/port.png"/>签到</a>
+								</li>
+							</ul>-->
+						</li>
+
 						<li class="seat-item" ng-repeat="sl in subscribeList" >
 							<p class="item-time"><span class="item-num" ng-bind="subscribeLeng - $index"></span><span ng-bind="sl.time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
 							<p class="item-txt" ng-bind="sl.info">致未来图书馆1层测试自习室 2-8 座</p>

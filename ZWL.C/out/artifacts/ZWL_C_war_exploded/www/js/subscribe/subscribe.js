@@ -13,39 +13,44 @@ var subscribeApp = angular.module("App",[]);
  */
 subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService){
 
+    //起始时间为当前时间
     var nowTime = Api.getSystemTime();
     var date = new Date(nowTime);
-    $("#start").html(date.getHours() + ":" +date.getMinutes() + ":00");
+    var Minutes = date.getMinutes().toString();
+    Minutes = Minutes.length > 1 ? Minutes : "0"+Minutes;
+    $("#start").html(date.getHours() + ":" + Minutes  + ":00");
 
+    //自习室  图书馆
     $scope.subscribeList = subscribeService.Campuses();
 
     //$scope.studyLounge = subscribeService.Classroom();//默认查询第一个自习室
 
+    //自习室  图书馆
     $scope.V_change = function(V_change){
         subscribeService.first_Campus = V_change;
         $scope.studyLounge = subscribeService.Classroom();
     }
 
+    //自习室
     $scope.sT_change = function(sT_change){
         console.log(sT_change);
     }
 
-});
-
-/**
- * 研修室
- */
-subscribeApp.controller("ResearchAndStudiesCtrl",function ($scope,subscribeService) {
+    //研修室 init
     var RR = subscribeService.BuildingResearchRoom();
-
+    subscribeService.rr_bean = {};
     if(RR) {
+        //研修室 图书馆
         $scope.libraryList = RR;
 
-        $scope.V_change = function (V_change) {
+        //研修室 图书馆 事件
+        $scope.buildingId_change = function (V_change) {
             subscribeService.first_BuildingResearch = V_change;
+
             $scope.ResearchRoom = subscribeService.ResearchRoom();
         }
 
+        //研修室 研修室 事件
         $scope.RR_change = function(arg){
             if(arg){
                 var ResearchRoom = this.ResearchRoom;
@@ -64,35 +69,51 @@ subscribeApp.controller("ResearchAndStudiesCtrl",function ($scope,subscribeServi
                     }
                 }
                 subscribeService.y_day =  subscribeService.selectedInfo.reservationDayNumber;
-               
-                var appElement = document.querySelector('[ng-controller=subscribeDateCtrl]');
-                var $scopes = angular.element(appElement).scope();
-                $scopes.$apply(function () {
-                    $scopes.subscribeDate = subscribeService.getDate();
-                });
+                //根据研修室 更新日期
+                $scope.subscribeDate = subscribeService.getDate();
 
+                var tipsfather = $(".tipsfather");
+                tipsfather.show();
+
+                var selectedInfo = subscribeService.selectedInfo;
+
+                tipsfather.html("<p class='tips' >" + selectedInfo.minPeople +"人以上才可以预约该教室，最多可容纳" + selectedInfo.maxPeople + "人！</p> <br><p class='tips'>开放时间为：" + selectedInfo.dayBeginTime + "-" + selectedInfo.dayEndTime + "</p>");
             }
+            subscribeService.rr_bean.roomed = arg;
 
         }
 
         $scope.peopleChange = function(arg){
-
-
+            subscribeService.rr_bean.totalPeople = arg;
             subscribeService.peopleNum = arg;
         }
 
+
     }
-})
+    $scope.radioClick = function (arg) {
+        $(".tipsfather").hide();
 
 
+        if(arg == 0){
+            subscribeService.y_day = 2;
+            $("#studyLoungeName").text("");
+            $scope.studyLounge = subscribeService.Classroom();
 
-subscribeApp.controller("subscribeDateCtrl",function($scope,subscribeService){
+        }else{
+
+            subscribeService.y_day = 1;
+
+        }
+        $scope.subscribeDate = subscribeService.getDate();
+
+    }
     $scope.subscribeDate = subscribeService.getDate();
 
     $scope.checkDate = function (arg) {
         subscribeService.checkDate(arg);
     }
 });
+
 
 subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
     $scope.ChooseSeat = function (arg) {
@@ -109,8 +130,52 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
     
     $scope.RRChooseSeat = function () {
 
-        window.location = "subscribeConfirm.html";
-        // Api.addReservationResearch();
+        subscribeService.rr_bean.reservationDate = new Date().getFullYear() + "-" + subscribeService.day ;
+        subscribeService.rr_bean.beginTime = $(".date #start")[0].innerHTML;
+        subscribeService.rr_bean.endTime = $(".date #end")[0].innerHTML;
+
+        var LibraryName = $("#LibraryName").text();
+        subscribeService.rr_bean.LibraryName = LibraryName;
+        var roomed = subscribeService.rr_bean.roomed;
+
+        var si = subscribeService.selectedInfo;
+
+        subscribeService.rr_bean.roomedName = si.name;
+
+        if(!roomed){
+            subscribeService.alertError("请选择研修室！");
+            return false;
+        }
+
+        var totalPeople = subscribeService.rr_bean.totalPeople;
+        if(!totalPeople){
+            subscribeService.alertError("请填写预约总人数！");
+            return false;
+        }
+
+        if(parseInt(totalPeople) > parseInt(si.maxPeople)){
+            subscribeService.alertError("预约总人数超过研修室规定人数！<br> <h3>最大人数不能超过"+subscribeService.selectedInfo.maxPeople +"人</h3>");
+            return false;
+        }
+        var dayBeginTime = new Date(subscribeService.rr_bean.reservationDate + " " +si.dayBeginTime);//
+        var beginTime = new Date(subscribeService.rr_bean.reservationDate + " " +subscribeService.rr_bean.beginTime);
+
+        if(beginTime < dayBeginTime){
+            subscribeService.alertError("预约时间不在研修室开放时间内<br> <h3>研修室开放时间为："+si.dayBeginTime +"-"+si.dayEndTime+"</h3>");
+            return false;
+        }
+        subscribeService.rr_bean.type = "researchRoom";
+
+        $.cookie("subscribeSubmit",JSON.stringify(subscribeService.rr_bean), {  path: '/' });
+        //window.location = "subscribeConfirm.html";
+        var serviceArg = subscribeService.rr_bean;
+        var apire = Api.addReservationResearch(serviceArg.roomed,serviceArg.totalPeople,serviceArg.reservationDate,serviceArg.beginTime,serviceArg.endTime);//roomed,totalPeople,reservationDate,beginTime,endTime
+        if(apire.success){
+
+            window.location = "index.html";
+
+        }
+
     }
 })
 

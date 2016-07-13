@@ -17,19 +17,20 @@
 				<h1 class="title">预约座位</h1>
 				<a class="right" href="#"></a>
 			</div>
-			<div class="app-view has-footer">
+			<div class="app-view has-footer" ng-controller="CampusAndBuildingCtrl">
 				<div class="app-view-content">
 					<div class="app-banel">
 						<div class="form-line">
 							<span class="tag">类型</span>
 							<div class="pl-5">
-								<input type="radio" id="radio-1-1" name="sex" class="regular-radio" checked value="0"/><span></span>
+								<input type="radio" id="radio-1-1" name="sex" class="regular-radio" ng-model="model" ng-chang="radioClick(model);"   checked  value="0"/><span></span>
 								<label for="radio-1-1">自习室</label>
-								<input type="radio" id="radio-1-2" name="sex" class="regular-radio" value="1"/><span></span>
+								<input type="radio" id="radio-1-2" name="sex"  class="regular-radio" ng-model="model" ng-chang="radioClick(model);" value="1"  /><span></span>
 								<label for="radio-1-2">研修室</label>
+
 							</div>
 						</div>
-						<div class="radio-item" style="display:block;" ng-controller="CampusAndBuildingCtrl"  >
+						<div class="radio-item" style="display:block;"   >
 							<div class="form-line">
 								<span class="tag">图书馆</span>
 								<div class="select">
@@ -47,12 +48,12 @@
 								</div>
 							</div>
 						</div>
-						<div class="radio-item" ng-controller="ResearchAndStudiesCtrl" >
+						<div class="radio-item"  ><!--ng-controller="ResearchAndStudiesCtrl"-->
 							<div class="form-line">
 								<span class="tag">图书馆</span>
 								<div class="select">
-									<select ng-model="select_Value" ng-change="V_change(select_Value)">
-										<option ng-repeat="lb in libraryList" value="{{lb.buildingId}}" ng-bind="lb.buildingName"> 致未来图书馆</option>
+									<select ng-model="buildingIdModel" ng-change="buildingId_change(buildingIdModel)">
+										<option ng-repeat="ll in libraryList" value="{{ll.buildingId}}" ng-bind="ll.buildingName"> 致未来图书馆</option>
 									</select>
 								</div>
 							</div>
@@ -73,7 +74,7 @@
 						</div>
 					</div>
 					<div class="app-banel">
-						<ul class="row day-pick" ng-controller="subscribeDateCtrl">
+						<ul class="row day-pick" ><!--ng-controller="subscribeDateCtrl"-->
 							<li class="col t-c {{sd.active}} " ng-repeat="sd in subscribeDate" ng-click="checkDate($index)">
 								<a href="#" ><span ng-bind="sd.Weekday"></span><br/><span ng-bind="sd.date"></span></a>
 							</li>
@@ -87,15 +88,15 @@
 									<th width="45%">截止时间</th>
 								</tr>
 								<tr>
-									<td><div class="date"><a href="#open-modal1" class="pickdate" id="start">12:30:00</a></div></td>
+									<td><div class="date"><a href="#open-modal1" class="pickdate" name="起始时间" id="start">12:30:00</a></div></td>
 									<td>—</td>
-									<td><div class="date"><a href="#open-modal1" class="pickdate" id="end">22:00:00</a></div></td>
+									<td><div class="date"><a href="#open-modal1" class="pickdate" name="截止时间" id="end">22:00:00</a></div></td>
 								</tr>
 							</table>
 						</div>
 					</div>
-					<div class="app-banel"style="display: none">
-						<p class="tips">07:00之后可以预约次日座位</p>
+					<div class="app-banel tipsfather" style="display: none">
+						<p class="tips" >07:00之后可以预约次日座位</p>
 					</div>
 				</div>
 				<div class="do-area" ng-controller="ChooseSeatCtrl">
@@ -191,8 +192,10 @@
 				$(".radio-item").eq(index).show().siblings(".radio-item").hide();
 				if(index==1){
 					$("#qd").show().siblings().hide();
+					$("#inputRadio").val(index);
 				}else{
 					$("#qd").hide().siblings().show();
+					$("#inputRadio").val(index);
 				}
 			})
 			/*$(".day-pick").children().click(function(){

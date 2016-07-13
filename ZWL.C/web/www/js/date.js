@@ -3,6 +3,7 @@ $(function(){
 	$(".pickdate").click(function(){
 
 		_this = $(this);
+		$(".pick-time h2").text(_this.attr("name"));
 		$(".hour").find("span").click(function(){
 			$(this).addClass("active").siblings().removeClass("active");
 			$("#hour").html($(this).html())

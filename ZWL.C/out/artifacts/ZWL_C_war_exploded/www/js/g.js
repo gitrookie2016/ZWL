@@ -74,6 +74,12 @@ window["g"]["getUrlParam"] = function getUrlParam(name) {
 window["g"]["ContextPath"] = "http://123.57.222.123:9901/";
 
 /**
+ * 研修
+ * @type {string}
+ */
+window["g"]["researchPath"] = "http://119.10.30.52:9901/";
+
+/**
  * json字符串转成json对象
  * @author Lix
  */

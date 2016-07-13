@@ -27,11 +27,26 @@ $(document).ready(function(){
 
 var app = angular.module("App",[]).controller("subscribeListCtrl",function($scope,appService){
     var subscribeList = appService.selectReservationByUser();
-    $scope.subscribeList = subscribeList;
     if(!subscribeList){
         return ;
     }
-    $scope.subscribeLeng = subscribeList.length;
+    $scope.subscribeList = subscribeList.lists;
+    var roomReservation = subscribeList.roomReservation;
+    var roomReservationList;
+    var ab = 0;
+    var sll = subscribeList.lists.length;
+    $scope.subscribeLeng = sll ;
+    if(typeof roomReservation != "undefined"){
+        roomReservationList = roomReservation.roomReservationList;//
+
+
+        $scope.roomReservation = roomReservation;
+        $scope.roomReservationList = roomReservationList;
+        ab = 1;
+        $scope.roomReservationLeng = parseInt(sll) + ab;
+    }
+
+
     $scope.checkSeat = function () {
 
         var sl = this.sl;
@@ -62,8 +77,8 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
                 
                 $scope.$apply(function () {
                     var subscribeListTwo = appService.selectReservationByUser();
-                    $scope.subscribeList = subscribeListTwo;
-                    $scope.subscribeLeng = subscribeListTwo.length;
+                    $scope.subscribeList = subscribeListTwo.lists;
+                    $scope.subscribeLeng = subscribeListTwo.lists.length;
                 });
 
             }else{
@@ -86,19 +101,41 @@ app.factory("appService",function () {
             $(".app-null").show();
             return null;
         }
+        var bean = {};
         var lists = list.list;
+        if(lists.length > 0) {
+            for (var l = 0; l < lists.length; l++) {
 
-        for(var l = 0 ; l < lists.length ; l++){
-            var beginTime = lists[l].sreservationBeginTime;
-            var now = new Date()
-            var begin = new Date(beginTime);
-            var _hm = Math.abs(begin-now)/1000/60;
-            lists[l].h = parseInt(_hm / 60);
-            lists[l].m = parseInt(_hm % 60);
-            lists[l].hm = parseInt(_hm / 60) +"小时"+parseInt(_hm % 60)+"分钟";
+                var beginTime = lists[l].sreservationBeginTime;
+                var _hm = factory.contrastTime(beginTime);
+                lists[l].h = parseInt(_hm / 60);
+                lists[l].m = parseInt(_hm % 60);
+                lists[l].hm = parseInt(_hm / 60) + "小时" + parseInt(_hm % 60) + "分钟";
 
+            }
+            bean.lists = lists;
         }
-        return  lists;
+        var roomReservation = list.roomReservation;
+
+        if(typeof roomReservation != "undefined"){
+
+            var rvl =  roomReservation.roomReservationList
+            for(var rrv = 0 ; rrv < rvl.length ; rrv++){
+                var ct = factory.contrastTime(rvl[rrv].time.substring(0,16) + ":00");
+                rvl[rrv].ct = parseInt(ct / 60) + "小时" + parseInt(ct % 60) + "分钟";
+            }
+            roomReservation.roomReservationList = rvl;
+            bean.roomReservation = roomReservation;
+        }
+
+        return bean;
+
+
+    }
+    factory.contrastTime = function (a) {
+        var now = new Date()
+        var begin = new Date(a);
+        return Math.abs(begin - now) / 1000 / 60;
     }
 
     return factory;
