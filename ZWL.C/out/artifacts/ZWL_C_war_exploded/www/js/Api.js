@@ -280,7 +280,7 @@ window["Api"]["SeatsInfo"] = function (classroomId,reservationBeginTime,reservat
 window["Api"]["addReservation"] = function (userInfoId,seatId,reservationBeginTime,reservationEndTime,notArrive){
     var arg = "" ;
     notArrive = notArrive != null ? notArrive : "1";
-    seatId = $("#SeatDataID").val();
+    seatId = seatId ? seatId : $("#SeatDataID").val();
     var userInfo = g.userInfo();
 
     var Authorization = userInfo.token;
@@ -727,6 +727,46 @@ window["Api"]["addSeatByrandom"] = function (buildingId,reservationBeginTime,res
         "reservationBeginTime":reservationBeginTime,
         "reservationEndTime":reservationEndTime,
         "campusId":userInfo.campusId,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+/**
+ * 更换座位
+ * @param reservationId
+ * @param seatId
+ * @returns {string}
+ */
+window["Api"]["changeSeatBychoose"] = function (reservationId,seatId){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "reservation/changeSeatBychoose",
+        "userInfoId":userInfo.userInfoId,
+        "reservationId":reservationId,
+        "seatId":seatId,
         "Authorization":userInfo.token
     };
     $.ajax({

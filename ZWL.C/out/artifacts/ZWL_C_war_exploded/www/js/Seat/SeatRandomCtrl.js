@@ -10,8 +10,6 @@ SeatRandomApp.controller("SeatRandomCtrl",function($scope,SeatRandomService){
 
     if(rsi.success){
         var rsiData = rsi.object;
-
-        SeatRandomService.rsiData = rsiData;
     }
 
     $scope.optionalSpace = rsiData.buildingName + "-" + rsiData.classroomNum;
@@ -20,10 +18,10 @@ SeatRandomApp.controller("SeatRandomCtrl",function($scope,SeatRandomService){
 });
 
 
-SeatRandomApp.controller("seatsSubmitCtrl",function($scope,SeatRandomService,$http){
+SeatRandomApp.controller("seatsSubmitCtrl",function($scope,SeatRandomService){
 
     $scope.seatsSubmit = function(){
-        var seatId = $("#SeatDataID").val();
+        var seatId = SeatRandomService.rsi.object.seatId;
         var userInfo = $.cookie("userInfo");
         userInfo = g.toJson(userInfo);
         var userInfoId = userInfo.userInfoId;

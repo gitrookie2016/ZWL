@@ -8,12 +8,10 @@ SeatRandomApp.controller("SeatRandomCtrl",function($scope,SeatRandomService){
 
     var rsi = SeatRandomService.rsi;
 
-    if(rsi.success){
-        var rsiData = rsi.object;
+    if(rsi) {
+        $scope.optionalSpace = rsi.buildingName + "-" + rsi.classroomNum;
+        $scope.optionalSeatNum = rsi.seatNum;
     }
-
-    $scope.optionalSpace = rsiData.buildingName + "-" + rsiData.classroomNum;
-    $scope.optionalSeatNum = rsiData.seatNum;
 
 });
 
@@ -21,25 +19,18 @@ SeatRandomApp.controller("SeatRandomCtrl",function($scope,SeatRandomService){
 SeatRandomApp.controller("seatsSubmitCtrl",function($scope,SeatRandomService){
 
     $scope.seatsSubmit = function(){
-        var seatId = SeatRandomService.rsi.object.seatId;
-        var userInfo = $.cookie("userInfo");
-        userInfo = g.toJson(userInfo);
-        var userInfoId = userInfo.userInfoId;
+        var SeatDataID = $("#SeatDataID").val();
 
-        var reservationBeginTime = SeatRandomService.reservationBeginTime ;
-        var reservationEndTime = SeatRandomService.reservationEndTime ;
-
-        var apire = Api.addReservation(userInfoId,seatId,reservationBeginTime,reservationEndTime,null);
+        var apire = Api.changeSeatBychoose(SeatRandomService.rsi.reservationId,SeatDataID);
 
         if(apire.success){
             window.location = "index.html";
+        }else{
+            alert(apire.message);
         }
     }
 
-    $scope.seatsRandom = function () {
-        //$("body").html("asdfasdfasdf");//等待提示
-        window.location = window.location.href;
-    }
+
 
 });
 
@@ -56,16 +47,7 @@ SeatRandomApp.directive("seats",function (SeatRandomService) {
 SeatRandomApp.factory("SeatRandomService",function(){
     var factory = {};
 
-    /**
-     * 获取随机座位信息
-     */
-    factory.getRandomSeatInfo = function(){
-        var subscribeDate = g.toJson($.cookie("subscribeDate"));
-        factory.reservationBeginTime = subscribeDate.reservationBeginTime;
-        factory.reservationEndTime = subscribeDate.reservationEndTime;
-        return Api.addSeatByrandom(subscribeDate.LibraryVal,factory.reservationBeginTime,factory.reservationEndTime);
 
-    }
 
     /**
      * 初始化座位列表
@@ -73,21 +55,19 @@ SeatRandomApp.factory("SeatRandomService",function(){
      */
     factory.initSeatInfo = function(){
 
-        factory.rsi = factory.getRandomSeatInfo();
-        var rsi = factory.rsi;
-        if(!rsi.success){
-            alert(rsi.message);
-            window.location = "subscribe.html";
+        var checkSeatInfo = g.toJson($.cookie("changeSeatInfo"));
+
+        factory.rsi = checkSeatInfo;
+        if(!checkSeatInfo){
+            window.location = "index.html";
         }
 
-        var subscribeDate = $.cookie("subscribeDate");
-        var SeatForm = g.toJson(subscribeDate);
-
-        var seatNum = rsi.object.seatNum;
+        var seatNum = checkSeatInfo.seatNum;
 
         var _html = "<div class=\"seat-wrap\" id=\"seat\" style='margin:50px 50px;transform:translateX("+g.getCountWidth(seatNum)+"px);'>";
-        if(SeatForm){
-            var SeatInfo = Api.SeatsInfo(rsi.object.classroomId,SeatForm.reservationBeginTime,SeatForm.reservationEndTime);
+
+        if(checkSeatInfo){
+            var SeatInfo = Api.SeatsInfo(checkSeatInfo.classroomId,checkSeatInfo.sreservationBeginTime,checkSeatInfo.sreservationEndTime);
             if(SeatInfo.success){
                 var Seats = SeatInfo.list;
                 factory.Seats = Seats;
@@ -114,16 +94,16 @@ SeatRandomApp.factory("SeatRandomService",function(){
                             switch (state){
                                 case 0:stateClass = "unseat null";//过道
                                     break;
-                                case 1 : stateClass = "";//可预约
+                                case 1 : stateClass = "seat_yes";//可预约
                                     break;
-                                case 2 : stateClass = "selected  boy-half"; //有预约
+                                case 2 : stateClass = "seat_yes selected  boy-half"; //有预约
                                     break;
-                                case 3 : stateClass = "unOptional boy-half-hold";//不可预约
+                                case 3 : stateClass = "seat_yes unOptional boy-half-hold";//不可预约
                                     break;
 
                             }
                             if(seatNum == Seats[s].seatNum && state != 0){
-                                stateClass = "active";
+                                stateClass = " activeme";
                             }
 
                             _html += "<LI class='"+stateClass+"' data='"+Seats[s].seatNum+" ' dataID="+Seats[s].seatId+"></LI>";

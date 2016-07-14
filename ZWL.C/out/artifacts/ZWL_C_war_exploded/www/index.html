@@ -85,8 +85,8 @@
 									<a class="btn has-icon c-b" href="javaScript:void(0);" inputFlag="{{$index}}input" ng-click="checkSeat()"><img align="absmiddle" src="img/see.png"/>查看座位</a>
 								</li>
 								<li class="col t-c">
-									<a class="btn has-icon c-b" href="#open-modal1"><img align="absmiddle" src="img/change.png"/>更换座位</a>
-								</li>
+									<a class="btn has-icon c-b" ng-click="changeSeat();" href="javaScript:void(0);"><img align="absmiddle" src="img/change.png"/>更换座位</a>
+								</li><!--#open-modal1-->
 							</ul>
 							<ul class="row top-line">
 								<li class="col t-c">
@@ -121,7 +121,7 @@
 		        	</div>
 		        	<img src="img/change-seat.png" />
 		        	<p>请您选择更换的方式</p>
-		        	<a class="btn btn-block btn-conner btn-blue" href="#">手动更换</a>
+		        	<a class="btn btn-block btn-conner btn-blue" href="changeSeat.html">手动更换</a>
 		        	<a class="btn btn-block btn-conner btn-pink" href="#">扫码更换</a>
 		        </div>
 		    </div>

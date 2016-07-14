@@ -46,8 +46,16 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
         ab = 1;
         $scope.roomReservationLeng = parseInt(sll) + ab;
     }
+    /**
+     * 更换座位
+     */
+    $scope.changeSeat = function () {
+        var changeSeatInfo = this.sl;
 
+        $.cookie("changeSeatInfo",JSON.stringify(changeSeatInfo),{path:"/"});
 
+        window.location = "#open-modal1";
+    }
     $scope.checkSeat = function () {
 
         var sl = this.sl;
@@ -78,8 +86,14 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
                 
                 $scope.$apply(function () {
                     var subscribeListTwo = appService.selectReservationByUser();
-                    $scope.subscribeList = subscribeListTwo.lists;
-                    $scope.subscribeLeng = subscribeListTwo.lists.length;
+                    if(subscribeListTwo) {
+
+                        $scope.subscribeList = subscribeListTwo.lists;
+                        if(subscribeListTwo.lists){
+                            $scope.subscribeLeng = subscribeListTwo.lists.length;
+                        }
+
+                    }
                 });
 
             }else{
