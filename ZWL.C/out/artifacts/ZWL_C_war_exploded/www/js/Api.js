@@ -23,12 +23,12 @@ window["Api"]["Schools"] = function(){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 
 /**
@@ -57,17 +57,16 @@ window["Api"]["login"] = function (userNum,userPwd,schoolNum){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 
 /**
  * 查询校区和图书馆信息
- * @param userInfoId
  * @returns {string}
  */
 window["Api"]["selectCampusAndBuildingInfomation"] = function (){
@@ -89,12 +88,12 @@ window["Api"]["selectCampusAndBuildingInfomation"] = function (){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 /**
  * 查询每间教室总座位数和剩余座位数
@@ -122,12 +121,12 @@ window["Api"]["selectEachClassroom"] = function (buildingId,reservationBeginTime
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 /**
  * 查询包含研修室的图书馆列表
@@ -154,13 +153,13 @@ window["Api"]["selectBuildingContainResearchRoom"] = function (token,userId){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 /**
  * 查询研修室信息（根据buildingId和userId得到满足权限的研修室）
@@ -185,12 +184,12 @@ window["Api"]["selectResearchRoom"] = function (buildingId,userId){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 /**
  * 预约研修室
@@ -224,7 +223,7 @@ window["Api"]["selectResearchRoom"] = function (buildingId,userId){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
@@ -249,7 +248,7 @@ window["Api"]["SeatsInfo"] = function (classroomId,reservationBeginTime,reservat
             "reservationBeginTime":reservationBeginTime,
             "reservationEndTime":reservationEndTime
         },
-        url		:	g.ContextPath + "selectInfo /selectEachClassroom_SeatsInfo",
+        url		:	g.ContextPath + "selectInfo/selectEachClassroom_SeatsInfo",
         async	:	false,
         success	:	function(res){
             if(res){
@@ -258,12 +257,12 @@ window["Api"]["SeatsInfo"] = function (classroomId,reservationBeginTime,reservat
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 /**
  * 预约（自己选座）
@@ -281,7 +280,7 @@ window["Api"]["SeatsInfo"] = function (classroomId,reservationBeginTime,reservat
 window["Api"]["addReservation"] = function (userInfoId,seatId,reservationBeginTime,reservationEndTime,notArrive){
     var arg = "" ;
     notArrive = notArrive != null ? notArrive : "1";
-    var seatId = $("#SeatDataID").val();
+    seatId = $("#SeatDataID").val();
     var userInfo = g.userInfo();
 
     var Authorization = userInfo.token;
@@ -296,8 +295,6 @@ window["Api"]["addReservation"] = function (userInfoId,seatId,reservationBeginTi
     };
 
     $.ajax({
-
-
         type: "post",
         url		:	 "../WebService.do",
         async	:	false,
@@ -315,13 +312,13 @@ window["Api"]["addReservation"] = function (userInfoId,seatId,reservationBeginTi
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 /**
  * 查询该用户签到或未签到的预约记录和授权记录(首页)
@@ -354,13 +351,13 @@ window["Api"]["selectReservationByUser"] = function (){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 /**
  * 查询该用户记录状态正常或异常的预约记录
@@ -399,13 +396,13 @@ window["Api"]["selectReservation"] = function (state,nowPage,pageSize){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 
 window["Api"]["cancelReservation"] = function (reservationId ){
@@ -435,13 +432,13 @@ window["Api"]["cancelReservation"] = function (reservationId ){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 window["Api"]["password"] = function (oldPassword,newPassword){
     var arg = "" ;
@@ -462,12 +459,12 @@ window["Api"]["password"] = function (oldPassword,newPassword){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 
 
@@ -489,12 +486,12 @@ window["Api"]["android"] = function (){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 //version/ios
 /**
@@ -514,12 +511,12 @@ window["Api"]["ios"] = function (){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
     });
 
     return arg;
-}
+};
 
 /**
  * 查询包含研修室的图书馆列表
@@ -553,13 +550,13 @@ window["Api"]["BuildingResearchRoom"] = function (){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 /**
  * 查询研修室信息（根据buildingId和userId得到满足权限的研修室）
@@ -592,13 +589,13 @@ window["Api"]["ResearchRoom"] = function (buildingId){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 /**
  * 预约研修室
@@ -639,13 +636,13 @@ window["Api"]["addReservationResearch"] = function (roomed,totalPeople,reservati
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
 
 //getTime/getSystemTime
 
@@ -662,10 +659,96 @@ window["Api"]["getSystemTime"] = function(){
         },
         error:function(e) {
             console.log(e);
-            return;
+            return null;
         }
 
     });
 
     return arg;
-}
+};
+
+
+/**
+ *
+ * @param nowPage
+ * @param pageSize
+ * @returns {string}
+ */
+window["Api"]["selectRoomReservation"] = function (nowPage,pageSize){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    nowPage = nowPage ? nowPage : 1;
+    pageSize = pageSize ? pageSize : 1;
+    var dataS = {
+        "url":g.ContextPath + "researchRoomReservation/selectRoomReservation",
+        "userId":userInfo.userInfoId,
+        "nowPage":nowPage,
+        "pageSize":pageSize,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        } ,
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+/**
+ * 预约座位（随机分配：在校区和楼名）
+ * @param buildingId
+ * @param reservationBeginTime
+ * @param reservationEndTime
+ * @returns {string}
+ */
+window["Api"]["addSeatByrandom"] = function (buildingId,reservationBeginTime,reservationEndTime){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "reservation/addSeatByrandom",
+        "userInfoId":userInfo.userInfoId,
+        "buildingId":buildingId,
+        "reservationBeginTime":reservationBeginTime,
+        "reservationEndTime":reservationEndTime,
+        "campusId":userInfo.campusId,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};

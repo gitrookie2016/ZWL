@@ -44,13 +44,13 @@
 					<div class="col v-m">
 						<ul class="row">
 							<li class="col v-m">
-								<a class="btn btn-opatiy btn-conner btn-block c-b" href="javaScript:void(0);">自习室记录</a>
+								<a id="zxs" class="btn btn-opatiy btn-conner btn-block c-b" ng-click="zxs();" href="javaScript:void(0);">自习室记录</a>
 							</li>
 							<li class="col t-r v-m">
-								<a class="btn btn-opatiy btn-conner btn-block c-gray" href="javaScript:void(0);">研修室记录</a>
+								<a id="yxs" class="btn btn-opatiy btn-conner btn-block c-gray"ng-click="yxs();" href="javaScript:void(0);">研修室记录</a>
 							</li>
 						</ul>
-						<p>您本年度已有2次违规<br>请保持良好的诚信记录</p>
+						<p>您本年度已有<span ng-bind="getout"></span>次违规<br>请保持良好的诚信记录</p>
 					</div>
 				</div>
 				<div class="app-view-content">

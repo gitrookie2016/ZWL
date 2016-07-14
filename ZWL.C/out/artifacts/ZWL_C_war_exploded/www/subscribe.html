@@ -23,9 +23,9 @@
 						<div class="form-line">
 							<span class="tag">类型</span>
 							<div class="pl-5">
-								<input type="radio" id="radio-1-1" name="sex" class="regular-radio" ng-model="model" ng-chang="radioClick(model);"   checked  value="0"/><span></span>
+								<input type="radio" id="radio-1-1" name="sex" class="regular-radio" ng-model="model" ng-change="radioClick(model);"  ng-checked="true"  value="0"/><span></span>
 								<label for="radio-1-1">自习室</label>
-								<input type="radio" id="radio-1-2" name="sex"  class="regular-radio" ng-model="model" ng-chang="radioClick(model);" value="1"  /><span></span>
+								<input type="radio" id="radio-1-2" name="sex"  class="regular-radio" ng-model="model" ng-change="radioClick(model);" value="1"  /><span></span>
 								<label for="radio-1-2">研修室</label>
 
 							</div>
@@ -35,6 +35,7 @@
 								<span class="tag">图书馆</span>
 								<div class="select">
 									<select id="LibraryName" ng-model="select_Value" ng-change="V_change(select_Value)">
+										<option value="" selected> </option>
 										<option ng-repeat="lb in subscribeList" value="{{lb.buildingId}}" ng-bind="lb.buildingName"></option>
 									</select>
 								</div>
@@ -43,6 +44,7 @@
 								<span class="tag">自习室</span>
 								<div class="select">
 									<select id="studyLoungeName" >
+										<option value="" selected> </option>
 										<option ng-repeat="sl in studyLounge" value="{{sl.classroomId}}"ng-bind="sl.classroomNum"> </option>
 									</select>
 								</div>
@@ -53,6 +55,7 @@
 								<span class="tag">图书馆</span>
 								<div class="select">
 									<select ng-model="buildingIdModel" ng-change="buildingId_change(buildingIdModel)">
+										<option value="" selected> </option>
 										<option ng-repeat="ll in libraryList" value="{{ll.buildingId}}" ng-bind="ll.buildingName"> 致未来图书馆</option>
 									</select>
 								</div>
@@ -60,7 +63,8 @@
 							<div class="form-line">
 								<span class="tag">研修室</span>
 								<div class="select">
-									<select ng-model="select_RR" ng-change="RR_change(select_RR)">
+									<select id="select_RR" ng-model="select_RR" ng-change="RR_change(select_RR)">
+										<option value="" selected> </option>
 										<option ng-repeat="RR in ResearchRoom" value="{{RR.id}}" ng-bind="RR.name">1层测试自习室</option>
 									</select>
 								</div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-App="App">
 	<head>
 		<meta name ="viewport" content ="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
 		<meta charset="UTF-8">
@@ -16,14 +16,14 @@
 				<a class="right" href="#open-modal1">说明</a>
 			</div>
 			<div class="app-view has-footer">
-				<div class="app-view-content seat">
+				<div class="app-view-content seat" ng-controller="SeatRandomCtrl">
 					<div class="seat-top">
 						<div class="row">
 							<div class="col v-m">
-								<h2 class="c-b plr-1">东区图书馆-第02自习室</h2>
+								<h2 class="c-b plr-1" ng-bind="optionalSpace">东区图书馆-第02自习室</h2>
         						<div class="row plr-1">
         							<div class="col">
-        								<p class="c-p">您选择的座位号：<span id="seatId">**-**</span></p>
+        								<p class="c-p">您选择的座位号：<span id="seatId" ng-bind="optionalSeatNum">**-**</span></p>
         							</div>
         							<div class="col t-r">
         								<p><span id="selected">17</span> / <span id="total">80</span></p>
@@ -49,256 +49,17 @@
 			        	</div>
 			        </div>
 			        <div class="seat-content">
-			        	<div class="seat-wrap" id="seat">
-			        		<ul>
-				        		<li class="selected boy-full" data="1-1"></li>
-				        		<li data="2-1"></li>
-				        		<li data="3-1"></li>
-				        		<li data="4-1"></li>
-				        		<li data="5-1"></li>
-				        		<li class="selected boy-full" data="6-1"></li>
-				        		<li class="selected boy-half" data="7-1"></li>
-				        		<li class="selected boy-half-hold" data="8-1"></li>
-				        		<li class="selected boy-half-hold" data="9-1"></li>
-				        		<li data="10-1"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected girl-full" data="1-2"></li>
-				        		<li class="selected girl-half" data="2-2"></li>
-				        		<li class="selected girl-full-hold" data="3-2"></li>
-				        		<li class="selected girl-half-hold" data="4-2"></li>
-				        		<li data="5-2"></li>
-				        		<li data="6-2"></li>
-				        		<li data="7-2"></li>
-				        		<li class="selected girl-half-hold" data="8-2"></li>
-				        		<li data="9-2"></li>
-				        		<li data="10-2"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-3"></li>
-				        		<li class="selected girl-half-hold" data="2-3"></li>
-				        		<li data="3-3"></li>
-				        		<li data="4-3"></li>
-				        		<li data="5-3"></li>
-				        		<li data="6-3"></li>
-				        		<li class="selected boy-half" data="7-3"></li>
-				        		<li data="8-3"></li>
-				        		<li data="9-3"></li>
-				        		<li class="selected girl-half-hold" data="10-3"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected boy-half" data="1-4"></li>
-				        		<li data="2-4"></li>
-				        		<li data="3-4"></li>
-				        		<li data="4-4"></li>
-				        		<li class="selected girl-half-hold" data="5-4"></li>
-				        		<li data="6-4"></li>
-				        		<li data="7-4"></li>
-				        		<li data="8-4"></li>
-				        		<li data="9-4"></li>
-				        		<li class="selected girl-half-hold" data="10-4"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-5"></li>
-				        		<li class="selected boy-full" data="2-5"></li>
-				        		<li data="3-5"></li>
-				        		<li class="selected boy-half" data="4-5"></li>
-				        		<li data="5-5"></li>
-				        		<li data="6-5"></li>
-				        		<li class="selected boy-full" data="7-5"></li>
-				        		<li data="8-5"></li>
-				        		<li class="selected girl-half-hold" data="9-5"></li>
-				        		<li data="10-5"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected girl-half-hold" data="1-6"></li>
-				        		<li data="2-6"></li>
-				        		<li data="3-6"></li>
-				        		<li data="4-6"></li>
-				        		<li class="selected boy-full" data="5-6"></li>
-				        		<li data="6-6"></li>
-				        		<li data="7-6"></li>
-				        		<li class="selected girl-half-hold" data="8-6"></li>
-				        		<li data="9-6"></li>
-				        		<li data="10-6"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-7"></li>
-				        		<li data="2-7"></li>
-				        		<li class="selected girl-half-hold" data="3-7"></li>
-				        		<li data="4-7"></li>
-				        		<li data="5-7"></li>
-				        		<li class="selected girl-half-hold" data="6-7"></li>
-				        		<li data="7-7"></li>
-				        		<li data="8-7"></li>
-				        		<li class="selected girl-half-hold" data="9-7"></li>
-				        		<li data="10-7"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-8"></li>
-				        		<li class="selected girl-full-hold" data="2-8"></li>
-				        		<li data="3-8"></li>
-				        		<li data="4-8"></li>
-				        		<li data="5-8"></li>
-				        		<li class="selected girl-full-hold" data="6-8"></li>
-				        		<li data="7-8"></li>
-				        		<li data="8-8"></li>
-				        		<li class="selected girl-full-hold" data="9-8"></li>
-				        		<li data="10-8"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected girl-half-hold" data="1-9"></li>
-				        		<li data="2-9"></li>
-				        		<li data="3-9"></li>
-				        		<li data="4-9"></li>
-				        		<li class="selected girl-half-hold" data="5-9"></li>
-				        		<li data="6-9"></li>
-				        		<li data="7-9"></li>
-				        		<li data="8-9"></li>
-				        		<li class="selected girl-half-hold" data="9-9"></li>
-				        		<li data="10-9"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-10"></li>
-				        		<li class="selected girl-full-hold" data="2-10"></li>
-				        		<li data="3-10"></li>
-				        		<li data="4-10"></li>
-				        		<li data="5-10"></li>
-				        		<li class="selected girl-full-hold" data="6-10"></li>
-				        		<li data="7-10"></li>
-				        		<li data="8-10"></li>
-				        		<li class="selected girl-full-hold" data="9-10"></li>
-				        		<li data="10-10"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected girl-half-hold" data="1-11"></li>
-				        		<li data="2-11"></li>
-				        		<li data="3-11"></li>
-				        		<li data="4-11"></li>
-				        		<li data="5-11"></li>
-				        		<li class="selected boy-full" data="6-11"></li>
-				        		<li data="7-11"></li>
-				        		<li data="8-11"></li>
-				        		<li data="9-11"></li>
-				        		<li data="10-11"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-12"></li>
-				        		<li data="2-12"></li>
-				        		<li data="3-12"></li>
-				        		<li data="4-12"></li>
-				        		<li class="selected boy-full" data="5-12"></li>
-				        		<li data="6-12"></li>
-				        		<li data="7-12"></li>
-				        		<li data="8-12"></li>
-				        		<li data="9-12"></li>
-				        		<li data="10-12"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-13"></li>
-				        		<li class="selected boy-half" data="2-13"></li>
-				        		<li data="3-13"></li>
-				        		<li data="4-13"></li>
-				        		<li data="5-13"></li>
-				        		<li data="6-13"></li>
-				        		<li data="7-13"></li>
-				        		<li class="selected boy-half" data="8-13"></li>
-				        		<li data="9-13"></li>
-				        		<li data="10-13"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-14"></li>
-				        		<li data="2-14"></li>
-				        		<li data="3-14"></li>
-				        		<li class="selected boy-half" data="4-14"></li>
-				        		<li class="selected girl-half-hold" data="5-14"></li>
-				        		<li data="6-14"></li>
-				        		<li data="7-14"></li>
-				        		<li data="8-14"></li>
-				        		<li class="selected girl-half-hold" data="9-14"></li>
-				        		<li data="10-14"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected girl-half-hold" data="1-15"></li>
-				        		<li data="2-15"></li>
-				        		<li data="3-15"></li>
-				        		<li class="selected girl-half-hold" data="4-15"></li>
-				        		<li data="5-15"></li>
-				        		<li data="6-15"></li>
-				        		<li class="selected boy-half" data="7-15"></li>
-				        		<li data="8-15"></li>
-				        		<li data="9-15"></li>
-				        		<li data="10-15"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected girl-half-hold" data="1-11"></li>
-				        		<li data="2-11"></li>
-				        		<li data="3-11"></li>
-				        		<li data="4-11"></li>
-				        		<li data="5-11"></li>
-				        		<li class="selected boy-full" data="6-11"></li>
-				        		<li data="7-11"></li>
-				        		<li data="8-11"></li>
-				        		<li data="9-11"></li>
-				        		<li data="10-11"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-12"></li>
-				        		<li data="2-12"></li>
-				        		<li data="3-12"></li>
-				        		<li data="4-12"></li>
-				        		<li class="selected boy-full" data="5-12"></li>
-				        		<li data="6-12"></li>
-				        		<li data="7-12"></li>
-				        		<li data="8-12"></li>
-				        		<li data="9-12"></li>
-				        		<li data="10-12"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-13"></li>
-				        		<li class="selected boy-half" data="2-13"></li>
-				        		<li data="3-13"></li>
-				        		<li data="4-13"></li>
-				        		<li data="5-13"></li>
-				        		<li data="6-13"></li>
-				        		<li data="7-13"></li>
-				        		<li class="selected boy-half" data="8-13"></li>
-				        		<li data="9-13"></li>
-				        		<li data="10-13"></li>
-				        	</ul>
-				        	<ul>
-				        		<li data="1-14"></li>
-				        		<li data="2-14"></li>
-				        		<li data="3-14"></li>
-				        		<li class="selected boy-half" data="4-14"></li>
-				        		<li class="selected girl-half-hold" data="5-14"></li>
-				        		<li data="6-14"></li>
-				        		<li data="7-14"></li>
-				        		<li data="8-14"></li>
-				        		<li class="selected girl-half-hold" data="9-14"></li>
-				        		<li data="10-14"></li>
-				        	</ul>
-				        	<ul>
-				        		<li class="selected girl-half-hold" data="1-15"></li>
-				        		<li data="2-15"></li>
-				        		<li data="3-15"></li>
-				        		<li class="selected girl-half-hold" data="4-15"></li>
-				        		<li data="5-15"></li>
-				        		<li data="6-15"></li>
-				        		<li class="selected boy-half" data="7-15"></li>
-				        		<li data="8-15"></li>
-				        		<li data="9-15"></li>
-				        		<li data="10-15"></li>
-				        	</ul>
-			        	</div>
+			        	<seats>
+
+						</seats>
 			        </div>
 				</div>
-				<div class="do-area row">
+				<div class="do-area row" ng-controller="seatsSubmitCtrl">
 					<div class="col col-50 v-m">
-						<a class="btn btn-conner btn-block btn-pink" href="#">再随机一次</a>
+						<a class="btn btn-conner btn-block btn-pink" ng-click="seatsRandom();" href="javaScript:void(0);">再随机一次</a>
 					</div>
 					<div class="col col-50 v-m">
-						<a class="btn btn-conner btn-block btn-blue" href="#">确定</a>
+						<a class="btn btn-conner btn-block btn-blue" ng-click="seatsSubmit();" href="javaScript:void(0);">确定</a>
 					</div>
 				</div>
 			</div>
@@ -340,6 +101,8 @@
 		</div>
 		<script src="js/zepto_1.1.3.js"></script>
 		<script src="js/touch-0.2.14.min.js"></script>
+		<script src="js/angular.js"></script>
+		<script src="js/Seat/SeatRandomCtrl.js"></script>
 		<script src="js/Seat/seat.js"></script>
 	</body>
 </html>

@@ -87,6 +87,17 @@ window['g']['toJson'] = function toJson(arg){
     return eval('(' + arg + ')');
 };
 
+window['g']['getCountWidth'] = function getCountWidth(arg){
+    if(arg) {
+        var sn = arg.split("-")[1];
+        var seatWidth = $(".seat-content").width();
+        var countWidth = 0 - ((Math.ceil(sn / 4) * 2 + parseInt(sn)) * parseInt(seatWidth / 9) - parseInt(seatWidth / 2)); //187.5
+        g.dx = countWidth;
+        return countWidth;
+    }
+}
+
+
 window["g"]["userInfo"] = function () {
     var _userInfo =   $.cookie("userInfo");
     if(typeof _userInfo == "undefined") {
@@ -303,4 +314,5 @@ window["g"]["localData"] = {
 
 
 
-document.write("<script src=\"../www/js/Api.js\" charset=\"utf-8\"></script>")
+document.write("<script src=\"../www/js/Api.js\" charset=\"utf-8\"></script>");
+document.write("<link rel=\"shortcut icon\" href=\"../www/img/app-logo.png\">");

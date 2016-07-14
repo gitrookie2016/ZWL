@@ -34,7 +34,8 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
     var roomReservation = subscribeList.roomReservation;
     var roomReservationList;
     var ab = 0;
-    var sll = subscribeList.lists.length;
+
+    var sll = typeof subscribeList.lists != "undefined" ? subscribeList.lists.length : 0;
     $scope.subscribeLeng = sll ;
     if(typeof roomReservation != "undefined"){
         roomReservationList = roomReservation.roomReservationList;//
@@ -103,7 +104,7 @@ app.factory("appService",function () {
         }
         var bean = {};
         var lists = list.list;
-        if(lists.length > 0) {
+        if(typeof lists !="undefined" && lists.length > 0) {
             for (var l = 0; l < lists.length; l++) {
 
                 var beginTime = lists[l].sreservationBeginTime;

@@ -96,12 +96,11 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
 
         if(arg == 0){
             subscribeService.y_day = 2;
-            $("#studyLoungeName").text("");
-            $scope.studyLounge = subscribeService.Classroom();
+            $("#studyLoungeName option:first").prop("selected", 'selected');
 
         }else{
-
             subscribeService.y_day = 1;
+            $("#select_RR option:first").prop("selected", 'selected');
 
         }
         $scope.subscribeDate = subscribeService.getDate();
@@ -174,6 +173,8 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
 
             window.location = "index.html";
 
+        }else if(!apire.success){
+            alert(apire.message);
         }
 
     }
@@ -312,10 +313,13 @@ subscribeApp.factory("subscribeService",function () {
            var studyLoungeName = studyLounge.text();
            var studyLoungeVal = studyLounge.val();
 
-           if(!studyLoungeName || !studyLoungeVal){
-               factory.alertError("请选择自习室！");
+           if(arg != "randomSeat") {
 
-               return false;
+               if (!studyLoungeName || !studyLoungeVal) {
+                   factory.alertError("请选择自习室！");
+
+                   return false;
+               }
            }
 
            bean.LibraryVal = LibraryVal;

@@ -5,13 +5,58 @@
 var recordApp = angular.module("App",[]);
 
 recordApp.controller("recordCtrl",function ($scope) {
-    $scope.recordList = selectReservation(null,1,25 );
-    
+
+    var Reservation = selectReservation(1,1,100 );
+
+    if(Reservation.success){
+        $scope.recordList = Reservation.list;
+    }
+
+
+    var getout = selectReservation(2,1,1 );
+
+    if(getout.success) {
+
+        $scope.getout = getout.sumReservation;
+
+    }
+
+    $scope.zxs = function () {
+        $("#zxs").addClass("c-b") .removeClass("c-gray");
+        $("#yxs").addClass("c-gray") .removeClass("c-b");
+
+        var Reservation = selectReservation(1,1,100 );
+
+        if(Reservation.success){
+            $scope.recordList = Reservation.list;
+        }
+
+
+        var getout = selectReservation(2,1,1 );
+
+        if(getout.success) {
+
+            $scope.getout = getout.sumReservation;
+
+        }
+
+    }
+
+    $scope.yxs = function () {
+        $("#zxs").addClass("c-gray") .removeClass("c-b");
+        $("#yxs").addClass("c-b") .removeClass("c-gray");
+        var RoomReservation = Api.selectRoomReservation(1,100);
+        if(RoomReservation.success){
+
+            $scope.recordList = RoomReservation.lists;
+
+        }
+    }
+
 });
 
 recordApp.factory("recordService",function () {
-    var factory = {};
-    
+
 
     
     return factory;
@@ -25,6 +70,6 @@ function selectReservation(state,nowPage,pageSize){
 
     var Reservation = Api.selectReservation(state,nowPage,pageSize);
 
-    return Reservation.list;
+    return Reservation;
 }
 
