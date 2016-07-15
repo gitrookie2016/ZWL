@@ -103,30 +103,39 @@
 				});
 				function pullfresh() {
 					setTimeout(function() {
-						if(moreData.rvflag){
+						if(moreData.flag){
 							/*rvfpageSize
 							 rvfpageNum
 							rvfpageCount */
 							//zongtiaoshu
-							var PageNumCount = Math.ceil(moreData.rvfpageCount / moreData.rvfpageSize);
+							var PageNumCount = Math.ceil(moreData.pageCount / moreData.pageSize);
 
 							var flag = false;
 
-							var nextPageNum = parseInt(moreData.rvfpageNum) + 1;
+							var nextPageNum = parseInt(moreData.pageNum) + 1;
 
 							if( nextPageNum <= PageNumCount){
+								var srv;
+								if(moreData.type == 1 ){
+									srv = selectReservation(1,nextPageNum,moreData.pageSize);
+								}else if(moreData.type == 2){
+									srv = Api.selectRoomReservation(nextPageNum,moreData.pageSize);
+								}
 
-								var srv = selectReservation(1,nextPageNum,moreData.rvfpageSize);
 								console.log(srv);
 								if(srv.success){
 									var srvInfo = srv.list;
-									moreData.rvfpageNum = nextPageNum;
+									if(typeof srvInfo == "undefined"){
+										srvInfo = srv.lists;
+									}
+									moreData.pageNum = nextPageNum;
 
 									if(srvInfo){
 										var html = "<div class='temp'>";
 										for(var s = 0 ; s < srvInfo.length ; s++){
+											var date = typeof srvInfo[s].date == 'undefined' ? '' : srvInfo[s].date;
 											html += 	"<li >"+
-														"	<p>"+srvInfo[s].date + " " + srvInfo[s].time+"</p>"+
+														"	<p>"+ date + " " + srvInfo[s].time+"</p>"+
 														"	<h2>" + srvInfo[s].info+"</h2>"+
 														"	<span class=\"right\"></span>"+
 														"</li> ";
@@ -136,8 +145,9 @@
 
 									}
 
+								}else {
+									flag = true;
 								}
-
 
 							}else {
 								flag = true;
