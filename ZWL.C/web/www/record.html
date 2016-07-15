@@ -7,8 +7,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 		<meta charset="UTF-8">
 		<title>记录</title>
+
+		<link rel="stylesheet" href="../www/css/mui.min.css" />
 		<link rel="stylesheet" href="../www/css/main.css" />
 		<script src="../www/js/jquery-1.7.1.min.js"></script>
+		<script src="../www/js/mui.js"></script>
 		<script src="../www/js/g.js" charset="utf-8"></script>
 		<script src="../www/js/iscroll.js" charset="utf-8"></script>
 <style>
@@ -53,8 +56,8 @@
 						<p>您本年度已有<span ng-bind="getout"></span>次违规<br>请保持良好的诚信记录</p>
 					</div>
 				</div>
-				<div class="app-view-content">
-
+				<div class="app-view-content " style="overflow: hidden;"  id="pullRefresh">
+					<div>
 					<ul class="txt-list" ><!--before after-->
 						<li ng-repeat="rl in recordList">
 							<p ng-bind="rl.date + ' ' + rl.time"></p>
@@ -70,10 +73,8 @@
 								<span class="before"></span>
 							</div>
 						</li>
-
-
 					</ul>
-
+					</div>
 				</div>
 			</div>
 			<div class="app-footer "><!--nav-foot-->
@@ -87,5 +88,72 @@
 		</div>
 		<script src="js/angular.js" charset="utf-8"></script>
 		<script src="js/record/record.js"></script>
+		<script>
+			$(document).ready(function(){
+				mui.init({
+					pullRefresh : {
+						container:"#pullRefresh",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+						up : {
+							height:50,//可选.默认50.触发上拉加载拖动距离
+							contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+							contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+							callback :pullfresh //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+						}
+					}
+				});
+				function pullfresh() {
+					setTimeout(function() {
+						if(moreData.rvflag){
+							/*rvfpageSize
+							 rvfpageNum
+							rvfpageCount */
+							//zongtiaoshu
+							var PageNumCount = Math.ceil(moreData.rvfpageCount / moreData.rvfpageSize);
+
+							var flag = false;
+
+							var nextPageNum = parseInt(moreData.rvfpageNum) + 1;
+
+							if( nextPageNum <= PageNumCount){
+
+								var srv = selectReservation(1,nextPageNum,moreData.rvfpageSize);
+								console.log(srv);
+								if(srv.success){
+									var srvInfo = srv.list;
+									moreData.rvfpageNum = nextPageNum;
+
+									if(srvInfo){
+										var html = "<div class='temp'>";
+										for(var s = 0 ; s < srvInfo.length ; s++){
+											html += 	"<li >"+
+														"	<p>"+srvInfo[s].date + " " + srvInfo[s].time+"</p>"+
+														"	<h2>" + srvInfo[s].info+"</h2>"+
+														"	<span class=\"right\"></span>"+
+														"</li> ";
+
+										}
+										$(".txt-list").append(html+"</div>");
+
+									}
+
+								}
+
+
+							}else {
+								flag = true;
+							}
+
+
+							//注意：
+							mui('#pullRefresh').pullRefresh().endPullupToRefresh(flag);
+
+						}
+
+					},500);
+				}
+
+			});
+
+		</script>
 	</body>
 </html>
