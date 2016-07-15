@@ -792,3 +792,44 @@ window["Api"]["changeSeatBychoose"] = function (reservationId,seatId){
 
     return arg;
 };
+
+//seat/getRecommendReservationTime
+/**
+ * 得到推荐的可预约时间段
+ * @param seatId
+ * @param reservationBeginTime
+ * @returns {string}
+ */
+window["Api"]["getRecommendReservationTime"] = function (seatId,reservationBeginTime){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "seat/getRecommendReservationTime",
+        "userInfoId":userInfo.userInfoId,
+        "seatId":seatId,
+        "reservationBeginTime":reservationBeginTime,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};

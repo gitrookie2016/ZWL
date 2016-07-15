@@ -45,6 +45,8 @@ var app = angular.module("App",[]).controller("subscribeListCtrl",function($scop
         $scope.roomReservationList = roomReservationList;
         ab = 1;
         $scope.roomReservationLeng = parseInt(sll) + ab;
+    }else{
+        $("#roomReservation").hide();
     }
     /**
      * 更换座位
@@ -114,6 +116,7 @@ app.factory("appService",function () {
         var list = Api.selectReservationByUser();
         if(!list.success){
             $(".app-null").show();
+            $(".seat-list").hide();
             return null;
         }
         var bean = {};

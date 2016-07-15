@@ -21,19 +21,35 @@ SeatRandomApp.controller("SeatRandomCtrl",function($scope,SeatRandomService){
 SeatRandomApp.controller("seatsSubmitCtrl",function($scope,SeatRandomService){
 
     $scope.seatsSubmit = function(){
+
+
+
         var seatId = SeatRandomService.rsi.object.seatId;
+        var reservationBeginTime = SeatRandomService.reservationBeginTime ;
+        var reservationEndTime = SeatRandomService.reservationEndTime ;
+        var seatNum = SeatRandomService.rsi.object.seatNum;
         var userInfo = $.cookie("userInfo");
         userInfo = g.toJson(userInfo);
         var userInfoId = userInfo.userInfoId;
-
-        var reservationBeginTime = SeatRandomService.reservationBeginTime ;
-        var reservationEndTime = SeatRandomService.reservationEndTime ;
-
+        /*
         var apire = Api.addReservation(userInfoId,seatId,reservationBeginTime,reservationEndTime,null);
-
         if(apire.success){
             window.location = "index.html";
-        }
+        }*/
+
+        var srs = {};
+        srs.seatId = seatId;
+        srs.seatNum = seatNum;
+        srs.reservationBeginTime = reservationBeginTime;
+        srs.reservationEndTime = reservationEndTime;
+        srs.userInfoId = userInfoId;
+        srs.type = "srs";
+
+        $.cookie("SubmitInfo",JSON.stringify(srs),{path : "/"});
+
+        window.location = "subscribeConfirm.html";
+
+
     }
 
     $scope.seatsRandom = function () {

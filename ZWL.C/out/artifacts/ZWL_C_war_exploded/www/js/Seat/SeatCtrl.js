@@ -12,9 +12,10 @@ SeatApp.controller("SeatCtrl",function($scope,SeatService){
 });
 
 
-SeatApp.controller("seatsSubmitCtrl",function($scope,SeatService,$http){
+SeatApp.controller("seatsSubmitCtrl",function($scope,SeatService){
     $scope.seatsSubmit = function(){
         var seatId = $("#SeatDataID").val();
+        var seatNum = $("#seatId").text();
         var userInfo = $.cookie("userInfo");
         userInfo = g.toJson(userInfo);
         var userInfoId = userInfo.userInfoId;
@@ -22,11 +23,18 @@ SeatApp.controller("seatsSubmitCtrl",function($scope,SeatService,$http){
         var reservationBeginTime = SeatService.reservationBeginTime ;
         var reservationEndTime = SeatService.reservationEndTime ;
 
-        var apire = Api.addReservation(userInfoId,seatId,reservationBeginTime,reservationEndTime,null);
+        var srs = {};
+        srs.seatId = seatId;
+        srs.seatNum = seatNum;
+        srs.reservationBeginTime = reservationBeginTime;
+        srs.reservationEndTime = reservationEndTime;
+        srs.userInfoId = userInfoId;
+        srs.type = "os";
 
-        if(apire.success){
-            window.location = "index.html";
-        }
+        $.cookie("SubmitInfo",JSON.stringify(srs),{path : "/"});
+
+        window.location = "subscribeConfirm.html";
+
     }
 
 });

@@ -104,10 +104,7 @@
 				function pullfresh() {
 					setTimeout(function() {
 						if(moreData.flag){
-							/*rvfpageSize
-							 rvfpageNum
-							rvfpageCount */
-							//zongtiaoshu
+
 							var PageNumCount = Math.ceil(moreData.pageCount / moreData.pageSize);
 
 							var flag = false;
@@ -133,7 +130,8 @@
 									if(srvInfo){
 										var html = "<div class='temp'>";
 										for(var s = 0 ; s < srvInfo.length ; s++){
-											var date = typeof srvInfo[s].date == 'undefined' ? '' : srvInfo[s].date;
+											var redate = srvInfo[s].date;
+											var date = typeof redate == 'undefined' ? '' : redate;
 											html += 	"<li >"+
 														"	<p>"+ date + " " + srvInfo[s].time+"</p>"+
 														"	<h2>" + srvInfo[s].info+"</h2>"+

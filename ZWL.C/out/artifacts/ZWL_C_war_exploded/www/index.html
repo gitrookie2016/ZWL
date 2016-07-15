@@ -46,13 +46,12 @@
 					<!---->
 					<ul class="seat-list" ng-controller="subscribeListCtrl">
 
-						<li class="seat-item">
+						<li class="seat-item" id="roomReservation">
 							<p class="item-time"><span class="item-num" ng-bind="roomReservationLeng">1</span><span ng-bind="roomReservation.roomReservationList[0].time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
 							<p class="item-txt" ng-bind="roomReservation.info">致未来图书馆1层测试自习室 2-8 座</p>
 							<p class="item-txt">预约人数<span ng-bind="roomReservation.totalPeople"></span>人,已签到<span ng-bind="roomReservation.roomReservationList[0].arrivalPeopleNumber"></span>人</p>
 							<p class="item-txt">预约码：<span ng-bind="roomReservation.roomReservationList[0].identifyCode"></span></p>
 							<p class="item-txt">距离签到时间<span class="c-p"ng-bind="roomReservation.roomReservationList[0].ct">3小时48分</span></p>
-
 
 							<ul class="row mt-1">
 								<li class="col t-c">
@@ -62,17 +61,7 @@
 									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/port.png"/>签到</a>
 								</li>
 							</ul>
-							<!--<ul class="row top-line">
-								<li class="col t-c">
-									<a class="btn has-icon c-b" href="#open-modal2"><img align="absmiddle" src="img/cancel.png"/>取消</a>
-								</li>
-								<li class="col t-c">
-									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/edit.png"/>续约</a>
-								</li>
-								<li class="col t-c">
-									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/port.png"/>签到</a>
-								</li>
-							</ul>-->
+
 						</li>
 
 						<li class="seat-item" ng-repeat="sl in subscribeList" >

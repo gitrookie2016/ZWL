@@ -31,18 +31,18 @@
 						<dt><img src="img/ion-date.png"/></dt>
 						<dd>
 							<h2>预约时间</h2>
-							<p>起始时间：2016-06-08  10:45:00</p>
-							<p>结束时间：2016-06-08  12:00:00</p>
+							<p>起始时间：<span ng-bind="beginTime">2016-06-08  10:45:00</span></p>
+							<p>结束时间：<span ng-bind="endTime">2016-06-08  12:00:00</span></p>
 						</dd>
 					</dl>
 					<dl class="favior-list">
 						<dt><img src="img/ion-date.png"/></dt>
 						<dd>
 							<h2>推荐时间</h2>
-							<p>起始时间：2016-06-08  10:30:00</p>
-							<p>结束时间：2016-06-08  12:00:00</p>
+							<p>起始时间：<span ng-bind="recommendBeginTime">2016-06-08  10:30:00</span></p>
+							<p>结束时间：<span ng-bind="recommendEndTime">2016-06-08  12:00:00</span></p>
 							<div class="app-radio">
-					            <input type="radio" name="sex" id="boy"/>
+					            <input type="radio" name="sex" id="boy"  ng-click="boy();"/>
 					            <span></span>
 					            <label for="boy">选择推荐时间</label>
 					        </div>
@@ -51,10 +51,12 @@
 				</div>
 				<div class="do-area row">
 					<div class="col v-m">
-						<a class="btn btn-conner btn-block btn-blue" href="#">确定</a>
+						<a class="btn btn-conner btn-block btn-blue" href="javaScript:void(0);" ng-click="submit();">确定</a>
 					</div>
 				</div>
 			</div>
 		</div>
+	<script src="js/angular.js"></script>
+	<script src="js/subscribe/subscribeConfirm.js"></script>
 	</body>
 </html>

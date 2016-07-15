@@ -121,7 +121,8 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
             var flag = arg;
             var ChooseSeatFlag = subscribeService.ChooseSeat(arg);
             if(ChooseSeatFlag){
-                window.location = flag+".html";
+
+                window.location = arg + ".html";
             }
         }
 
@@ -167,6 +168,7 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
 
         $.cookie("subscribeSubmit",JSON.stringify(subscribeService.rr_bean), {  path: '/' });
         //window.location = "subscribeConfirm.html";
+
         var serviceArg = subscribeService.rr_bean;
         var apire = Api.addReservationResearch(serviceArg.roomed,serviceArg.totalPeople,serviceArg.reservationDate,serviceArg.beginTime,serviceArg.endTime);//roomed,totalPeople,reservationDate,beginTime,endTime
         if(apire.success){
@@ -331,6 +333,8 @@ subscribeApp.factory("subscribeService",function () {
 
            spaceBean.LibraryName = LibraryName;
            spaceBean.studyLoungeName = studyLoungeName;
+
+           spaceBean.toHref = arg;
 
            $.cookie("subscribeSpace",JSON.stringify(spaceBean), {  path: '/' });//
 

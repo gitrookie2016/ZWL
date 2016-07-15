@@ -15,7 +15,9 @@ $(function(){
 
 	})
 	$("#confirm").click(function(){
-		_this.text($("#hour").text()+":"+$("#min").text()+":00");
+		var hour = $("#hour").text().toString();
+		hour = hour.length < 2 ? "0" +hour :hour
+		_this.text(hour +":"+$("#min").text()+":00");
 		_this = null;
 	})
 })
