@@ -96,10 +96,12 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
 
         if(arg == 0){
             subscribeService.y_day = 2;
+            subscribeService.radioType = 1;
             $("#studyLoungeName option:first").prop("selected", 'selected');
 
         }else{
             subscribeService.y_day = 1;
+            subscribeService.radioType = 2;
             $("#select_RR option:first").prop("selected", 'selected');
 
         }
@@ -130,7 +132,7 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
     
     $scope.RRChooseSeat = function () {
 
-        subscribeService.rr_bean.reservationDate = new Date().getFullYear() + "-" + subscribeService.day ;
+        subscribeService.rr_bean.reservationDate = subscribeService.day ;
         subscribeService.rr_bean.beginTime = $(".date #start")[0].innerHTML;
         subscribeService.rr_bean.endTime = $(".date #end")[0].innerHTML;
 
@@ -253,13 +255,19 @@ subscribeApp.factory("subscribeService",function () {
 
         y_day = y_day ? y_day : 2;
 
+        var S_date = subscribeDate.getDate();
         for(var d = 0 ; d < y_day ; d++){
 
-            var D_Date =  subscribeDate.setDate( subscribeDate.getDate() + d);
+            var D_Date =  subscribeDate.setDate( S_date + d);
 
             var date = new Date(D_Date);
             var dates = {};
-            dates.active = d == 0 ? "active" : "";
+            if(typeof factory.radioType == "undefined" || factory.radioType == 1 ){
+                dates.active = d == 0 ? "active" : "";
+            }else{
+                dates.active = "";
+            }
+
             dates.Weekday = weekday[parseInt(S_Day+d) % 7];
             var Month = date.getMonth()+1  ;
             Month = Month.toString().length == 2 ? Month : "0"+ Month;
@@ -282,9 +290,37 @@ subscribeApp.factory("subscribeService",function () {
     factory.checkDate = function (arg) {
 
         var day_children = $(".day-pick").children().eq(arg);
-        var day_span = day_children.find("span");
-        factory.day = day_span.eq(1)[0].innerHTML;
-        day_children.addClass("active").siblings().removeClass("active");
+
+        if(typeof factory.radioType == "undefined" || factory.radioType == 1 ) {
+            var day_span = day_children.find("span");
+            factory.day = day_span.eq(1)[0].innerHTML;
+            day_children.addClass("active").siblings().removeClass("active");
+
+        }else{
+            if(day_children.attr("class").indexOf("active") > -1){
+                day_children.removeClass("active");
+            }else{
+                day_children.addClass("active");
+            }
+
+            var li_active = $(".day-pick").find(".active");
+
+            var days = "";
+
+            if(li_active.length > 0){
+                for(var l = 0 ; l < li_active.length ; l++){
+                    var val = li_active.children().eq(l).find("span").eq(1)[0].innerHTML;
+                    val = new Date().getFullYear() + "-" + val;
+                    if(l==0){
+                        days += val;
+                    }else{
+                        days += "," + val;
+                    }
+
+                }
+                factory.day = days;
+            }
+        }
     }
 
     /**

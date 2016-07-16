@@ -45,7 +45,7 @@ ConfirmApp.controller("ConfirmCtrl",function ($scope) {
         if(isRecommend){
             apire = Api.addReservation(SubmitInfo.userInfoId,SubmitInfo.seatId,recommendBeginTime,recommendEndTime,null);
         }else{
-            apire = Api.addReservation(SubmitInfo.userInfoId,SubmitInfo.seatId,SubmitInfo.recommendBeginTime,SubmitInfo.recommendEndTime,null);
+            apire = Api.addReservation(SubmitInfo.userInfoId,SubmitInfo.seatId,SubmitInfo.reservationBeginTime,SubmitInfo.reservationEndTime,null);
         }
 
         if(apire.success){
