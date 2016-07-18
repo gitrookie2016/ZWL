@@ -52,8 +52,7 @@
                 localImag.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)",
                         localImag.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = img_txt
             } catch(f) {
-                return alert("您上传的图片格式不正确，请重新选择！"),
-                        !1
+                return alert("您上传的图片格式不正确，请重新选择！");
             }
             preview.style.display = "none",
                     document.selection.empty()
