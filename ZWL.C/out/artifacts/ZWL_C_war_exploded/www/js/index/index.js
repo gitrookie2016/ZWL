@@ -25,87 +25,140 @@ $(document).ready(function(){
     }
 });
 
-var app = angular.module("App",[]).controller("subscribeListCtrl",function($scope,appService){
-    var subscribeList = appService.selectReservationByUser();
-    if(!subscribeList){
-        return ;
-    }
-    $scope.subscribeList = subscribeList.lists;
-    var roomReservation = subscribeList.roomReservation;
-    var roomReservationList;
-    var ab = 0;
+var app = angular.module("App",[]);
 
-    var sll = typeof subscribeList.lists != "undefined" ? subscribeList.lists.length : 0;
-    $scope.subscribeLeng = sll ;
-    if(typeof roomReservation != "undefined"){
-        roomReservationList = roomReservation.roomReservationList;//
+    app.controller("subscribeListCtrl",function($scope,appService){
 
+        var flag = parseInt($.cookie("muiFlag"));
+        if(flag){
+            switch (flag){
+                case 1 :
+                    mui.toast("续约成功");
 
-        $scope.roomReservation = roomReservation;
-        $scope.roomReservationList = roomReservationList;
-        ab = 1;
-        $scope.roomReservationLeng = parseInt(sll) + ab;
-    }else{
-        $("#roomReservation").hide();
-    }
-    /**
-     * 更换座位
-     */
-    $scope.changeSeat = function () {
-        var changeSeatInfo = this.sl;
-
-        $.cookie("changeSeatInfo",JSON.stringify(changeSeatInfo),{path:"/"});
-
-        window.location = "#open-modal1";
-    }
-    $scope.checkSeat = function () {
-
-        var sl = this.sl;
-
-
-        var bean = {
-            "info"      :   sl.info,
-            "time"      :   sl.time,
-            "sreservationBeginTime"      :   sl.sreservationBeginTime,
-            "sreservationEndTime"      :   sl.sreservationEndTime,
-            "classroomId"      :   sl.classroomId,
-            "seatNum"   :   sl.seatNum
+                    break;
+                case  2 :
+                    mui.toast("座位更换成功");
+            }
+            $.removeCookie("muiFlag",{  path: '/' });
         }
 
-        $.cookie("checkSeatInfo",JSON.stringify(bean), {  path: '/' });
-        window.location = "checkSeat.html";
-    }
 
-    $scope.cancel = function () {
-
-        var sl = this.sl;
-
-        $("#open-modal2 h3").html(sl.time + "<br>" + sl.info);
-
-        $("#open-modal2 .cancel").click(function(){
-            var apire = Api.cancelReservation(sl.reservationId);
-            if(apire.success){
-                
-                $scope.$apply(function () {
-                    var subscribeListTwo = appService.selectReservationByUser();
-                    if(subscribeListTwo) {
-
-                        $scope.subscribeList = subscribeListTwo.lists;
-                        if(subscribeListTwo.lists){
-                            $scope.subscribeLeng = subscribeListTwo.lists.length;
-                        }
-
-                    }
-                });
-
-            }else{
-                console.log(apire.message);
+        /**
+         * 续约
+         */
+        $scope.contract = function () {
+            var sl = this.sl;
+            var bean = {
+                "info"      :   sl.info,
+                "time"      :   sl.time,
+                "sreservationBeginTime"      :   sl.sreservationBeginTime,
+                "sreservationEndTime"      :   sl.sreservationEndTime,
+                "reservationId"      :   sl.reservationId,
+                "seatNum"   :   sl.seatNum
             }
-        });
 
+            $.cookie("contractInfo",JSON.stringify(bean), {  path: '/' });
+
+            window.location = "contract.html";
+        }
+
+        $scope.alertBtn =  function () {
+            $(".more-yxs").show();
+        }
+
+        var subscribeList = appService.selectReservationByUser();
+        if(!subscribeList){
+            return ;
+        }
+        $scope.subscribeList = subscribeList.lists;
+        var roomReservation = subscribeList.roomReservation;
+        var roomReservationList;
+        var ab = 0;
+
+        var sll = typeof subscribeList.lists != "undefined" ? subscribeList.lists.length : 0;
+        $scope.subscribeLeng = sll ;
+        if(typeof roomReservation != "undefined"){
+            roomReservationList = roomReservation.roomReservationList;//
+
+
+            $scope.roomReservation = roomReservation;
+            $scope.roomReservationList = appService.roomReservationList = roomReservationList;
+
+            ab = 1;
+            $scope.roomReservationLeng = parseInt(sll) + ab;
+        }else{
+            $("#roomReservation").hide();
+        }
+        /**
+         * 更换座位
+         */
+        $scope.changeSeat = function () {
+            var changeSeatInfo = this.sl;
+
+            $.cookie("changeSeatInfo",JSON.stringify(changeSeatInfo),{path:"/"});
+
+            window.location = "#open-modal1";
+        }
+        $scope.checkSeat = function () {
+
+            var sl = this.sl;
+
+
+            var bean = {
+                "info"      :   sl.info,
+                "time"      :   sl.time,
+                "sreservationBeginTime"      :   sl.sreservationBeginTime,
+                "sreservationEndTime"      :   sl.sreservationEndTime,
+                "classroomId"      :   sl.classroomId,
+                "seatNum"   :   sl.seatNum
+            }
+
+            $.cookie("checkSeatInfo",JSON.stringify(bean), {  path: '/' });
+            window.location = "checkSeat.html";
+        }
+
+        /**
+         * 取消座位
+         */
+        $scope.cancel = function () {
+
+            var sl = this.sl;
+
+            $("#open-modal2 h3").html(sl.time + "<br>" + sl.info);
+
+            $("#open-modal2 .cancel").click(function(){
+                var apire = Api.cancelReservation(sl.reservationId);
+                if(apire.success){
+
+                    $scope.$apply(function () {
+                        var subscribeListTwo = appService.selectReservationByUser();
+                        if(subscribeListTwo) {
+
+                            $scope.subscribeList = subscribeListTwo.lists;
+                            if(subscribeListTwo.lists){
+                                $scope.subscribeLeng = subscribeListTwo.lists.length;
+                            }
+
+                        }
+                    });
+                    mui.toast("座位取消成功");
+                }else{
+                    console.log(apire.message);
+                    mui.toast(apire.message);
+                }
+            });
+
+        }
+
+});
+
+app.controller("moreYXSCtrl",function ($scope,appService) {
+    $scope.roomReservationList = appService.roomReservationList;
+
+    $scope.close = function(){
+        $(".more-yxs").hide();
     }
-
-})
+});
 
 app.factory("appService",function () {
 
@@ -151,10 +204,44 @@ app.factory("appService",function () {
 
     }
     factory.contrastTime = function (a) {
-        var now = new Date()
+        var SysTime = Api.getSystemTime();
+        SysTime = SysTime.replace("-","/");
+        SysTime = SysTime.replace("-","/");
+        var now = new Date(SysTime);
+        a = a.replace("-","/");
+        a = a.replace("-","/");
         var begin = new Date(a);
         return Math.abs(begin - now) / 1000 / 60;
-    }
+    };
+
 
     return factory;
+});
+
+$(document).ready(function () {
+    mui.init();
+    var btnArray = ['确认', '取消'];
+    $('#OA_task_1').on('tap', '.mui-btn', function(event) {
+        var elem = this;
+        var li = elem.parentNode.parentNode;
+        mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
+            if (e.index == 0) {
+                var lv = li.getAttributeNode("name").value;
+                if(lv){
+                    var reapi = Api.cancleReservation(lv);
+                    if(reapi.success){
+                        li.parentNode.removeChild(li);
+                    }else{
+                        mui.toast(reapi.message);
+                    }
+
+                }
+
+            } else {
+                setTimeout(function() {
+                    this.$.swipeoutClose(li);
+                }, 0);
+            }
+        });
+    });
 });

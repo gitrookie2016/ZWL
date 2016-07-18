@@ -50,6 +50,8 @@ ConfirmApp.controller("ConfirmCtrl",function ($scope) {
 
         if(apire.success){
             window.location = "index.html";
+        }else{
+            mui.toast(apire.message);
         }
 
     }

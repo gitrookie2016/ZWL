@@ -11,9 +11,9 @@
 		<link rel="stylesheet" href="../www/css/mui.min.css" />
 		<link rel="stylesheet" href="../www/css/main.css" />
 		<script src="../www/js/jquery-1.7.1.min.js"></script>
-		<script src="../www/js/mui.js"></script>
+
 		<script src="../www/js/g.js" charset="utf-8"></script>
-		<script src="../www/js/iscroll.js" charset="utf-8"></script>
+		<script src="../www/js/mui.js" charset="utf-8"></script>
 <style>
 
 	/*.nav-foot {
@@ -119,7 +119,7 @@
 									srv = Api.selectRoomReservation(nextPageNum,moreData.pageSize);
 								}
 
-								console.log(srv);
+								//console.log(srv);
 								if(srv.success){
 									var srvInfo = srv.list;
 									if(typeof srvInfo == "undefined"){

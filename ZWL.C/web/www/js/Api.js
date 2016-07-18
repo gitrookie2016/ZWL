@@ -833,3 +833,77 @@ window["Api"]["getRecommendReservationTime"] = function (seatId,reservationBegin
 
     return arg;
 };
+
+
+/**
+ * 取消预约
+ * @param id
+ * @returns {string}
+ */
+window["Api"]["cancleReservation"] = function (id){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "researchRoomReservation/cancleReservation",
+        "id":id,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+
+//reservation/ extendSeatTime
+window["Api"]["extendSeatTime"] = function (reservationId,reservationEndTime){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "reservation/extendSeatTime",
+        "userInfoId":userInfo.userInfoId,
+        "reservationId":reservationId,
+        "reservationEndTime":reservationEndTime,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebService.do",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};

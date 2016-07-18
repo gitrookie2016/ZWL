@@ -313,6 +313,8 @@ window["g"]["localData"] = {
 }
 
 
+document.write("<link rel=\"shortcut icon\" href=\"../www/img/app-logo.png\">");
 
 document.write("<script src=\"../www/js/Api.js\" charset=\"utf-8\"></script>");
-document.write("<link rel=\"shortcut icon\" href=\"../www/img/app-logo.png\">");
+
+

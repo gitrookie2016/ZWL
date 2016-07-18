@@ -24,6 +24,7 @@ SeatRandomApp.controller("seatsSubmitCtrl",function($scope,SeatRandomService){
         var apire = Api.changeSeatBychoose(SeatRandomService.rsi.reservationId,SeatDataID);
 
         if(apire.success){
+            $.cookie("muiFlag",2,{path:"/"});
             window.location = "index.html";
         }else{
             alert(apire.message);
