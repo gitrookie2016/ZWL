@@ -104,7 +104,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="open-modal1" class="modal-window">
+		<div id="open-modal1" class="modal-window" ng-controller="alertChangeSeatCtrl">
 		    <div class="row">
 		        <div class="col v-m">
 		        	<div class="modal-title">
@@ -114,7 +114,7 @@
 		        	<img src="img/change-seat.png" />
 		        	<p>请您选择更换的方式</p>
 		        	<a class="btn btn-block btn-conner btn-blue" href="changeSeat.html">手动更换</a>
-		        	<a class="btn btn-block btn-conner btn-pink" href="#">扫码更换</a>
+		        	<a class="btn btn-block btn-conner btn-pink" ng-click="QRCode();" href="javaScript:void(0);">扫码更换</a>
 		        </div>
 		    </div>
 		</div>
@@ -159,5 +159,7 @@
 			<div class="mui-popup-buttons"><span class="mui-popup-button" ng-click="close()">关闭</span></div>
 		</div>
 		<div class="mui-popup-backdrop mui-active more-yxs" style="display: none;"></div>
+	<script src="js/jweixin-1.0.0.js"></script>
+	<script src="js/scanQRCode.js"></script>
 	</body>
 </html>

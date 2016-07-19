@@ -27,8 +27,15 @@ $(document).ready(function(){
 
 var app = angular.module("App",[]);
 
+
     app.controller("subscribeListCtrl",function($scope,appService){
 
+
+
+        /**
+         * 提示
+         * @type {Number}
+         */
         var flag = parseInt($.cookie("muiFlag"));
         if(flag){
             switch (flag){
@@ -216,6 +223,16 @@ app.factory("appService",function () {
 
 
     return factory;
+});
+
+app.controller("alertChangeSeatCtrl",function ($scope) {
+    /**
+     * 扫码
+     * @constructor
+     */
+    $scope.QRCode = function(){
+        QRCode();
+    }
 });
 
 $(document).ready(function () {
