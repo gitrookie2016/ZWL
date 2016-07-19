@@ -15,6 +15,7 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
 
     //起始时间为当前时间
     var nowTime = Api.getSystemTime();
+    nowTime = nowTime.replace("-","/").replace("-","/");
     var date = new Date(nowTime);
     var Minutes = date.getMinutes().toString();
     Minutes = Minutes.length > 1 ? Minutes : "0"+Minutes;

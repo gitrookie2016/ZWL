@@ -16,12 +16,13 @@ $(document).ready(function(){
         var _userPwd = $(".userPwd").val();
         var _schoolNum = $(".schoolNum option:selected").val();
         if(_userNum && _userPwd && _schoolNum){
+            var bean = {};
+            var _userInfo = Api.login(_userNum,_userPwd,_schoolNum);
 
-           var _userInfo = Api.login(_userNum,_userPwd,_schoolNum);
 
             if(_userInfo.success){
                 //_userInfo.object
-                var bean = {};
+
                 bean.token = _userInfo.object.token;
                 bean.userSex = _userInfo.object.userSex;
                 bean.userName = _userInfo.object.userName;
@@ -43,6 +44,29 @@ $(document).ready(function(){
 
                 var expiresDate= new Date();
                 expiresDate.setTime(expiresDate.getTime() + (30 * 60 * 1000));
+
+
+                var selectConfig = Api.selectConfig(_userInfo.object.campusId);
+                if(typeof selectConfig != "undefined" && selectConfig.success){
+                    bean.configId = selectConfig.object.configId;
+                    bean.leaveLength = selectConfig.object.leaveLength;
+                    bean.leaveTimes = selectConfig.object.leaveTimes;
+                    bean.lunchStartTime = selectConfig.object.lunchStartTime;
+                    bean.lunchEndTime = selectConfig.object.lunchEndTime;
+                    bean.dinnerStartTime = selectConfig.object.dinnerStartTime;
+                    bean.dinnerEndTime = selectConfig.object.dinnerEndTime;
+                    bean.reservationTime = selectConfig.object.reservationTime;
+                    bean.reservationLength = selectConfig.object.reservationLength;
+                    bean.arriveTimeOut = selectConfig.object.arriveTimeOut;
+                    bean.awayTimeIn = selectConfig.object.awayTimeIn;
+                    bean.awayTimeOut = selectConfig.object.awayTimeOut;
+                    bean.violationTimes = selectConfig.object.violationTimes;
+                    bean.blacklistDuration = selectConfig.object.blacklistDuration;
+                    bean.temporaryLeaveLock = selectConfig.object.temporaryLeaveLock;
+                    bean.createDate = selectConfig.object.createDate;
+                    bean.startGrab = selectConfig.object.startGrab;
+                }
+
 
                 $.cookie("userInfo",JSON.stringify(bean), {  path: '/' ,expires : expiresDate});
 

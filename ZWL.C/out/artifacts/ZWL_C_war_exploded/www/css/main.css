@@ -237,3 +237,6 @@ html{font-size:3.75vw;}/*iphone 6*/
 .edit-pwd .form-line .input{margin-top:0.5rem;margin-bottom:0.5rem;}
 .edit-pwd .form-line .tag img{margin-top:-0.8rem;}
 .v-b{vertical-align: bottom !important;}
+.leave-option{
+    color: #007aff;font-size: 14px;
+}

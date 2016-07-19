@@ -31,6 +31,96 @@ var app = angular.module("App",[]);
     app.controller("subscribeListCtrl",function($scope,appService){
 
 
+        /**
+         * 签到
+         */
+        $scope.checkIn = function(){
+
+            wx.scanQRCode({
+                needResult: 1,
+                desc: 'scanQRCode desc',
+                success: function (res) {
+
+                    var rs = res.resultStr;
+                    var reApi = Api.checkInSeat(rs);
+                    if(reApi.success && reApi.message != 0){
+                        $scope.$apply(function () {
+                            var subscribeListTwo = appService.selectReservationByUser();
+                            if(subscribeListTwo) {
+
+                                $scope.subscribeList = subscribeListTwo.lists;
+                                if(subscribeListTwo.lists){
+                                    $scope.subscribeLeng = subscribeListTwo.lists.length;
+                                }
+
+                            }
+                        });
+                        mui.toast("签到成功");
+                    }else{
+                        mui.toast("签到失败");
+                    }
+
+                }
+            });
+        }
+
+
+        /**
+         * 离席
+         */
+        $scope.checkOut = function () {
+            appService.LeaveReservationId = this.sl.reservationId;
+            $(".leave-div").show();
+
+
+        }
+
+        $scope.leave_close = function () {
+            $(".leave-div").hide();
+        }
+
+        /**
+         * 离开
+         */
+        $scope.leave = function (arg) {
+            if(parseInt(arg) == 1){
+
+                $.cookie("leaveTime", new Date() , {path : "/"});
+            }
+            var reApi = Api.leave(appService.LeaveReservationId,arg);
+            if(reApi && reApi.success){
+
+                    var subscribeListTwo = appService.selectReservationByUser();
+                    if(subscribeListTwo) {
+
+                        $scope.subscribeList = subscribeListTwo.lists;
+                        if(subscribeListTwo.lists){
+                            $scope.subscribeLeng = subscribeListTwo.lists.length;
+                        }
+
+                    }
+
+                $(".leave-div").hide();
+                mui.toast(reApi.message);
+            }else{
+                $(".leave-div").hide();
+                mui.toast(reApi.message);
+            }
+        }
+
+        var _ui = g.userInfo();
+
+        $scope.temporary = "临时离开（允许离开最大时长5分钟）";
+        $scope.lunch = "午餐（"+_ui.lunchStartTime + "-"  +_ui.lunchEndTime +"）";
+        $scope.dinner = "晚餐（"+_ui.dinnerStartTime + "-" +_ui.dinnerEndTime +"）";
+
+
+
+
+
+
+
+
 
         /**
          * 提示
@@ -189,6 +279,16 @@ app.factory("appService",function () {
                 lists[l].h = parseInt(_hm / 60);
                 lists[l].m = parseInt(_hm % 60);
                 lists[l].hm = parseInt(_hm / 60) + "小时" + parseInt(_hm % 60) + "分钟";
+                if( lists[l].notArrive == 2 ){
+                    if(lists[l].leaveFlag == 1){
+
+                        lists[l].leavehm = parseInt(lists[l].canUseMinute / 60 ) + "分钟" + parseInt(lists[l].canUseMinute % 60 ) + "秒";
+                    }
+                    var EndTime = lists[l].sreservationEndTime;
+                    var Endhm = factory.contrastTime(EndTime);
+                    lists[l].Endhm = parseInt(Endhm / 60) + "小时" + parseInt(Endhm % 60) + "分钟";
+
+                }
 
             }
             bean.lists = lists;

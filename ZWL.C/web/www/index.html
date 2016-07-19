@@ -16,7 +16,7 @@
 
 	</head>
 	<body>
-		<div class="app has-head has-banner">
+		<div class="app has-head has-banner" ng-controller="subscribeListCtrl">
 			<div class="app-head">
 				<ul class="row" style="padding-top:5px;">
 					<li class="col v-m" style="padding-top:7px;">
@@ -47,7 +47,8 @@
 						</div>
 					</div>
 					<!---->
-					<ul class="seat-list" ng-controller="subscribeListCtrl">
+
+					<ul class="seat-list" >
 
 						<li class="seat-item" id="roomReservation" >
 							<p class="item-time"><span class="item-num" ng-bind="roomReservationLeng">1</span><span ng-bind="roomReservation.roomReservationList[0].time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
@@ -70,7 +71,18 @@
 						<li class="seat-item" ng-repeat="sl in subscribeList" >
 							<p class="item-time"><span class="item-num" ng-bind="subscribeLeng - $index"></span><span ng-bind="sl.time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
 							<p class="item-txt" ng-bind="sl.info">致未来图书馆1层测试自习室 2-8 座</p>
-							<p class="item-txt">距离签到时间<span class="c-p" ng-bind="sl.hm">3小时48分</span></p>
+							<div ng-if="sl.notArrive == 1">
+								<p class="item-txt">距离签到时间<span class="c-p" ng-bind="sl.hm">3小时48分</span></p>
+							</div>
+							<div ng-if="sl.notArrive == 2">
+								<div ng-if="sl.leaveFlag == 0">
+									<p class="item-txt">距离离席时间<span class="c-p" ng-bind="sl.Endhm">3小时48分</span></p>
+								</div>
+								<div ng-if="sl.leaveFlag == 1">
+									<p class="item-txt">距离回来签到时间<span class="c-p" ng-bind="sl.leavehm">3小时48分</span></p>
+								</div>
+
+							</div>
 							<input id="{{$index}}input" type="hidden" value="{'time':'{{sl.time}}','info':'{{sl.info}}','seatNum':'{{sl.seatNum}}'}">
 							<ul class="row mt-1">
 								<li class="col t-c">
@@ -82,18 +94,37 @@
 							</ul>
 							<ul class="row top-line">
 								<li class="col t-c">
-									<a class="btn has-icon c-b" href="#open-modal2" ng-click="cancel();"><img align="absmiddle" src="img/cancel.png"/>取消</a>
+									<div ng-if="sl.notArrive == 1">
+										<a class="btn has-icon c-b" href="#open-modal2" ng-click="cancel();"><img align="absmiddle" src="img/cancel.png"/>取消</a>
+									</div>
+									<div ng-if="sl.notArrive == 2">
+										<a class="btn has-icon c-b" href="javaScript:void(0);" ng-click="checkOut();"><img align="absmiddle" src="img/cancel.png"/>离席</a>
+									</div>
 								</li>
 								<li class="col t-c">
 									<a class="btn has-icon c-b" ng-click="contract();" href="javaScript:void(0);"><img align="absmiddle" src="img/edit.png"/>续约</a>
 								</li>
 								<li class="col t-c">
-									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/port.png"/>签到</a>
+									<div ng-if="sl.notArrive == 1">
+										<a class="btn has-icon c-b" ng-click="checkIn();" href="javaScript:void(0);"><img align="absmiddle" src="img/port.png"/>签到</a>
+									</div>
+
+									<div ng-if="sl.notArrive == 2">
+
+										<div ng-if="sl.leaveFlag == 1">
+											<a class="btn has-icon c-b" ng-click="checkIn();" href="javaScript:void(0);"><img align="absmiddle" src="img/port.png"/>签到</a>
+										</div>
+										<div ng-if="sl.leaveFlag == 0">
+											<a class="btn has-icon c-b"  href="javaScript:void(0);"><img align="absmiddle" src="img/port.png"/>已签</a>
+										</div>
+									</div>
 								</li>
 							</ul>
 						</li>
+
 					</ul>
 				</div>
+
 			</div>
 			<div class="app-footer">
 				<div class="nav row">
@@ -103,6 +134,17 @@
 					<a class="col" href="settings.html">设置</a>
 				</div>
 			</div>
+			<!--离席选择框-->
+			<div class="mui-popup mui-popup-in leave-div" style="display: none;">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell leave-option"  ng-bind="temporary" ng-click="leave(1);">Item 1</li>
+					<li class="mui-table-view-cell leave-option"  ng-bind="lunch" ng-click="leave(2);">Item 2</li>
+					<li class="mui-table-view-cell leave-option"  ng-bind="dinner" ng-click="leave(3);">Item 3</li>
+					<li class="mui-table-view-cell leave-option"  ng-click="leave(4);">离席</li>
+				</ul>
+				<div class="mui-table-view"><span class="mui-popup-button" style="font-size: 15px" ng-click="leave_close()">关闭</span></div>
+			</div>
+			<!--离席选择框-->
 		</div>
 		<div id="open-modal1" class="modal-window" ng-controller="alertChangeSeatCtrl">
 		    <div class="row">
@@ -131,9 +173,18 @@
 		        	<a class="btn btn-block btn-conner btn-blue cancel" href="#">确定</a>
 		        </div>
 		    </div>
+
 		</div>
 		<script src="js/angular.js" charset="utf-8"></script>
 		<script src="js/index/index.js"></script>
+
+
+
+
+
+
+
+
 		<div class="mui-popup mui-popup-in more-yxs" style="display: none;" ng-controller="moreYXSCtrl" >
 
 			<div class="mui-popup-inner">
@@ -152,13 +203,9 @@
 					</div>
 				</li>
 			</ul>
-
-
-
-
 			<div class="mui-popup-buttons"><span class="mui-popup-button" ng-click="close()">关闭</span></div>
 		</div>
-		<div class="mui-popup-backdrop mui-active more-yxs" style="display: none;"></div>
+		<div class="mui-popup-backdrop mui-active more-yxs leave-div" style="display: none;"></div>
 	<script src="js/jweixin-1.0.0.js"></script>
 	<script src="js/scanQRCode.js"></script>
 	</body>

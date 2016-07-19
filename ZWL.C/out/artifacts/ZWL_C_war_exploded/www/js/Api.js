@@ -907,3 +907,132 @@ window["Api"]["extendSeatTime"] = function (reservationId,reservationEndTime){
 
     return arg;
 };
+
+
+/**
+ * 获取access_token
+ * @param appid
+ * @param secret
+ * @returns {string}
+ */
+    window["Api"]["getToken"] = function(appid,secret){
+        var arg = "" ;
+        appid = appid ? appid : "wxc13823a96ab80a9b";
+        secret = secret ? secret : "b6319aa98e47ac78871da7231041bd3b";
+        $.ajax({
+            type: "get",
+            url		:	 "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+secret,
+            async	:	false,
+            success	:	function(res){
+                if(res){
+                    arg = res;
+                }
+            },
+            error:function(e) {
+                console.log(e);
+                return null;
+            }
+
+        });
+
+        return arg;
+    };
+
+
+/**
+ * 签到
+ * @param seatId
+ * @returns {string}
+ */
+window["Api"]["checkInSeat"] = function(seatId){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    $.ajax({
+        type: "get",
+        url		:	 g.ContextPath + "scan/scanQrCode",
+        async	:	false,
+        data    :{
+            "userInfoId":userInfo.userInfoId,
+            "seatId":seatId
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+
+
+
+
+/**
+ * 按校区Id查询配置信息
+ * @returns {string}
+ */
+window["Api"]["selectConfig"] = function(campusId){
+    var arg = "" ;
+
+    $.ajax({
+        type: "get",
+        url		:	 g.ContextPath + "configuration/selectConfig",
+        async	:	false,
+        data    :{
+            "campusId":campusId
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+/**
+ * 临时离开、午饭、晚饭、彻底离席
+ * @param reservationId
+ * @param configId
+ * @param flag
+ * @returns {string}
+ */
+window["Api"]["leave"] = function(reservationId,flag){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    $.ajax({
+        type: "get",
+        url		:	 g.ContextPath + "scan/leave",
+        async	:	false,
+        data    :{
+            "reservationId":reservationId,
+            "configId":userInfo.configId,
+            "flag":flag
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
