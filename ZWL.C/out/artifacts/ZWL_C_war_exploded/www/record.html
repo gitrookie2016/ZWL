@@ -62,16 +62,8 @@
 						<li ng-repeat="rl in recordList">
 							<p ng-bind="rl.date + ' ' + rl.time"></p>
 							<h2 ng-bind="rl.info">东区图书馆05自习室15-59-3座位</h2>
-							<span class="right"></span>
-							<div ng-if="rl.leaveFlag == 0 ">
-								<span class="right"></span>
-							</div>
-							<div ng-if="rl.leaveFlag == 1 || rl.leaveFlag == 2 ||rl.leaveFlag == 3 ">
-								<span class="after"></span>
-							</div>
-							<div ng-if="rl.leaveFlag == 4 ">
-								<span class="before"></span>
-							</div>
+							<h2 style="color:red;" ng-bind="rl.stateInfo"></h2>
+							<span ng-class="rl.stateClass"></span>
 						</li>
 					</ul>
 					</div>
@@ -114,29 +106,45 @@
 							if( nextPageNum <= PageNumCount){
 								var srv;
 								if(moreData.type == 1 ){
-									srv = selectReservation(1,nextPageNum,moreData.pageSize);
+									var zxsState = $.cookie("zxsState");
+									zxsState = zxsState ? zxsState : 0 ;
+
+									pageSize = moreData.pageSize;
+									pageNum = nextPageNum;
+
+									srv = zxs(zxsState,nextPageNum,moreData.pageSize);
 								}else if(moreData.type == 2){
 									srv = Api.selectRoomReservation(nextPageNum,moreData.pageSize);
+									if(srv.success){
+										srv = srv.lists;
+									}else{
+										srv = false;
+									}
 								}
 
 								//console.log(srv);
-								if(srv.success){
-									var srvInfo = srv.list;
+								if(srv){
+
+									/*var srvInfo = srv.list;
 									if(typeof srvInfo == "undefined"){
 										srvInfo = srv.lists;
-									}
+									}*/
+
 									moreData.pageNum = nextPageNum;
 
-									if(srvInfo){
+									if(srv.length > 0){
 										var html = "<div class='temp'>";
-										for(var s = 0 ; s < srvInfo.length ; s++){
-											var redate = srvInfo[s].date;
+										for(var s = 0 ; s < srv.length ; s++){
+											var redate = srv[s].date;
 											var date = typeof redate == 'undefined' ? '' : redate;
-											html += 	"<li >"+
-														"	<p>"+ date + " " + srvInfo[s].time+"</p>"+
-														"	<h2>" + srvInfo[s].info+"</h2>"+
-														"	<span class=\"right\"></span>"+
-														"</li> ";
+											html += 	"<li >";
+											html +=			"<p>"+ date + " " + srv[s].time+"</p>";
+											html +=			"<h2>" + srv[s].info+"</h2>";
+																if(parseInt(srv[s].state) != 1 && moreData.type == 1){
+																	html += "<h2 style='color: red;'>" + srv[s].stateInfo+"</h2>";
+																}
+											html +=			"<span class=\""+srv[s].stateClass+"\"></span>";
+											html +=		"</li> ";
 
 										}
 										$(".txt-list").append(html+"</div>");
@@ -152,7 +160,7 @@
 							}
 
 
-							//注意：
+							//注意：flag = true 为没有更多
 							mui('#pullRefresh').pullRefresh().endPullupToRefresh(flag);
 
 						}

@@ -9,6 +9,6 @@
 </servlet>
     <servlet-mapping>
         <servlet-name>WebService</servlet-name>
-        <url-pattern>/WebService.do</url-pattern>
+        <url-pattern>/WebAction/*</url-pattern>
     </servlet-mapping>
 </web-app>

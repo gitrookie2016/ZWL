@@ -296,7 +296,7 @@ window["Api"]["addReservation"] = function (userInfoId,seatId,reservationBeginTi
 
     $.ajax({
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -336,7 +336,7 @@ window["Api"]["selectReservationByUser"] = function (){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -381,7 +381,7 @@ window["Api"]["selectReservation"] = function (state,nowPage,pageSize){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -417,7 +417,7 @@ window["Api"]["cancelReservation"] = function (reservationId ){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -535,7 +535,7 @@ window["Api"]["BuildingResearchRoom"] = function (){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -576,7 +576,7 @@ window["Api"]["ResearchRoom"] = function (buildingId){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -623,7 +623,7 @@ window["Api"]["addReservationResearch"] = function (roomed,totalPeople,reservati
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -689,7 +689,7 @@ window["Api"]["selectRoomReservation"] = function (nowPage,pageSize){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -732,7 +732,7 @@ window["Api"]["addSeatByrandom"] = function (buildingId,reservationBeginTime,res
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -772,7 +772,7 @@ window["Api"]["changeSeatBychoose"] = function (reservationId,seatId){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -813,7 +813,7 @@ window["Api"]["getRecommendReservationTime"] = function (seatId,reservationBegin
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -851,7 +851,7 @@ window["Api"]["cancleReservation"] = function (id){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {
@@ -887,7 +887,7 @@ window["Api"]["extendSeatTime"] = function (reservationId,reservationEndTime){
     $.ajax({
 
         type: "post",
-        url		:	 "../WebService.do",
+        url		:	 "../WebAction/Api/requestApi",
         async	:	false,
         dataType : "json",
         data    : {

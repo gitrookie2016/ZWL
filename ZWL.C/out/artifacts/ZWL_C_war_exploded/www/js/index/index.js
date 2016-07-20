@@ -28,7 +28,7 @@ $(document).ready(function(){
 var app = angular.module("App",[]);
 
 
-    app.controller("subscribeListCtrl",function($scope,appService){
+    app.controller("subscribeListCtrl",function($scope,appService,$http){
 
 
         /**
@@ -64,6 +64,11 @@ var app = angular.module("App",[]);
             });
         }
 
+        $scope.yxs_checkIn = function () {
+           g.localData.set("abc","测试");
+            alert(123);
+
+        }
 
         /**
          * 离席
@@ -164,28 +169,21 @@ var app = angular.module("App",[]);
         }
 
         var subscribeList = appService.selectReservationByUser();
+        appService.subscribeList = subscribeList;
         if(!subscribeList){
             return ;
         }
         $scope.subscribeList = subscribeList.lists;
-        var roomReservation = subscribeList.roomReservation;
-        var roomReservationList;
-        var ab = 0;
 
-        var sll = typeof subscribeList.lists != "undefined" ? subscribeList.lists.length : 0;
-        $scope.subscribeLeng = sll ;
-        if(typeof roomReservation != "undefined"){
-            roomReservationList = roomReservation.roomReservationList;//
+        /**
+         * 研修室
+         */
+        appService.yxsApply();
+        $scope.subscribeLeng = appService.subscribeLeng;
+        $scope.roomReservation = appService.roomReservation;
+        $scope.roomReservationList = appService.roomReservationList = appService.roomReservationList;
+        $scope.roomReservationLeng = appService.roomReservationLeng
 
-
-            $scope.roomReservation = roomReservation;
-            $scope.roomReservationList = appService.roomReservationList = roomReservationList;
-
-            ab = 1;
-            $scope.roomReservationLeng = parseInt(sll) + ab;
-        }else{
-            $("#roomReservation").hide();
-        }
         /**
          * 更换座位
          */
@@ -247,20 +245,87 @@ var app = angular.module("App",[]);
 
         }
 
+
+        $scope.roomReservationList = appService.roomReservationList;
+
+
+        /**
+         * 研修室查看关闭
+         */
+        $scope.close = function close_yxs(){
+            $(".more-yxs").hide();
+        }
+
+
+        /**
+         * 研修室查看
+         */
+        var btnArray = ['确认', '取消'];
+        $('#OA_task_1').on('slideleft', '.mui-table-view-cell', function(event) {
+            var elem = this;
+
+            mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
+                if (e.index == 0) {
+                    var lv = elem.getAttributeNode("name").value;
+                    if(lv){
+                        var reapi = Api.cancleReservation(lv);
+                        if(reapi.success){
+                            elem.parentNode.removeChild(elem);
+
+                            //删掉后更新页面
+                            appService.yxsApply();
+                            $scope.subscribeLeng = appService.subscribeLeng;
+                            $scope.roomReservation = appService.roomReservation;
+                            $scope.roomReservationList = appService.roomReservationList = appService.roomReservationList;
+                            $scope.roomReservationLeng = appService.roomReservationLeng
+
+                            var ocl = $("#OA_task_1").children().length
+                            if(ocl == 0){
+                                $(".more-yxs").hide();
+                            }
+                        }else{
+                            mui.toast(reapi.message);
+                        }
+
+                    }
+
+                } else {
+                    setTimeout(function() {
+                        mui.swipeoutClose(elem);
+                    }, 0);
+                }
+            });
+        });
+
+
 });
 
-app.controller("moreYXSCtrl",function ($scope,appService) {
-    $scope.roomReservationList = appService.roomReservationList;
-
-    $scope.close = function(){
-        $(".more-yxs").hide();
-    }
-});
 
 app.factory("appService",function () {
 
     var factory = {}
+    factory.SysTime = null;
+    factory.yxsApply = function(){
 
+        var roomReservation = factory.selectReservationByUser();
+        var roomReservationList;
+        var ab = 0;
+
+        var sll = typeof factory.subscribeList.lists != "undefined" ? factory.subscribeList.lists.length : 0;
+        factory.subscribeLeng = sll;
+        if (typeof roomReservation != "undefined" && roomReservation != null) {
+            roomReservationList = roomReservation.roomReservation.roomReservationList;//
+
+
+            factory.roomReservation = roomReservation.roomReservation;
+            factory.roomReservationList = factory.roomReservationList = roomReservationList;
+            ab = 1;
+            factory.roomReservationLeng = parseInt(sll) + ab;
+        } else {
+            $("#roomReservation").hide();
+        }
+
+    }
     factory.selectReservationByUser = function () {
 
         var list = Api.selectReservationByUser();
@@ -311,7 +376,15 @@ app.factory("appService",function () {
 
     }
     factory.contrastTime = function (a) {
-        var SysTime = Api.getSystemTime();
+
+        var SysTime;
+        if(factory.SysTime){
+            SysTime = factory.SysTime;
+        }else{
+            SysTime = factory.SysTime = Api.getSystemTime();
+        }
+
+
         SysTime = SysTime.replace("-","/");
         SysTime = SysTime.replace("-","/");
         var now = new Date(SysTime);
@@ -337,28 +410,5 @@ app.controller("alertChangeSeatCtrl",function ($scope) {
 
 $(document).ready(function () {
     mui.init();
-    var btnArray = ['确认', '取消'];
-    $('#OA_task_1').on('tap', '.mui-btn', function(event) {
-        var elem = this;
-        var li = elem.parentNode.parentNode;
-        mui.confirm('确认删除该条记录？', '提示', btnArray, function(e) {
-            if (e.index == 0) {
-                var lv = li.getAttributeNode("name").value;
-                if(lv){
-                    var reapi = Api.cancleReservation(lv);
-                    if(reapi.success){
-                        li.parentNode.removeChild(li);
-                    }else{
-                        mui.toast(reapi.message);
-                    }
 
-                }
-
-            } else {
-                setTimeout(function() {
-                    this.$.swipeoutClose(li);
-                }, 0);
-            }
-        });
-    });
 });

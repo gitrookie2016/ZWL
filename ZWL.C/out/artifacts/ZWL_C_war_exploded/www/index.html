@@ -62,7 +62,7 @@
 									<a class="btn has-icon c-b " ng-click="alertBtn();" href="javaScript:void(0);"><img align="absmiddle" src="img/see.png"/>查看</a>
 								</li>
 								<li class="col t-c">
-									<a class="btn has-icon c-b" href="#"><img align="absmiddle" src="img/port.png"/>签到</a>
+									<a class="btn has-icon c-b" ng-click="yxs_checkIn();" href="javaScript:void(0);"><img align="absmiddle" src="img/port.png"/>签到</a>
 								</li>
 							</ul>
 
@@ -145,6 +145,29 @@
 				<div class="mui-table-view"><span class="mui-popup-button" style="font-size: 15px" ng-click="leave_close()">关闭</span></div>
 			</div>
 			<!--离席选择框-->
+
+			<!--研修室查看-->
+			<div class="mui-popup mui-popup-in more-yxs" style="display: none;"  >
+
+				<div class="mui-popup-inner">
+					<div class="mui-popup-title">向左滑取消预约</div>
+				</div>
+
+				<ul id="OA_task_1" class="mui-table-view">
+					<li class="mui-table-view-cell" ng-repeat="rrl in roomReservationList" name="{{rrl.id}}">
+						<div class="mui-slider-right mui-disabled">
+							<a class="mui-btn mui-btn-red">取消</a>
+						</div>
+						<div class="mui-slider-handle">
+							<span ng-bind="rrl.time"></span>&nbsp;&nbsp;&nbsp;
+							<span ng-bind="rrl.identifyCode"></span>
+
+						</div>
+					</li>
+				</ul>
+				<div class="mui-popup-buttons"><span class="mui-popup-button" ng-click="close()">关闭</span></div>
+			</div>
+			<!--研修室查看-->
 		</div>
 		<div id="open-modal1" class="modal-window" ng-controller="alertChangeSeatCtrl">
 		    <div class="row">
@@ -185,26 +208,7 @@
 
 
 
-		<div class="mui-popup mui-popup-in more-yxs" style="display: none;" ng-controller="moreYXSCtrl" >
 
-			<div class="mui-popup-inner">
-				<div class="mui-popup-title">向左滑取消预约</div>
-			</div>
-
-			<ul id="OA_task_1" class="mui-table-view">
-				<li class="mui-table-view-cell" ng-repeat="rrl in roomReservationList" name="{{rrl.id}}">
-					<div class="mui-slider-right mui-disabled">
-						<a class="mui-btn mui-btn-red">取消</a>
-					</div>
-					<div class="mui-slider-handle">
-						<span ng-bind="rrl.time"></span>&nbsp;&nbsp;&nbsp;
-						<span ng-bind="rrl.identifyCode"></span>
-
-					</div>
-				</li>
-			</ul>
-			<div class="mui-popup-buttons"><span class="mui-popup-button" ng-click="close()">关闭</span></div>
-		</div>
 		<div class="mui-popup-backdrop mui-active more-yxs leave-div" style="display: none;"></div>
 	<script src="js/jweixin-1.0.0.js"></script>
 	<script src="js/scanQRCode.js"></script>

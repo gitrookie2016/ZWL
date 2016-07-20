@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.util.UUID;
 
 
-public class Test {
+public class SHA {
 
 	  /** 
      * 定义加密方式 
@@ -20,7 +20,7 @@ public class Test {
     /** 
      * 构造函数 
      */  
-    public Test() {  
+    public SHA() {
   
     }  
   
