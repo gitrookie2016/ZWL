@@ -1,19 +1,32 @@
 
 
 
+var timestamp,nonceStr,signature;
+
+var ChatConfig = Api.ApplyWeChatConfig();
+if(ChatConfig && ChatConfig.Success){
+   var result = ChatConfig.result;
+    if(result){
+        timestamp = result.SystemTime;
+        nonceStr = result.nonceStr;
+        signature = result.Signature;
+    }
+
+}
+
 wx.config({
     debug: false,
     appId: 'wxc13823a96ab80a9b',
-    timestamp: 1468920225683,
-    nonceStr: 'Wm3WZYTPz0wzccnW',
-    signature: '2c802a27e4204c1a28ed040222736ff917346e44',
+    timestamp: timestamp,
+    nonceStr: nonceStr,
+    signature: signature,
     jsApiList: [
         'scanQRCode'
     ]
 });
 
 wx.error(function (res) {
-    alert(res.errMsg+"eee");
+    alert(res.errMsg+"配置出错，扫码暂时不能用！");
 });
 
 

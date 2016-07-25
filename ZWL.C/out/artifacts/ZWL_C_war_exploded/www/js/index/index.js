@@ -32,6 +32,69 @@ var app = angular.module("App",[]);
 
 
         /**
+         * 扫码就坐
+         *
+         */
+        $scope.SweepCode = function () {
+            var rs;
+            wx.scanQRCode({
+                needResult: 1,
+                success: function (res,e) {
+                    rs = res.resultStr;
+                    mui.toast("扫码成功");
+                    mui.toast(rs);
+                    Api.scanQrCode(rs);
+                }
+            });
+
+
+        }
+
+
+        /**
+         * 研修室签到
+         * arg 预约码
+         */
+        $scope.signIn = function () {
+            var rs;
+
+                wx.scanQRCode({
+                    needResult: 1,
+                    success: function (res,e) {
+                        rs = res.resultStr;
+                        mui.toast("扫码成功");
+                        var identifyCode ;
+                        var btnArray = ["确认","取消"];
+                        mui.prompt("请输入预约码", rs,  btnArray, function(e) {
+                            if (e.index == 0) {
+
+                                identifyCode = e.value;
+
+                                if(identifyCode){
+                                    var reApi = Api.signIn(identifyCode,rs);
+                                    if(reApi && reApi.success){
+                                        mui.toast("签到成功");
+                                    }
+
+                                }else{
+                                    mui.toast("请输入预约码");
+                                }
+
+                            } else {
+                                mui.toast("签到失败");
+                                return null;
+                            }
+                        })
+
+
+                    }
+                });
+
+
+        }
+
+
+        /**
          * 签到
          */
         $scope.checkIn = function(){
@@ -64,11 +127,6 @@ var app = angular.module("App",[]);
             });
         }
 
-        $scope.yxs_checkIn = function () {
-           g.localData.set("abc","测试");
-            alert(123);
-
-        }
 
         /**
          * 离席

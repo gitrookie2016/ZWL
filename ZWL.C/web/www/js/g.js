@@ -44,6 +44,24 @@ Date.prototype.Format = function(formatStr){
     return str;
 }
 
+window["g"]["prompt"] = function (btnArray,message,placeholder,title,e) {
+
+    btnArray = btnArray ? btnArray : ['确定', '取消'];
+    title = title ? title : "提示";
+    message = message ? message : "";
+    placeholder = placeholder ? placeholder : "";
+
+    mui.prompt(message, placeholder, title, btnArray, function(e) {
+        if (e.index == 0) {
+            return e.value;
+        } else {
+            return null;
+        }
+    })
+    
+}
+
+
 
 window["g"]["openmodal2"] = function(msg){
     var op = $("#open-modal2 p");

@@ -1036,3 +1036,152 @@ window["Api"]["leave"] = function(reservationId,flag){
 
     return arg;
 };
+
+/**
+ * 读取文件信息
+ * @param pathName
+ */
+window["Api"]["getFileInfo"] = function(fileName){
+
+    fileName = fileName ? fileName : "WeChatAccess_token.json";
+    var dataS = {};
+    dataS.fileName = fileName;
+
+    var arg = "";
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebAction/Api/ReaderFile",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+    return arg;
+}
+
+/**
+ * 更新微信配置
+ * @param pathName
+ */
+window["Api"]["ApplyWeChatConfig"] = function(fileName){
+
+    fileName = fileName ? fileName : "WeChatAccess_token.json";
+    var dataS = {};
+    dataS.fileName = fileName;
+    dataS.configUrl = window.location.href;
+
+    var arg = "";
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebAction/Api/ApplyWeChatConfig",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+    return arg;
+}
+
+//researchRoomReservation/signIn
+/**
+ * 研修室签到
+ * @param identifyCode
+ * @param roomId
+ * @returns {string}
+ */
+window["Api"]["signIn"] = function (identifyCode,roomId){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "researchRoomReservation/signIn",
+        "userId":userInfo.userInfoId,
+        "identifyCode":identifyCode,
+        "roomId":roomId,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebAction/Api/requestApi",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+                alert(res);
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            alert(123);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+//scan/scanQrCode
+
+window["Api"]["scanQrCode"] = function (seatId){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "scan/scanQrCode",
+        "userId":userInfo.userInfoId,
+        "seatId":seatId,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebAction/Api/requestApi",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+                alert(res);
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            alert(123);
+            return null;
+        }
+
+    });
+
+    return arg;
+};

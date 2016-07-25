@@ -1,21 +1,16 @@
 package com.l.zwl.Util;
 
-
-import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
 import java.io.*;
 
 /**
- * Created by Lix on 2016-7-20.
+ * Created by Lix on 2016-7-25.
  */
-public class FileUtil {
+public class FoodUtil {
 
-    private final static String path = new FileUtil().getClass().getResource("/").getFile().toString()+"jsonFile/";
+    public final static String path = new FileUtil().getClass().getResource("/").getFile().toString()+"foodFile/";
 
-    public static String getFilePath(){
-        return path;
-    }
 
     /**
      * 写文件
@@ -23,33 +18,33 @@ public class FileUtil {
      * @param fileName /wechatAccess_token.json
      * @return boolean
      */
-    public String WriterFile (String str , String fileName){
-        JSONObject json = new JSONObject();
-        json.put("Success",State.SUCCESS_IS_FALSE);
-
-        JSONObject strJSON = JSONObject.fromObject(str);
-        if(str == null || fileName == null || str.isEmpty() || fileName.isEmpty() || strJSON == null || strJSON.size() == 0){
-            json.put("state",State.PARAMETER_IS_NULL);
-            return json.toString();
-        }
+    public boolean WriterFile (String str ,String type , String fileName){
+        boolean flag = false;
         try {
-            File file = new File(path);
+
+            String filePath = path;
+            if(type != null){
+                filePath = path+type+"/";
+            }
+            File file = new File(filePath);
+
+
             if (!file.exists() && !file.isDirectory()){
                 file.mkdirs();
             }
-            FileWriter fw =  new FileWriter(path+fileName,false);
+
+            FileWriter fw =  new FileWriter(filePath+fileName,false);
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(str);
             bw.flush();
             bw.close();
-            json.put("Success",State.SUCCESS_IS_TRUE);
-            json.put("result",strJSON);
+            flag = true;
+
 
         } catch (IOException e) {
-            json.put("state",State.WRITER_FILE_EXCEPTION);
-            return json.toString();
+            flag = false;
         }
-        return json.toString();
+        return flag;
     }
 
     /**
@@ -59,8 +54,8 @@ public class FileUtil {
      */
     public String ReaderFile(String fileName){
 
-
         JSONObject json = new JSONObject();
+
         json.put("Success",State.SUCCESS_IS_FALSE);
 
         if(fileName == null || fileName.isEmpty()){
@@ -74,7 +69,6 @@ public class FileUtil {
             String filePath = path+fileName;
             File file=new File(filePath);
             if(!file.exists()){
-                json.put("state",State.FILE_IS_NULL);
                 return json.toString();
             }
             FileReader fr = new FileReader(filePath);
@@ -86,6 +80,7 @@ public class FileUtil {
             }
             json.put("Success",State.SUCCESS_IS_TRUE);
             json.put("result",buffer.toString());
+
             br.close();
             fr.close();
         } catch (FileNotFoundException e) {
@@ -100,16 +95,6 @@ public class FileUtil {
 
 
         return json.toString();
-
     }
 
-
-
-
-
-
-    public static void main(String[] arg){
-        new FileUtil().WriterFile("asdfaaaaaaaaaaaaaaaaaaaaaaaaaaasdfaaaaaaaaaaaaaaaaaaaaaaaaaaasdfaaaaaaaaaaaaaaaaaaaaaaaaaaasdfaaaaaaaaaaaaaaaaaaaaaaaaaaasdfaaaaaaaaaaaaaaaaaaaaaaaaaa","adfdfddfd.txt");
-        new FileUtil().ReaderFile("adfdfddfd.txt");
-    }
 }

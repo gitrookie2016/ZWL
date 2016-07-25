@@ -21,6 +21,9 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
     Minutes = Minutes.length > 1 ? Minutes : "0"+Minutes;
     $("#start").html(date.getHours() + ":" + Minutes  + ":00");
 
+    $("#hour").html(date.getHours());
+    $("#min").html(Minutes);
+
     //自习室  图书馆
     $scope.subscribeList = subscribeService.Campuses();
 
