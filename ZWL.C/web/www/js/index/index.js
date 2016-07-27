@@ -41,13 +41,60 @@ var app = angular.module("App",[]);
                 needResult: 1,
                 success: function (res,e) {
                     rs = res.resultStr;
-                    mui.toast("扫码成功");
-                    mui.toast(rs);
-                    Api.scanQrCode(rs);
+                    //mui.toast(rs.indexOf("R"));
+                    if(rs.toString().indexOf("R") == -1){
+                        mui.toast(1);
+                        var reApi = Api.scanQrCode(rs);
+                        mui.toast(2);
+                        mui.toast(reApi);
+                        if(reApi.success && reApi.message != 0){
+                            $scope.$apply(function () {
+                                var subscribeListTwo = appService.selectReservationByUser();
+                                if(subscribeListTwo) {
+
+                                    $scope.subscribeList = subscribeListTwo.lists;
+                                    if(subscribeListTwo.lists){
+                                        $scope.subscribeLeng = subscribeListTwo.lists.length;
+                                    }
+
+                                }
+                            });
+                            mui.toast("签到成功");
+                        }else{
+                            mui.toast(reApi.message);
+                            mui.toast(reApi.success);
+                            if(reApi.message == 0){
+                                var bean = {};
+
+                                var list = reApi.object;
+                                if(list){
+                                    bean.buildingName   = list.buildingName;
+                                    bean.seatNum        = list.seatNum;
+                                    bean.campusName     = list.campusName;
+                                    bean.classroomNum   = list.classroomNum;
+                                    bean.dayBeginTime   = list.dayBeginTime;
+                                    bean.dayEndTime     = list.dayEndTime;
+                                    bean.seatNum        = list.seatNum;
+                                    bean.floor          = list.floor;
+                                    bean.seatId         = rs;
+
+                                    $.cookie("contractZXS",JSON.stringify(bean), {  path: '/' });
+                                    window.location = "sweepCode.html";
+
+                                }else{
+                                    mui.toast("扫码失败！");
+                                }
+
+                            }else  if(reApi.message == 3){
+                                mui.toast("已签到或迟到！");
+                            }else  if(reApi.message == 2){
+                                mui.toast("离开中（临时离开、午饭、晚饭）");
+                            }
+
+                        }
+                    }
                 }
             });
-
-
         }
 
 
@@ -56,28 +103,39 @@ var app = angular.module("App",[]);
          * arg 预约码
          */
         $scope.signIn = function () {
-            var rs;
+            var rs ;
+            var identifyCode ;
+            var btnArray = ["确认","取消"];
 
-                wx.scanQRCode({
+            wx.scanQRCode({
                     needResult: 1,
                     success: function (res,e) {
                         rs = res.resultStr;
-                        mui.toast("扫码成功");
-                        var identifyCode ;
-                        var btnArray = ["确认","取消"];
                         mui.prompt("请输入预约码", rs,  btnArray, function(e) {
-                            if (e.index == 0) {
+                            if (e.index == 1) {
 
                                 identifyCode = e.value;
 
                                 if(identifyCode){
-                                    var reApi = Api.signIn(identifyCode,rs);
-                                    if(reApi && reApi.success){
-                                        mui.toast("签到成功");
+                                    var reApi = Api.signIn(identifyCode,rs.substring(1,rs.length));
+                                    if(reApi){
+                                        if( reApi.success){
+                                            $scope.$apply(function () {
+                                                appService.yxsApply();
+                                                $scope.subscribeLeng = appService.subscribeLeng;
+                                                $scope.roomReservation = appService.roomReservation;
+                                                $scope.roomReservationList = appService.roomReservationList = appService.roomReservationList;
+                                                $scope.roomReservationLeng = appService.roomReservationLeng
+                                            });
+                                            mui.toast("签到成功");
+                                        }else{
+                                            mui.toast("签到失败!"+reApi.message);
+                                            return null;
+                                        }
                                     }
-
                                 }else{
                                     mui.toast("请输入预约码");
+                                    return null;
                                 }
 
                             } else {
@@ -89,6 +147,8 @@ var app = angular.module("App",[]);
 
                     }
                 });
+
+
 
 
         }
@@ -198,6 +258,10 @@ var app = angular.module("App",[]);
                     break;
                 case  2 :
                     mui.toast("座位更换成功");
+                    break;
+                case  3 :
+                    mui.toast("预约成功并已签到");
+                    break;
             }
             $.removeCookie("muiFlag",{  path: '/' });
         }
@@ -306,11 +370,28 @@ var app = angular.module("App",[]);
 
         $scope.roomReservationList = appService.roomReservationList;
 
+        $scope.signOutYXS = function(arg){
+
+            var reApi = Api.signOutYXS(arg);
+            if(reApi){
+                if(reApi.success){
+                    appService.yxsApply();
+                    $scope.subscribeLeng = appService.subscribeLeng;
+                    $scope.roomReservation = appService.roomReservation;
+                    $scope.roomReservationList = appService.roomReservationList = appService.roomReservationList;
+                    $scope.roomReservationLeng = appService.roomReservationLeng
+                    mui.toast(reApi.message);
+                }else{
+                    mui.toast(reApi.message);
+                }
+            }
+        }
+
 
         /**
          * 研修室查看关闭
          */
-        $scope.close = function close_yxs(){
+        $scope.close = function (){
             $(".more-yxs").hide();
         }
 
@@ -371,9 +452,9 @@ app.factory("appService",function () {
 
         var sll = typeof factory.subscribeList.lists != "undefined" ? factory.subscribeList.lists.length : 0;
         factory.subscribeLeng = sll;
-        if (typeof roomReservation != "undefined" && roomReservation != null) {
-            roomReservationList = roomReservation.roomReservation.roomReservationList;//
+        if (typeof roomReservation != "undefined" && roomReservation != null && roomReservation.roomReservation) {
 
+            roomReservationList = roomReservation.roomReservation.roomReservationList;//
 
             factory.roomReservation = roomReservation.roomReservation;
             factory.roomReservationList = factory.roomReservationList = roomReservationList;
@@ -402,11 +483,22 @@ app.factory("appService",function () {
                 lists[l].h = parseInt(_hm / 60);
                 lists[l].m = parseInt(_hm % 60);
                 lists[l].hm = parseInt(_hm / 60) + "小时" + parseInt(_hm % 60) + "分钟";
+                if(!factory.compare(beginTime)){
+                    lists[l].hm = "0小时0分钟";
+                }
                 if( lists[l].notArrive == 2 ){
                     if(lists[l].leaveFlag == 1){
+                        lists[l].leavehm = parseInt(lists[l].canUseMinute / 60 ) + "分钟" + parseInt(lists[l].canUseMinute % 60 ) + "秒";
+                    }
+                    if(lists[l].leaveFlag == 2){//午饭离开
 
                         lists[l].leavehm = parseInt(lists[l].canUseMinute / 60 ) + "分钟" + parseInt(lists[l].canUseMinute % 60 ) + "秒";
                     }
+                    if(lists[l].leaveFlag == 3){//晚饭离开
+
+                        lists[l].leavehm = parseInt(lists[l].canUseMinute / 60 ) + "分钟" + parseInt(lists[l].canUseMinute % 60 ) + "秒";
+                    }
+
                     var EndTime = lists[l].sreservationEndTime;
                     var Endhm = factory.contrastTime(EndTime);
                     lists[l].Endhm = parseInt(Endhm / 60) + "小时" + parseInt(Endhm % 60) + "分钟";
@@ -424,15 +516,46 @@ app.factory("appService",function () {
             for(var rrv = 0 ; rrv < rvl.length ; rrv++){
                 var ct = factory.contrastTime(rvl[rrv].time.substring(0,16) + ":00");
                 rvl[rrv].ct = parseInt(ct / 60) + "小时" + parseInt(ct % 60) + "分钟";
+                if(!factory.compare(rvl[rrv].time.substring(0,16))){
+                    rvl[rrv].ct = "0小时0分钟";
+                }
+                if(rvl[rrv].notArrive == 2){
+                    var TET = factory.contrastTime(rvl[rrv].time.substring(0,11) +rvl[rrv].time.substring(19)+ ":00");
+                    rvl[rrv].toEndTime = parseInt(TET / 60) + "小时" + parseInt(TET % 60) + "分钟";
+                }
             }
             roomReservation.roomReservationList = rvl;
             bean.roomReservation = roomReservation;
         }
-
+        factory.SysTime = null;
         return bean;
 
 
     }
+
+
+    factory.compare = function(a){
+        var SysTime;
+        if(factory.SysTime){
+            SysTime = factory.SysTime;
+        }else{
+            SysTime = factory.SysTime = Api.getSystemTime();
+        }
+        SysTime = SysTime.replace("-","/");
+        SysTime = SysTime.replace("-","/");
+        var now = new Date(SysTime);
+        a = a.replace("-","/");
+        a = a.replace("-","/");
+        var begin = new Date(a);
+        var compare = begin - now;
+        if(compare > -1){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
     factory.contrastTime = function (a) {
 
         var SysTime;

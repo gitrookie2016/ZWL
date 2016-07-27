@@ -55,14 +55,24 @@
 							<p class="item-txt" ng-bind="roomReservation.info">致未来图书馆1层测试自习室 2-8 座</p>
 							<p class="item-txt">预约人数<span ng-bind="roomReservation.totalPeople"></span>人,已签到<span ng-bind="roomReservation.roomReservationList[0].arrivalPeopleNumber"></span>人</p>
 							<p class="item-txt">预约码：<span ng-bind="roomReservation.roomReservationList[0].identifyCode"></span></p>
-							<p class="item-txt">距离签到时间<span class="c-p"ng-bind="roomReservation.roomReservationList[0].ct">3小时48分</span></p>
+							<div ng-if="roomReservation.roomReservationList[0].notArrive == 1">
+								<p class="item-txt">距离签到时间<span class="c-p"ng-bind="roomReservation.roomReservationList[0].ct">3小时48分</span></p>
+							</div>
+							<div ng-if="roomReservation.roomReservationList[0].notArrive == 2">
+								<p class="item-txt">距离离席时间<span class="c-p"ng-bind="roomReservation.roomReservationList[0].toEndTime">3小时48分</span></p>
+							</div>
 
 							<ul class="row mt-1">
 								<li class="col t-c">
 									<a class="btn has-icon c-b " ng-click="alertBtn();" href="javaScript:void(0);"><img align="absmiddle" src="img/see.png"/>查看</a>
 								</li>
 								<li class="col t-c">
-									<a class="btn has-icon c-b" ng-click="signIn();" href="javaScript:void(0);"><img align="absmiddle" src="img/port.png"/>签到</a>
+									<div ng-if="roomReservation.roomReservationList[0].notArrive == 1">
+										<a class="btn has-icon c-b" ng-click="signIn();" href="javaScript:void(0);"><img align="absmiddle" src="img/port.png"/>签到</a>
+									</div>
+									<div ng-if="roomReservation.roomReservationList[0].notArrive == 2">
+										<a class="btn has-icon c-b" ng-click="signOutYXS(roomReservation.roomReservationList[0].id);" href="javaScript:void(0);"><img align="absmiddle" src="img/cancel.png"/>离席</a>
+									</div>
 								</li>
 							</ul>
 
@@ -78,7 +88,7 @@
 								<div ng-if="sl.leaveFlag == 0">
 									<p class="item-txt">距离离席时间<span class="c-p" ng-bind="sl.Endhm">3小时48分</span></p>
 								</div>
-								<div ng-if="sl.leaveFlag == 1">
+								<div ng-if="sl.leaveFlag != 0  ">
 									<p class="item-txt">距离回来签到时间<span class="c-p" ng-bind="sl.leavehm">3小时48分</span></p>
 								</div>
 
@@ -111,7 +121,7 @@
 
 									<div ng-if="sl.notArrive == 2">
 
-										<div ng-if="sl.leaveFlag == 1">
+										<div ng-if="sl.leaveFlag != 0">
 											<a class="btn has-icon c-b" ng-click="checkIn();" href="javaScript:void(0);"><img align="absmiddle" src="img/port.png"/>签到</a>
 										</div>
 										<div ng-if="sl.leaveFlag == 0">

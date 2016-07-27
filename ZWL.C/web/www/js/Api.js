@@ -1135,12 +1135,10 @@ window["Api"]["signIn"] = function (identifyCode,roomId){
         success	:	function(res){
             if(res){
                 arg = res;
-                alert(res);
             }
         },
         error:function(e) {
             console.log(e);
-            alert(123);
             return null;
         }
 
@@ -1156,7 +1154,7 @@ window["Api"]["scanQrCode"] = function (seatId){
     var userInfo = g.userInfo();
     var dataS = {
         "url":g.ContextPath + "scan/scanQrCode",
-        "userId":userInfo.userInfoId,
+        "userInfoId":userInfo.userInfoId,
         "seatId":seatId,
         "Authorization":userInfo.token
     };
@@ -1172,12 +1170,50 @@ window["Api"]["scanQrCode"] = function (seatId){
         success	:	function(res){
             if(res){
                 arg = res;
-                alert(res);
             }
         },
         error:function(e) {
             console.log(e);
-            alert(123);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+//researchRoomReservation/signOut
+
+
+/**
+ * 研修室离席
+ * @param id
+ * @returns {string}
+ */
+window["Api"]["signOutYXS"] = function (id){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "researchRoomReservation/signOut",
+        "id":id,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebAction/Api/requestApi",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
             return null;
         }
 
