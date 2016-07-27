@@ -72,7 +72,7 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
                          reservationDayNumber: 3*/
                     }
                 }
-                subscribeService.y_day =  subscribeService.selectedInfo.reservationDayNumber;
+                subscribeService.day_YXS = subscribeService.y_day =  subscribeService.selectedInfo.reservationDayNumber;
                 //根据研修室 更新日期
                 $scope.subscribeDate = subscribeService.getDate();
 
@@ -82,6 +82,8 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
                 var selectedInfo = subscribeService.selectedInfo;
 
                 tipsfather.html("<p class='tips' >" + selectedInfo.minPeople +"人以上才可以预约该教室，最多可容纳" + selectedInfo.maxPeople + "人！</p> <br><p class='tips'>开放时间为：" + selectedInfo.dayBeginTime + "-" + selectedInfo.dayEndTime + "</p>");
+                subscribeService.YXS_BZ = "<p class='tips' >" + selectedInfo.minPeople +"人以上才可以预约该教室，最多可容纳" + selectedInfo.maxPeople + "人！</p> <br><p class='tips'>开放时间为：" + selectedInfo.dayBeginTime + "-" + selectedInfo.dayEndTime + "</p>"
+                subscribeService.tipsfather = tipsfather;
             }
             subscribeService.rr_bean.roomed = arg;
 
@@ -104,9 +106,16 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
             $("#studyLoungeName option:first").prop("selected", 'selected');
 
         }else{
-            subscribeService.y_day = 1;
+
+            subscribeService.y_day = subscribeService.day_YXS ? subscribeService.day_YXS : 1;
             subscribeService.radioType = 2;
-            $("#select_RR option:first").prop("selected", 'selected');
+            if(subscribeService.YXS_BZ){
+                subscribeService.tipsfather.html(subscribeService.YXS_BZ);
+                $(".tipsfather").show();
+            }
+
+
+            //$("#select_RR option:first").prop("selected", 'selected');
 
         }
         $scope.subscribeDate = subscribeService.getDate();
@@ -170,6 +179,11 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
             subscribeService.alertError("预约时间不在研修室开放时间内<br> <h3>研修室开放时间为："+si.dayBeginTime +"-"+si.dayEndTime+"</h3>");
             return false;
         }
+        if(subscribeService.rr_bean.reservationDate.length < 7){
+            subscribeService.alertError("请至少选择一个日期！");
+            return false;
+        }
+
         subscribeService.rr_bean.type = "researchRoom";
 
         $.cookie("subscribeSubmit",JSON.stringify(subscribeService.rr_bean), {  path: '/' });

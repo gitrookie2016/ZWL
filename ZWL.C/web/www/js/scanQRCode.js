@@ -26,7 +26,7 @@ wx.config({
 });
 
 wx.error(function (res) {
-    alert(res.errMsg+"配置出错，扫码暂时不能用！");
+    mui.toast(res.errMsg+"配置出错，扫码暂时不能用！");
 });
 
 

@@ -92,6 +92,41 @@ var app = angular.module("App",[]);
                             }
 
                         }
+                    }else{
+                        var identifyCode ;
+                        var btnArray = ["确认","取消"];
+                        mui.prompt("请输入预约码", rs,  btnArray, function(e) {
+                            if (e.index == 1) {
+
+                                identifyCode = e.value;
+
+                                if(identifyCode){
+                                    var reApi = Api.signIn(identifyCode,rs.substring(1,rs.length));
+                                    if(reApi){
+                                        if( reApi.success){
+                                            $scope.$apply(function () {
+                                                appService.yxsApply();
+                                                $scope.subscribeLeng = appService.subscribeLeng;
+                                                $scope.roomReservation = appService.roomReservation;
+                                                $scope.roomReservationList = appService.roomReservationList = appService.roomReservationList;
+                                                $scope.roomReservationLeng = appService.roomReservationLeng
+                                            });
+                                            mui.toast("签到成功");
+                                        }else{
+                                            mui.toast("签到失败!"+reApi.message);
+                                            return null;
+                                        }
+                                    }
+                                }else{
+                                    mui.toast("请输入预约码");
+                                    return null;
+                                }
+
+                            } else {
+                                mui.toast("签到失败");
+                                return null;
+                            }
+                        })
                     }
                 }
             });
