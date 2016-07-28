@@ -614,6 +614,22 @@ app.factory("appService",function () {
     return factory;
 });
 
+app.directive("zwlyxsindex",function(){
+    return {
+
+        templateUrl : "template/yxs_index.html"
+
+    };
+});
+
+app.directive("zwlzxsindex",function(){
+    return {
+
+        templateUrl : "template/zxs_index.html"
+
+    };
+});
+
 app.controller("alertChangeSeatCtrl",function ($scope) {
     /**
      * 扫码

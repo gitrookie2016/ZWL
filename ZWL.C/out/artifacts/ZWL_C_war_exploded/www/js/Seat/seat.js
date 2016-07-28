@@ -91,6 +91,9 @@ $(function(){
 
 	}*/
 
-
+	var linull = $("#thumb .null");
+	for(var l = 0 ; l < linull.length ; l++){
+		$(linull[l]).css("border","0");
+	}
 
 })

@@ -35,6 +35,11 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
         $scope.studyLounge = subscribeService.Classroom();
     }
 
+    if(subscribeService.cookie_subscribeDate.LibraryVal){
+        subscribeService.first_Campus =  subscribeService.cookie_subscribeDate.LibraryVal;
+        $scope.studyLounge = subscribeService.Classroom();
+    }
+
     //自习室
     $scope.sT_change = function(sT_change){
         console.log(sT_change);
@@ -115,7 +120,6 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
             }
 
 
-            //$("#select_RR option:first").prop("selected", 'selected');
 
         }
         $scope.subscribeDate = subscribeService.getDate();
@@ -226,8 +230,16 @@ subscribeApp.factory("subscribeService",function () {
     }
 
     factory.Classroom = function(){
+
+        var TSGID = "";
+
         if(factory.first_Campus){
-            var SEC = Api.selectEachClassroom(factory.first_Campus,"2016-07-05 08:00:00","9999-08-05 08:00:00");
+            TSGID =  factory.first_Campus;
+        }
+
+
+        if(TSGID){
+            var SEC = Api.selectEachClassroom(TSGID,"2016-07-05 08:00:00","9999-08-05 08:00:00");
             if(SEC.success){
                 var studyLounge = SEC.list;
                return studyLounge;
@@ -252,6 +264,8 @@ subscribeApp.factory("subscribeService",function () {
         }
     }
 
+    factory.cookie_subscribeDate = g.toJson($.cookie("subscribeDate"));
+
     factory.getDate = function(){
 
         var dateArray = new Array();
@@ -274,18 +288,13 @@ subscribeApp.factory("subscribeService",function () {
         y_day = y_day ? y_day : 2;
 
         var S_date = subscribeDate.getDate();
+
         for(var d = 0 ; d < y_day ; d++){
 
             var D_Date =  subscribeDate.setDate( S_date + d);
 
             var date = new Date(D_Date);
             var dates = {};
-            if(typeof factory.radioType == "undefined" || factory.radioType == 1 ){
-                dates.active = d == 0 ? "active" : "";
-            }else{
-                dates.active = "";
-            }
-
             dates.Weekday = weekday[parseInt(S_Day+d) % 7];
             var Month = date.getMonth()+1  ;
             Month = Month.toString().length == 2 ? Month : "0"+ Month;
@@ -295,6 +304,19 @@ subscribeApp.factory("subscribeService",function () {
             if(d == 0){
                 factory.day = dates.date;
             }
+            if(typeof factory.radioType == "undefined" || factory.radioType == 1 ){
+
+                if( factory.cookie_subscribeDate &&  factory.cookie_subscribeDate.reservationDay){
+                    dates.active = dates.date ==  factory.cookie_subscribeDate.reservationDay ? "active" : "";
+                }else{
+                    dates.active = d == 0 ? "active" : "";
+                }
+
+            }else{
+                dates.active = "";
+            }
+
+
             dateArray[d] = dates;
         }
         return dateArray;
@@ -306,6 +328,8 @@ subscribeApp.factory("subscribeService",function () {
      * @param arg
      */
     factory.checkDate = function (arg) {
+
+
 
         var day_children = $(".day-pick").children().eq(arg);
 
@@ -352,8 +376,11 @@ subscribeApp.factory("subscribeService",function () {
            var bean = {};
            var Day_year = new Date().getFullYear();
 
+
            bean.reservationBeginTime = Day_year + "-" + factory.day + " "+ $(".date #start")[0].innerHTML;
            bean.reservationEndTime = Day_year + "-" + factory.day + " "+ $(".date #end")[0].innerHTML;
+           bean.reservationDate = Day_year + "-" + factory.day ;
+           bean.reservationDay =  factory.day ;
 
            var Library = $("#LibraryName");
            var studyLounge = $("#studyLoungeName");
@@ -411,4 +438,30 @@ subscribeApp.factory("subscribeService",function () {
 
 
     return factory;
+});
+
+$(document).ready(function(){
+    var cookie_subscribeDate = g.toJson($.cookie("subscribeDate"));
+
+    var Library = $("#LibraryName option");
+    if(Library.length > 0){
+        for(var lb = 0 ; lb < Library.length ; lb++){
+            if(Library[lb].value == cookie_subscribeDate.LibraryVal){
+                $(Library[lb]).prop("selected", 'selected');
+            }
+        }
+    }
+
+
+    var studyLounge = $("#studyLoungeName option");
+    if(studyLounge.length > 0){
+        for(var lb = 0 ; lb < studyLounge.length ; lb++){
+            if(studyLounge[lb].value == cookie_subscribeDate.studyLoungeVal){
+                $(studyLounge[lb]).prop("selected", 'selected');
+            }
+        }
+    }
+
+
+
 });
