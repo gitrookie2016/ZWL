@@ -15,6 +15,19 @@ $(document).ready(function(){
         var _userNum = $(".userNum").val();
         var _userPwd = $(".userPwd").val();
         var _schoolNum = $(".schoolNum option:selected").val();
+
+        if(!_schoolNum || _schoolNum == "请选择"){
+            mui.toast("请选择学校");
+            return null;
+        }
+        if(!_userNum){
+            mui.toast("请输入学号");
+            return null;
+        }
+        if(!_userPwd){
+            mui.toast("请输入密码");
+            return null;
+        }
         if(_userNum && _userPwd && _schoolNum){
             var bean = {};
             var _userInfo = Api.login(_userNum,_userPwd,_schoolNum);
@@ -72,6 +85,8 @@ $(document).ready(function(){
 
                 window.location="index.html";
 
+            }else{
+                mui.toast(_userInfo.message);
             }
         }
 

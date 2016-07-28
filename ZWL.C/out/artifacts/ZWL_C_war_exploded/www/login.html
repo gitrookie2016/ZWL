@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="../www/css/main.css" />
 		<script src="../www/js/jquery-1.7.1.min.js"></script>
 		<script src="../www/js/g.js" charset="utf-8"></script>
+		<script src="../www/js/mui.js" charset="utf-8"></script>
 	</head>
 	<body>
 		<div class="app has-head app-sub white">
@@ -21,18 +22,6 @@
 			<div class="app-view">
 				<div class="app-view-content pad-1">
 					<div class="form-line">
-						<span class="tag"><img src="img/ion-user.png"/></span>
-						<div>
-							<input type="text" class="input userNum"  placeholder="请输入您的学号" value="666666"/>
-						</div>
-					</div>
-					<div class="form-line">
-						<span class="tag"><img src="img/ion-pwd.png"/></span>
-						<div>
-							<input type="password" class="input userPwd"  placeholder="请输入您的密码" value="666666"/>
-						</div>
-					</div>
-					<div class="form-line">
 						<span class="tag">学校</span>
 						<div class="select">
 							<select class="g-schools schoolNum">
@@ -40,6 +29,19 @@
 							</select>
 						</div>
 					</div>
+					<div class="form-line">
+						<span class="tag"><img src="img/ion-user.png"/></span>
+						<div>
+							<input type="text" class="input userNum"  placeholder="请输入您的学号" value=""/>
+						</div>
+					</div>
+					<div class="form-line">
+						<span class="tag"><img src="img/ion-pwd.png"/></span>
+						<div>
+							<input type="password" class="input userPwd"  placeholder="请输入您的密码" value=""/>
+						</div>
+					</div>
+
 
 					<a href="javaScript:void(0);" class="btn btn-conner btn-blue btn-block mt-2 g-login">登录</a>
 				</div>
