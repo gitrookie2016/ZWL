@@ -1,18 +1,18 @@
 <li class="seat-item" ng-repeat="sl in subscribeList" >
     <p class="item-time"><span class="item-num" ng-bind="subscribeLeng - $index"></span><span ng-bind="sl.time">2016-06-08&nbsp;&nbsp;&nbsp;09:45-22:00</span></p>
     <p class="item-txt" ng-bind="sl.info">致未来图书馆1层测试自习室 2-8 座</p>
-    <div ng-if="sl.notArrive == 1">
-        <p class="item-txt">距离签到时间<span class="c-p" ng-bind="sl.hm">3小时48分</span></p>
-    </div>
-    <div ng-if="sl.notArrive == 2">
-        <div ng-if="sl.leaveFlag == 0">
-            <p class="item-txt">距离离席时间<span class="c-p" ng-bind="sl.Endhm">3小时48分</span></p>
-        </div>
-        <div ng-if="sl.leaveFlag != 0  ">
-            <p class="item-txt">距离回来签到时间<span class="c-p" ng-bind="sl.leavehm">3小时48分</span></p>
-        </div>
+    <!-- <div ng-if="sl.notArrive == 1">-->
+         <p class="item-txt"><span ng-bind="sl.timeCn"></span><span class="c-p" id="{{sl.timeid}}" ng-bind="sl.hm"></span></p>
+     <!--</div>
+     <div ng-if="sl.notArrive == 2">
+         <div ng-if="sl.leaveFlag == 0">
+             <p class="item-txt">距离离席时间<span class="c-p" ng-bind="sl.Endhm">3小时48分</span></p>
+         </div>
+         <div ng-if="sl.leaveFlag != 0  ">
+             <p class="item-txt">距离回来签到时间<span class="c-p" ng-bind="sl.leavehm">3小时48分</span></p>
+         </div>
 
-    </div>
+     </div>-->
     <input id="{{$index}}input" type="hidden" value="{'time':'{{sl.time}}','info':'{{sl.info}}','seatNum':'{{sl.seatNum}}'}">
     <ul class="row mt-1">
         <li class="col t-c">
@@ -50,4 +50,5 @@
             </div>
         </li>
     </ul>
+
 </li>

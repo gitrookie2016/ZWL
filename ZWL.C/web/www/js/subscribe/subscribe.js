@@ -27,15 +27,35 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
     //自习室  图书馆
     $scope.subscribeList = subscribeService.Campuses();
 
-    //$scope.studyLounge = subscribeService.Classroom();//默认查询第一个自习室
+    $scope.studyLounge = subscribeService.Classroom();//默认查询第一个自习室
 
     //自习室  图书馆
     $scope.V_change = function(V_change){
         subscribeService.first_Campus = V_change;
+
+        if(V_change){
+
+            var subscribeList = this.subscribeList;
+            if(subscribeList){
+                for(var ll = 0 ; ll < subscribeList.length ; ll++){
+                    if(V_change == subscribeList[ll].buildingId){
+                        var tipsfather = $(".tipsfather");
+                        tipsfather.html("<p class='tips' >开放时间："+subscribeList[ll].dayBeginTime+"-"+subscribeList[ll].dayEndTime+"</p>");
+                        tipsfather.show();
+                    }
+                }
+            }
+
+
+
+
+        }
+
+
         $scope.studyLounge = subscribeService.Classroom();
     }
 
-    if(subscribeService.cookie_subscribeDate.LibraryVal){
+    if(subscribeService.cookie_subscribeDate && subscribeService.cookie_subscribeDate.LibraryVal){
         subscribeService.first_Campus =  subscribeService.cookie_subscribeDate.LibraryVal;
         $scope.studyLounge = subscribeService.Classroom();
     }
@@ -108,7 +128,7 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
         if(arg == 0){
             subscribeService.y_day = 2;
             subscribeService.radioType = 1;
-            $("#studyLoungeName option:first").prop("selected", 'selected');
+            //$("#studyLoungeName option:first").prop("selected", 'selected');
 
         }else{
 
@@ -223,10 +243,14 @@ subscribeApp.factory("subscribeService",function () {
             var Campuses = Campus_re.list;
 
             factory.first_Campus = Campuses[0].buildingId;
+            $.cookie("all_Campus",JSON.stringify(Campuses), {  path: '/' });//
+
             factory.Campus_list = Campus_re.list;
             return Campus_re.list;
 
         }
+
+
     }
 
     factory.Classroom = function(){
@@ -244,6 +268,9 @@ subscribeApp.factory("subscribeService",function () {
                 var studyLounge = SEC.list;
                return studyLounge;
             }
+        }else{
+            var tipsfather = $(".tipsfather");
+            tipsfather.hide();
         }
     }
 
@@ -443,25 +470,56 @@ subscribeApp.factory("subscribeService",function () {
 $(document).ready(function(){
     var cookie_subscribeDate = g.toJson($.cookie("subscribeDate"));
 
-    var Library = $("#LibraryName option");
-    if(Library.length > 0){
-        for(var lb = 0 ; lb < Library.length ; lb++){
-            if(Library[lb].value == cookie_subscribeDate.LibraryVal){
-                $(Library[lb]).prop("selected", 'selected');
+
+        var Library = $("#LibraryName option");
+        if(Library.length > 0){
+            for(var lb = 0 ; lb < Library.length ; lb++){
+                if(cookie_subscribeDate){
+                    if(Library[lb].value == cookie_subscribeDate.LibraryVal){
+                        $(Library[lb]).prop("selected", 'selected');
+                    }
+                }else{
+                   if(lb == 1){
+                       $(Library[lb]).prop("selected", 'selected');
+                   }
+                }
+
+            }
+        }
+
+        var studyLounge = $("#studyLoungeName option");
+        if(studyLounge.length > 0){
+            for(var lb = 0 ; lb < studyLounge.length ; lb++){
+                if(cookie_subscribeDate) {
+                    if (studyLounge[lb].value == cookie_subscribeDate.studyLoungeVal) {
+                        $(studyLounge[lb]).prop("selected", 'selected');
+                    }
+                }else{
+                    if(lb == 1){
+                        $(studyLounge[lb]).prop("selected", 'selected');
+                    }
+                }
+            }
+        }
+
+    var all_Campus = g.toJson($.cookie("all_Campus"));
+    if(all_Campus){
+        var tipsfather = $(".tipsfather");
+        tipsfather.show();
+        for(var ac = 0 ; ac < all_Campus.length ; ac++) {
+
+            if (cookie_subscribeDate) {
+                if (all_Campus[ac].buildingId == cookie_subscribeDate.LibraryVal) {
+
+                    tipsfather.html("<p class='tips' >开放时间："+all_Campus[ac].dayBeginTime+"-"+all_Campus[ac].dayEndTime+"</p>");
+                }
+            } else {
+                if (ac == 0) {
+                    tipsfather.html("<p class='tips' >开放时间："+all_Campus[ac].dayBeginTime+"-"+all_Campus[ac].dayEndTime+"</p>");
+                }
             }
         }
     }
-
-
-    var studyLounge = $("#studyLoungeName option");
-    if(studyLounge.length > 0){
-        for(var lb = 0 ; lb < studyLounge.length ; lb++){
-            if(studyLounge[lb].value == cookie_subscribeDate.studyLoungeVal){
-                $(studyLounge[lb]).prop("selected", 'selected');
-            }
-        }
-    }
-
 
 
 });

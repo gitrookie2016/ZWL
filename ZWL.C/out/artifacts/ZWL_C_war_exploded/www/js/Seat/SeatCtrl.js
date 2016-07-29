@@ -89,19 +89,73 @@ SeatApp.factory("SeatService",function(){
                     for(var s = 0 ; s < Seats .length ; s++){
                         if(Seats[s].columnNum == array[a].num   ){
                             var state = Seats[s].state;
-                            switch (state){
+
+                            /*switch (state){
                                 case 0:state = "unseat null";//过道
                                     break;
-                                case 1 : state = "seat_yes";//可预约
+                                case 1 : state = "seat_yes";//可预约 空
                                     break;
-                                case 2 : state = "seat_yes selected  boy-half"; //有预约
+                                case 2 : state = "seat_yes"; //有预约 有时段
+                                    if(Seats[s].userSex == 1){
+                                        state +=" boy-half";
+                                    }
+                                    if(Seats[s].userSex == 2){
+                                        state +=" girl-half";
+                                    }
                                     break;
-                                case 3 : state = "seat_yes unOptional boy-half-hold";//不可预约
+                                case 3 : state = "seat_yes unOptional ";//不可预约  整日
+                                    if(Seats[s].userSex == 1){
+                                        state +=" boy-full";
+                                    }
+                                    if(Seats[s].userSex == 2){
+                                        state +=" girl-full";
+                                    }
                                     break;
 
+                            }*/
+
+                            var state_css = "";
+
+                            var sex_type = "";
+
+                            if(Seats[s].userSex == 1){
+                                sex_type =" boy-";
+                            }
+                            if(Seats[s].userSex == 2){
+                                sex_type =" girl-";
                             }
 
-                            _html += "<LI class='"+state+"' data='"+Seats[s].seatNum+" ' dataID="+Seats[s].seatId+"></LI>";
+                            var leaveFlag_css = "";
+                            if(Seats[s].leaveFlag == 1){
+                                leaveFlag_css = "-hold";
+                            }
+
+                            if(state == 0){
+                                state_css = "unseat null";
+                            }
+                            if(state == 1){
+                                state_css = "seat_yes";
+                            }
+                            if(state == 2){
+                                state_css = "seat_yes "+sex_type+"half"+leaveFlag_css;
+                            }
+                            if(state == 3){
+                                state_css = "seat_yes unOptional selected "+sex_type+"full"+leaveFlag_css;
+                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            _html += "<LI class='"+state_css+"' data='"+Seats[s].seatNum+" ' dataID="+Seats[s].seatId+"></LI>";
                         }
                     }
                     _html +="</ul>";

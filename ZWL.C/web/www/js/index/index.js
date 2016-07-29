@@ -24,18 +24,19 @@ $(document).ready(function(){
 
     }
 });
-
+var interval;
 var app = angular.module("App",[]);
 
 
-    app.controller("subscribeListCtrl",function($scope,appService,$http){
-
+    app.controller("subscribeListCtrl",function($scope,appService,$interval){
+        interval = $interval;
 
         /**
          * 扫码就坐
          *
          */
         $scope.SweepCode = function () {
+
             var rs;
             wx.scanQRCode({
                 needResult: 1,
@@ -43,10 +44,7 @@ var app = angular.module("App",[]);
                     rs = res.resultStr;
                     //mui.toast(rs.indexOf("R"));
                     if(rs.toString().indexOf("R") == -1){
-                        mui.toast(1);
                         var reApi = Api.scanQrCode(rs);
-                        mui.toast(2);
-                        mui.toast(reApi);
                         if(reApi.success && reApi.message != 0){
                             $scope.$apply(function () {
                                 var subscribeListTwo = appService.selectReservationByUser();
@@ -61,8 +59,6 @@ var app = angular.module("App",[]);
                             });
                             mui.toast("签到成功");
                         }else{
-                            mui.toast(reApi.message);
-                            mui.toast(reApi.success);
                             if(reApi.message == 0){
                                 var bean = {};
 
@@ -500,6 +496,32 @@ app.factory("appService",function () {
         }
 
     }
+
+
+    /**
+     * 倒计时
+     */
+    factory.setTimeout = function(el,time){
+
+         interval(function(){
+
+            time = time-1;
+             console.log(time);
+            var el_ID = $("#"+el);
+            if(el_ID.length != 0){
+
+                if(time > 0){
+                    $("#"+el).html(parseInt(time / 60 / 60) + "小时" + parseInt(time / 60 % 60 ) + "分钟" + parseInt(time % 60 ) + "秒");
+                }else{
+                    $("#"+el).html("0小时0分钟0秒");
+                }
+
+            }
+
+        },1000);
+    }
+
+
     factory.selectReservationByUser = function () {
 
         var list = Api.selectReservationByUser();
@@ -517,26 +539,45 @@ app.factory("appService",function () {
                 var _hm = factory.contrastTime(beginTime);
                 lists[l].h = parseInt(_hm / 60);
                 lists[l].m = parseInt(_hm % 60);
-                lists[l].hm = parseInt(_hm / 60) + "小时" + parseInt(_hm % 60) + "分钟";
-                if(!factory.compare(beginTime)){
-                    lists[l].hm = "0小时0分钟";
+
+
+
+                if( lists[l].notArrive == 1 ) {
+                    lists[l].timeCn = "距离签到时间";
+                    lists[l].timeid = g.mathRandom(20);
+                    factory.setTimeout(lists[l].timeid,lists[l].canUseMinute);
                 }
+
                 if( lists[l].notArrive == 2 ){
+
                     if(lists[l].leaveFlag == 1){
-                        lists[l].leavehm = parseInt(lists[l].canUseMinute / 60 ) + "分钟" + parseInt(lists[l].canUseMinute % 60 ) + "秒";
+                        lists[l].timeCn = "距离回来签到时间";
+                        lists[l].timeid = g.mathRandom(20);
+                        factory.setTimeout(lists[l].timeid , lists[l].canUseMinute);
+
                     }
                     if(lists[l].leaveFlag == 2){//午饭离开
 
-                        lists[l].leavehm = parseInt(lists[l].canUseMinute / 60 ) + "分钟" + parseInt(lists[l].canUseMinute % 60 ) + "秒";
+                        lists[l].timeCn = "距离回来签到时间";
+                        lists[l].timeid = g.mathRandom(20);
+                        factory.setTimeout(lists[l].timeid , lists[l].canUseMinute );
                     }
                     if(lists[l].leaveFlag == 3){//晚饭离开
+                        lists[l].timeCn = "距离回来签到时间";
+                        lists[l].timeid = g.mathRandom(20);
+                        factory.setTimeout(lists[l].timeid , lists[l].canUseMinute );
 
-                        lists[l].leavehm = parseInt(lists[l].canUseMinute / 60 ) + "分钟" + parseInt(lists[l].canUseMinute % 60 ) + "秒";
+                    }
+                    if(lists[l].leaveFlag == 0){
+                        lists[l].timeCn = "距离离席时间";
+                        lists[l].timeid = g.mathRandom(20);
+                        var EndTime = lists[l].sreservationEndTime;
+                        var Endhm = factory.contrastTime(EndTime);
+                        factory.setTimeout(lists[l].timeid,Endhm);
+
                     }
 
-                    var EndTime = lists[l].sreservationEndTime;
-                    var Endhm = factory.contrastTime(EndTime);
-                    lists[l].Endhm = parseInt(Endhm / 60) + "小时" + parseInt(Endhm % 60) + "分钟";
+
 
                 }
 
@@ -607,7 +648,7 @@ app.factory("appService",function () {
         a = a.replace("-","/");
         a = a.replace("-","/");
         var begin = new Date(a);
-        return Math.abs(begin - now) / 1000 / 60;
+        return (begin - now) / 1000 ;
     };
 
 

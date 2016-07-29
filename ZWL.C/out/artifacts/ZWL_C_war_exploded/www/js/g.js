@@ -114,7 +114,11 @@ window['g']['getCountWidth'] = function getCountWidth(arg){
         return countWidth;
     }
 }
-
+window['g']['mathRandom'] = function(n){
+    n = n > 20 ? 20 : n;
+    var p = Math.pow(10,n+1)
+    return parseInt(p*Math.random());
+}
 
 window["g"]["userInfo"] = function () {
     var _userInfo =   $.cookie("userInfo");

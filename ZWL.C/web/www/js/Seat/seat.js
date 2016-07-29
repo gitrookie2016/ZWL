@@ -60,6 +60,8 @@ $(function(){
 			alert('过道');
 		}else if($(this).hasClass('unOptional')) {
 			alert('不可预约');
+		}else if($(this).hasClass('random_css')){
+
 		}else{
 			$(".active").removeClass("active");
 			$(this).addClass('active');

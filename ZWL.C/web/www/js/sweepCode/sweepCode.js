@@ -50,7 +50,7 @@ contractApp.controller("contractCtrl",function ($scope) {
 
 (function($) {
     $.init();
-    var result = $('#result')[0];
+    //var result = $('#result')[0];
     var btns = $('.btn');
     btns.each(function(i, btn) {
         btn.addEventListener('tap', function() {
@@ -73,7 +73,7 @@ contractApp.controller("contractCtrl",function ($scope) {
                  * rs.h 时，用法同年
                  * rs.i 分（minutes 的第二个字母），用法同年
                  */
-                result.innerText = '选择结果: ' + rs.text;
+                //result.innerText = '选择结果: ' + rs.text;
                 var stt = $(".span_Time")[0].innerHTML;
                 stt = stt.substring(0,11);
                 stt = stt + rs.h.value + ":" + rs.i.value + ":" + "00";

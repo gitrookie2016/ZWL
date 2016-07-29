@@ -127,19 +127,36 @@ SeatRandomApp.factory("SeatRandomService",function(){
                         if(Seats[s].columnNum == array[a].num   ){
                             var state = Seats[s].state;
                             var stateClass;
-                            switch (state){
-                                case 0:stateClass = "unseat null";//过道
-                                    break;
-                                case 1 : stateClass = "";//可预约
-                                    break;
-                                case 2 : stateClass = "selected  boy-half"; //有预约
-                                    break;
-                                case 3 : stateClass = "unOptional boy-half-hold";//不可预约
-                                    break;
 
+                            var sex_type = "";
+
+                            if(Seats[s].userSex == 1){
+                                sex_type =" boy-";
                             }
+                            if(Seats[s].userSex == 2){
+                                sex_type =" girl-";
+                            }
+
+                            var leaveFlag_css = "";
+                            if(Seats[s].leaveFlag == 1){
+                                leaveFlag_css = "-hold";
+                            }
+
+                            if(state == 0){
+                                stateClass = "unseat null";
+                            }
+                            if(state == 1){
+                                stateClass = "random_css seat_yes";
+                            }
+                            if(state == 2){
+                                stateClass = "random_css seat_yes "+sex_type+"half"+leaveFlag_css;
+                            }
+                            if(state == 3){
+                                stateClass = "random_css seat_yes unOptional selected "+sex_type+"full"+leaveFlag_css;
+                            }
+
                             if(seatNum == Seats[s].seatNum && state != 0){
-                                stateClass = "active";
+                                stateClass = "seat_yes active";
                             }
 
                             _html += "<LI class='"+stateClass+"' data='"+Seats[s].seatNum+" ' dataID="+Seats[s].seatId+"></LI>";
