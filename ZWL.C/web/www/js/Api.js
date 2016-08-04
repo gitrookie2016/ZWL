@@ -1006,7 +1006,6 @@ window["Api"]["selectConfig"] = function(campusId){
 /**
  * 临时离开、午饭、晚饭、彻底离席
  * @param reservationId
- * @param configId
  * @param flag
  * @returns {string}
  */
@@ -1039,7 +1038,7 @@ window["Api"]["leave"] = function(reservationId,flag){
 
 /**
  * 读取文件信息
- * @param pathName
+ * @param fileName
  */
 window["Api"]["getFileInfo"] = function(fileName){
 
@@ -1060,6 +1059,8 @@ window["Api"]["getFileInfo"] = function(fileName){
         success	:	function(res){
             if(res){
                 arg = res;
+            }else{
+                return null;
             }
         },
         error:function(e) {
@@ -1073,7 +1074,7 @@ window["Api"]["getFileInfo"] = function(fileName){
 
 /**
  * 更新微信配置
- * @param pathName
+ * @param fileName
  */
 window["Api"]["ApplyWeChatConfig"] = function(fileName){
 
@@ -1095,6 +1096,8 @@ window["Api"]["ApplyWeChatConfig"] = function(fileName){
         success	:	function(res){
             if(res){
                 arg = res;
+            }else{
+                return null;
             }
         },
         error:function(e) {
@@ -1196,6 +1199,85 @@ window["Api"]["signOutYXS"] = function (id){
     var dataS = {
         "url":g.ContextPath + "researchRoomReservation/signOut",
         "id":id,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebAction/Api/requestApi",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+/**
+ * 互换时，扫码查看当前预约记录
+ * @param seatId
+ * @param reservationId
+ * @returns {string}
+ */
+window["Api"]["seatInfo"] = function (seatId,reservationId){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "scan/seatInfo",
+        "seatId":seatId,
+        "reservationId":reservationId,
+        "Authorization":userInfo.token
+    };
+    $.ajax({
+
+        type: "post",
+        url		:	 "../WebAction/Api/requestApi",
+        async	:	false,
+        dataType : "json",
+        data    : {
+            "data" : JSON.stringify(dataS)
+        },
+        success	:	function(res){
+            if(res){
+                arg = res;
+            }
+        },
+        error:function(e) {
+            console.log(e);
+            return null;
+        }
+
+    });
+
+    return arg;
+};
+
+/**
+ * 互换座位
+ * @param receiveReservationId
+ * @param reservationId
+ * @returns {string}
+ */
+window["Api"]["exchangeSeat"] = function (receiveReservationId,reservationId){
+    var arg = "" ;
+    var userInfo = g.userInfo();
+    var dataS = {
+        "url":g.ContextPath + "reservation/exchangeSeat",
+        "userInfoId":userInfo.userInfoId,
+        "receiveReservationId":receiveReservationId,
+        "reservationId":reservationId,
         "Authorization":userInfo.token
     };
     $.ajax({

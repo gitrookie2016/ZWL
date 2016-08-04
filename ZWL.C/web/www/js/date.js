@@ -17,7 +17,13 @@ $(function(){
 	$("#confirm").click(function(){
 		var hour = $("#hour").text().toString();
 		hour = hour.length < 2 ? "0" +hour :hour
-		_this.text(hour +":"+$("#min").text()+":00");
+		var _url = window.location.href;
+		if(_url.indexOf("sweepCode") > -1 || _url.indexOf("contract") > -1){
+			var _this_text = _this.text();
+			_this.text(_this_text.substring(0,11)+" "+hour +":"+$("#min").text()+":00");
+		}else{
+			_this.text(hour +":"+$("#min").text()+":00");
+		}
 		_this = null;
 	})
 })

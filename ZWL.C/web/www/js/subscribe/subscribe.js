@@ -128,6 +128,7 @@ subscribeApp.controller("CampusAndBuildingCtrl",function($scope,subscribeService
         if(arg == 0){
             subscribeService.y_day = 2;
             subscribeService.radioType = 1;
+            $(".tipsfather").show();
             //$("#studyLoungeName option:first").prop("selected", 'selected');
 
         }else{

@@ -87,12 +87,12 @@ window["g"]["getUrlParam"] = function getUrlParam(name) {
 }
 
 /**
- *
+ *正式接口地址
  */
-window["g"]["ContextPath"] = "http://123.57.222.123:9901/";
+window["g"]["ContextPath"] = "http://www.jzwz88.com:9901/";//"http://123.57.222.123:9901/";
 
 /**
- * 研修
+ * 测试地址
  * @type {string}
  */
 window["g"]["researchPath"] = "http://119.10.30.52:9901/";

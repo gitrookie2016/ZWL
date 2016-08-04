@@ -31,6 +31,11 @@ SeatApp.controller("seatsSubmitCtrl",function($scope,SeatService){
         srs.userInfoId = userInfoId;
         srs.type = "os";
 
+        if(!seatId){
+            alert("请选择座位！");
+            return null;
+        }
+
         $.cookie("SubmitInfo",JSON.stringify(srs),{path : "/"});
 
         window.location = "subscribeConfirm.html";
@@ -90,29 +95,7 @@ SeatApp.factory("SeatService",function(){
                         if(Seats[s].columnNum == array[a].num   ){
                             var state = Seats[s].state;
 
-                            /*switch (state){
-                                case 0:state = "unseat null";//过道
-                                    break;
-                                case 1 : state = "seat_yes";//可预约 空
-                                    break;
-                                case 2 : state = "seat_yes"; //有预约 有时段
-                                    if(Seats[s].userSex == 1){
-                                        state +=" boy-half";
-                                    }
-                                    if(Seats[s].userSex == 2){
-                                        state +=" girl-half";
-                                    }
-                                    break;
-                                case 3 : state = "seat_yes unOptional ";//不可预约  整日
-                                    if(Seats[s].userSex == 1){
-                                        state +=" boy-full";
-                                    }
-                                    if(Seats[s].userSex == 2){
-                                        state +=" girl-full";
-                                    }
-                                    break;
 
-                            }*/
 
                             var state_css = "";
 
@@ -142,17 +125,6 @@ SeatApp.factory("SeatService",function(){
                             if(state == 3){
                                 state_css = "seat_yes unOptional selected "+sex_type+"full"+leaveFlag_css;
                             }
-
-
-
-
-
-
-
-
-
-
-
 
 
                             _html += "<LI class='"+state_css+"' data='"+Seats[s].seatNum+" ' dataID="+Seats[s].seatId+"></LI>";

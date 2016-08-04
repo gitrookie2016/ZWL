@@ -36,23 +36,11 @@
 						<dd>
 							<h2>续约时间</h2>
 							<p>起始时间：<span ng-bind="sreservationBeginTime">2016-06-08  10:45:00</span></p>
-							<p>结束时间：<span class="span_Time" ng-bind="sreservationEndTime">2016-06-08  12:00:00</span><span id="demo5" data-options="{&quot;type&quot;:&quot;time&quot;}" class="btn mui-btn mui-btn-block" style="border: 0;color:blue;">点击修改结束时间</span></p>
+							<p>结束时间：<a class="span_Time date pickdate" href="#open-modal1" style="width: 55%;color: #666;" ng-bind="sreservationEndTime">2016-06-08  12:00:00</a></p>
 
 						</dd>
 					</dl>
-					<!--<dl class="favior-list">
-						<dt><img src="img/ion-date.png"/></dt>
-						<dd>
-							<h2>已被预约时间</h2>
-							<p>起始时间：<span ng-bind="recommendBeginTime">2016-06-08  10:30:00</span></p>
-							<p>结束时间：<span ng-bind="recommendEndTime">2016-06-08  12:00:00</span></p>
-							<div class="app-radio">
-					            <input type="radio" name="sex" id="boy"  ng-click="boy();"/>
-					            <span></span>
-					            <label for="boy">选择推荐时间</label>
-					        </div>
-						</dd>
-					</dl>-->
+
 				</div>
 				<div class="do-area row">
 					<div class="col v-m">
@@ -60,9 +48,59 @@
 					</div>
 				</div>
 			</div>
+			<div id="open-modal1" class="modal-window">
+				<div class="row">
+					<div class="col v-m">
+						<div class="modal-title row">
+							<h2 class="col" style="padding-left:2rem;width:65%;">小时    (24小时制)</h2>
+							<p class="col" style="padding-left:4rem;text-align: left;">分钟</p>
+						</div>
+						<ul class="row">
+							<li class="col col-70 fs-0 hour" style="padding:0 2rem;border-right:1px dashed #fff;width:65%;">
+								<span class="time">6</span>
+								<span class="time">7</span>
+								<span class="time">8</span>
+								<span class="time">9</span>
+								<span class="time">10</span>
+								<span class="time">11</span>
+								<span class="time">12</span>
+								<span class="time">13</span>
+								<span class="time">14</span>
+								<span class="time">15</span>
+								<span class="time">16</span>
+								<span class="time">17</span>
+								<span class="time">18</span>
+								<span class="time">19</span>
+								<span class="time">20</span>
+								<span class="time">21</span>
+								<span class="time">22</span>
+								<span class="time">23</span>
+							</li>
+							<li class="col col-30 fs-0 minute" style="padding-left:2rem; width: 35%;padding-left:3rem;">
+								<span class="time">00</span>
+								<span class="time">10</span>
+								<span class="time">20</span>
+								<span class="time">30</span>
+								<span class="time">40</span>
+								<span class="time">50</span>
+							</li>
+						</ul>
+						<div class="row" style="padding:2rem;">
+							<div class="col pick-time v-m" style="width:50%;">
+								<h2>起始时间</h2>
+								<p><span id="hour">11</span>:<span id="min">20</span></p>
+							</div>
+							<div class="col" style="width:50%;vertical-align: bottom;">
+								<a href="#" class="btn btn-blue btn-conner btn-block" id="confirm">确定</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id='result' class="ui-alert"></div>
 	<script src="js/angular.js"></script>
 	<script src="js/contract/contract.js"></script>
+		<script src="js/date.js"></script>
 	</body>
 </html>

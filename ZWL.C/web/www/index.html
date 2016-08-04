@@ -16,7 +16,7 @@
 
 	</head>
 	<body>
-		<div class="app has-head has-banner" ng-controller="subscribeListCtrl">
+		<div class="app has-head has-banner"style="padding-bottom: 6rem;" ng-controller="subscribeListCtrl">
 			<div class="app-head">
 				<ul class="row" style="padding-top:5px;">
 					<li class="col v-m" style="padding-top:7px;">
@@ -28,7 +28,7 @@
 						<img class="face" src="img/face.png"/>
 					</li>
 				</ul>
-				<ul class="row">
+				<ul class="row" style="    height: 6rem;">
 					<li class="col v-t">
 						<a class="btn btn-opatiy btn-conner has-icon c-b" href="subscribe.html"><img align="absmiddle" src="img/ion-clock.png"/>我要预约</a>
 					</li>
@@ -100,20 +100,21 @@
 				<div class="mui-popup-buttons"><span class="mui-popup-button" ng-click="close()">关闭</span></div>
 			</div>
 			<!--研修室查看-->
-		</div>
-		<div id="open-modal1" class="modal-window" ng-controller="alertChangeSeatCtrl">
-		    <div class="row">
-		        <div class="col v-m">
-		        	<div class="modal-title">
-		        		<h2>更换座位</h2>
-		        		<a href="#modal-close" title="Close" class="modal-close"></a>
-		        	</div>
-		        	<img src="img/change-seat.png" />
-		        	<p>请您选择更换的方式</p>
-		        	<a class="btn btn-block btn-conner btn-blue" href="changeSeat.html">手动更换</a>
-		        	<a class="btn btn-block btn-conner btn-pink" ng-click="QRCode();" href="javaScript:void(0);">扫码更换</a>
-		        </div>
-		    </div>
+
+			<div id="open-modal1" class="modal-window" >
+				<div class="row">
+					<div class="col v-m">
+						<div class="modal-title">
+							<h2>更换座位</h2>
+							<a href="#modal-close" title="Close" class="modal-close"></a>
+						</div>
+						<img src="img/change-seat.png" />
+						<p>请您选择更换的方式</p>
+						<a class="btn btn-block btn-conner btn-blue" href="changeSeat.html">手动更换</a>
+						<a class="btn btn-block btn-conner btn-pink" ng-click="scanCodeChange();" href="javaScript:void(0);">扫码更换</a>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id="open-modal2" class="modal-window">
 		    <div class="row">

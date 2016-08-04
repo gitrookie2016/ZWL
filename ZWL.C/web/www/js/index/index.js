@@ -466,7 +466,71 @@ var app = angular.module("App",[]);
                 }
             });
         });
+        /**
+         * 扫码
+         * @constructor
+         */
+        $scope.scanCodeChange = function(){
+            var changeSeatInfo = g.toJson($.cookie("changeSeatInfo"));
+            var reservationId = changeSeatInfo.reservationId;
+            wx.scanQRCode({
+                needResult: 1,
+                success: function (res) {
+                    var rs = res.resultStr;
+                    var seatInfo = Api.seatInfo(rs,reservationId);
+                    if(seatInfo){
+                        if(seatInfo.success) {
+                            if(seatInfo.message == "false"){
+                                var apire = Api.changeSeatBychoose(reservationId,rs);
+                                if(apire.success){
+                                    mui.toast("更换成功！");
+                                    var subscribeListTwo = appService.selectReservationByUser();
+                                    if(subscribeListTwo) {
+                                        $scope.subscribeList = subscribeListTwo.lists;
+                                        if(subscribeListTwo.lists){
+                                            $scope.subscribeLeng = subscribeListTwo.lists.length;
+                                        }
+                                    }
+                                    window.location = "#modal-close";
+                                }else{
+                                    mui.toast(apire.message);
 
+                                }
+                            }else if(seatInfo.message == "true"){
+                                var btnArray = ['是', '否'];
+                                mui.confirm("您要跟"+seatInfo.object.userName+"交换座位吗？<br>对方预约时间："+seatInfo.object.reservationBeginTime+"-"+seatInfo.object.reservationEndTime+"<br>预约座位"+seatInfo.object.seatNum, '互换座位', btnArray, function (e) {
+                                    if (e.index == 0) {
+                                        window.location = "#modal-close";
+                                        var exchangeSeat = Api.exchangeSeat(seatInfo.object.reservationId,reservationId);
+
+                                        if(exchangeSeat.success){
+
+                                            mui.toast(exchangeSeat.message);
+
+                                        }else{
+                                            mui.toast("换座失败，请重试！");
+                                        }
+
+                                    }
+                                })
+                            }else{
+
+                                mui.toast(seatInfo.message);
+                            }
+
+                        }else{
+
+                            mui.toast(seatInfo.message);
+                        }
+
+                    }else{
+                        mui.toast("没有该预约记录！");
+                    }
+
+
+                }
+            });
+        }
 
 });
 
@@ -506,7 +570,6 @@ app.factory("appService",function () {
          interval(function(){
 
             time = time-1;
-             console.log(time);
             var el_ID = $("#"+el);
             if(el_ID.length != 0){
 
@@ -527,6 +590,11 @@ app.factory("appService",function () {
         var list = Api.selectReservationByUser();
         if(!list.success){
             $(".app-null").show();
+            $(".app-head").css("background","#76B86E");
+
+            var sppclass = $(".app-head").attr("class");
+            $(".app-head").attr("class",sppclass + " app-head-null");
+            $(".c-b").css("color","#76B86E");
             $(".seat-list").hide();
             return null;
         }
@@ -545,7 +613,7 @@ app.factory("appService",function () {
                 if( lists[l].notArrive == 1 ) {
                     lists[l].timeCn = "距离签到时间";
                     lists[l].timeid = g.mathRandom(20);
-                    factory.setTimeout(lists[l].timeid,lists[l].canUseMinute);
+                    factory.setTimeout(lists[l].timeid,_hm);
                 }
 
                 if( lists[l].notArrive == 2 ){
@@ -671,15 +739,7 @@ app.directive("zwlzxsindex",function(){
     };
 });
 
-app.controller("alertChangeSeatCtrl",function ($scope) {
-    /**
-     * 扫码
-     * @constructor
-     */
-    $scope.QRCode = function(){
-        QRCode();
-    }
-});
+
 
 $(document).ready(function () {
     mui.init();
