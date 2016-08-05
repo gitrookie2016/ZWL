@@ -2,6 +2,8 @@
  * Created by Lix on 2016-7-7.
  */
 
+var g_count , g_h , g_w;
+
 var SeatRandomApp = angular.module("App",[]);
 
 SeatRandomApp.controller("SeatRandomCtrl",function($scope,SeatRandomService){
@@ -67,6 +69,7 @@ SeatRandomApp.directive("seats",function (SeatRandomService) {
         template: SeatRandomService.initSeatInfo(),
         replace: true
     };
+
 });
 
 SeatRandomApp.factory("SeatRandomService",function(){
@@ -100,8 +103,9 @@ SeatRandomApp.factory("SeatRandomService",function(){
         var SeatForm = g.toJson(subscribeDate);
 
         var seatNum = rsi.object.seatNum;
+        
+        var _html = "<div class=\"seat-wrap\" id=\"seat\" style='margin:50px 50px;'>";
 
-        var _html = "<div class=\"seat-wrap\" id=\"seat\" style='margin:50px 50px;transform:translateX("+g.getCountWidth(seatNum)+"px);'>";
         if(SeatForm){
             var SeatInfo = Api.SeatsInfo(rsi.object.classroomId,SeatForm.reservationBeginTime,SeatForm.reservationEndTime);
             if(SeatInfo.success){
@@ -119,12 +123,17 @@ SeatRandomApp.factory("SeatRandomService",function(){
                     array[k] = temp;
                 }
 
+
+
                 factory.tempArray = array;
 
                 for(var a = 0 ; a < array.length ; a++ ){
                     _html += "<ul>";
-                    for(var s = 0 ; s < Seats .length ; s++){
+                    g_count = 0;
+                    for( var s = 0 ; s < Seats.length ; s++){
+
                         if(Seats[s].columnNum == array[a].num   ){
+                            g_count++
                             var state = Seats[s].state;
                             var stateClass;
 
@@ -140,10 +149,12 @@ SeatRandomApp.factory("SeatRandomService",function(){
                             var leaveFlag_css = "";
                             if(Seats[s].leaveFlag == 1){
                                 leaveFlag_css = "-hold";
+
                             }
 
                             if(state == 0){
                                 stateClass = "unseat null";
+
                             }
                             if(state == 1){
                                 stateClass = "random_css seat_yes";
@@ -159,15 +170,26 @@ SeatRandomApp.factory("SeatRandomService",function(){
                                 stateClass = "seat_yes active";
                             }
 
+                            if(seatNum == Seats[s].seatNum && state != 0){
+                                g_h = g_count;//计算出随机座位的真实行
+                                g_w = a+1;//计算出随机座位的真实列
+                                stateClass = "active";
+                            }
                             _html += "<LI class='"+stateClass+"' data='"+Seats[s].seatNum+" ' dataID="+Seats[s].seatId+"></LI>";
                         }
+
+
                     }
                     _html +="</ul>";
                 }
 
 
+
+
+
             }
         }
+
         return _html + "</div>";
 
     }
@@ -175,3 +197,11 @@ SeatRandomApp.factory("SeatRandomService",function(){
 
     return factory;
 });
+
+$(document).ready(function(){
+    var target = document.getElementById("seat");
+    
+    $(target).css('-webkit-transform',"matrix(1,0,0,1,"+ parseInt(g.getCountWidth(g_w)) +","+ parseInt(g.getCountHeight(g_h)) +")");
+
+});
+

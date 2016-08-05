@@ -565,8 +565,11 @@ app.factory("appService",function () {
     /**
      * 倒计时
      */
-    factory.setTimeout = function(el,time){
+    factory.setTimeout = function(el,time,type){
 
+        var controllerScope = $('div[ng-controller="subscribeListCtrl"]').scope();
+
+        var userInfo = g.toJson($.cookie("userInfo"));
          interval(function(){
 
             time = time-1;
@@ -576,7 +579,25 @@ app.factory("appService",function () {
                 if(time > 0){
                     $("#"+el).html(parseInt(time / 60 / 60) + "小时" + parseInt(time / 60 % 60 ) + "分钟" + parseInt(time % 60 ) + "秒");
                 }else{
+                    if(type == 1){
+                        if(parseInt(-time) > (3 * 60)){
+
+                            mui.toast("签到超时，您已违规！");
+
+                                var subscribeListTwo = factory.selectReservationByUser();
+                                if(subscribeListTwo) {
+                                    controllerScope.subscribeList = subscribeListTwo.lists;
+                                    if(subscribeListTwo.lists){
+                                        controllerScope.subscribeLeng = subscribeListTwo.lists.length;
+                                    }
+
+                                }
+                        }
+                    }
+                    console.log(userInfo.arriveTimeOut*60);
+                    console.log(parseInt(time));
                     $("#"+el).html("0小时0分钟0秒");
+
                 }
 
             }
@@ -598,6 +619,11 @@ app.factory("appService",function () {
             $(".seat-list").hide();
             return null;
         }
+
+        var controllerScope = $('div[ng-controller="subscribeListCtrl"]').scope();
+
+        var userInfo = g.toJson($.cookie("userInfo"));
+
         var bean = {};
         var lists = list.list;
         if(typeof lists !="undefined" && lists.length > 0) {
@@ -612,8 +638,43 @@ app.factory("appService",function () {
 
                 if( lists[l].notArrive == 1 ) {
                     lists[l].timeCn = "距离签到时间";
-                    lists[l].timeid = g.mathRandom(20);
-                    factory.setTimeout(lists[l].timeid,_hm);
+
+                    var el = lists[l].timeid = g.mathRandom(20);
+                    var time = _hm;
+
+                    var fromTheSignIn = interval(function(){
+
+                        time = time-1;
+                        var el_ID = $("#"+el);
+                        if(el_ID.length != 0){
+
+                            if(time > 0){
+                                $("#"+el).html(parseInt(time / 60 / 60) + "小时" + parseInt(time / 60 % 60 ) + "分钟" + parseInt(time % 60 ) + "秒");
+                            }else{
+                                if(parseInt(-time) > (userInfo.arriveTimeOut * 60)){
+
+                                    var subscribeListTwo = factory.selectReservationByUser();
+                                    if(subscribeListTwo) {
+                                        controllerScope.subscribeList = subscribeListTwo.lists;
+                                        if(subscribeListTwo.lists){
+                                            controllerScope.subscribeLeng = subscribeListTwo.lists.length;
+                                        }
+                                    }else{
+                                        mui.toast("签到超时，您已违规！");
+                                        interval.cancel(fromTheSignIn);
+                                    }
+
+
+                                }
+                                console.log(userInfo.arriveTimeOut*60);
+                                console.log(parseInt(time));
+                                $("#"+el).html("0小时0分钟0秒");
+
+                            }
+
+                        }
+
+                    },1000);
                 }
 
                 if( lists[l].notArrive == 2 ){
@@ -702,13 +763,7 @@ app.factory("appService",function () {
 
     factory.contrastTime = function (a) {
 
-        var SysTime;
-        if(factory.SysTime){
-            SysTime = factory.SysTime;
-        }else{
-            SysTime = factory.SysTime = Api.getSystemTime();
-        }
-
+        var SysTime = factory.SysTime = Api.getSystemTime();
 
         SysTime = SysTime.replace("-","/");
         SysTime = SysTime.replace("-","/");

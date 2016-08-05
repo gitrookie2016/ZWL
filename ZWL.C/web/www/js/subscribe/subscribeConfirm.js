@@ -49,6 +49,7 @@ ConfirmApp.controller("ConfirmCtrl",function ($scope) {
         }
 
         if(apire.success){
+            $.removeCookie("SubmitInfo",{path : "/"})
             window.location = "index.html";
         }else{
             mui.toast(apire.message);

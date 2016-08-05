@@ -22,7 +22,47 @@ $(function(){
 	var selected=$('#seat').find(".selected").length;
 	$('#total').html(total)
 	$('#selected').html(total-selected)
-	touch.on('#seat', 'drag', function(ev){
+	var seat_head = $(".seat-head .t-r").eq(0);
+	var seat_head_width = seat_head.width();
+
+	var _app = $(".app");
+	var _app_height = _app.height();
+	var _app_width = _app.width();
+
+	var ceil_width = Math.ceil((seat_head_width / _app_width) * 100);
+
+	if(ceil_width > 65){
+		var seat_ul = $(".seat-thumb ul").height();
+		var seat_thumb = $(".seat-thumb").eq(0);
+		seat_thumb.height((seat_ul / 4 / 2) + seat_ul);
+		var seat_width = _app_width * 0.5;
+		seat_thumb.width(seat_width);
+
+		$(".seat-thumb ul li").width($(".seat-thumb ul").length / seat_width);
+
+
+	}
+
+
+	//略缩图设置大小
+	var seat_head_height = $(".seat-head").eq(0).height();
+
+	if(seat_head_height > (_app_height * 0.15)){
+		var seat_thumb = $(".seat-thumb").eq(0);
+		seat_thumb.height(_app_height * 0.14);
+		var ul_height = $(".seat-thumb ul").height();
+		$(".seat-thumb ul li").height((_app_height * 0.14) / (ul_height / 4 + (ul_height / 4 / 2)));
+	}
+
+	//略缩图 红框位置
+	fn_viewHandle();
+
+	function fn_viewHandle(ev) {
+		var bean = {
+			x : 0,
+			y : 0
+		}
+		ev = ev ? ev : bean;
 		dx = dx || 0;
 		dy = dy || 0;
 		/*console.log("当前x值为:" + dx + ", 当前y值为:" + dy +".");*/
@@ -31,11 +71,20 @@ $(function(){
 		target.style.webkitTransform = "translate3d(" + offx + "," + offy + ",0) scale("+currentScale+")";
 		var moveXbli=parseInt(offx)/wid;
 		var moveYbli=parseInt(offy)/colHeight;
+
 		var thumbWid=$("#thumb").width();
 		var thumbHt=$("#thumb").height();
+
+
 		var viewHandle=document.getElementById("viewHandle");
 		view.css({left:-moveXbli*thumbWid,top:-moveYbli*thumbHt})
-		console.log(moveXbli)
+	}
+
+
+
+	touch.on('#seat', 'drag', function(ev){
+		fn_viewHandle(ev);
+
 	});
 	touch.on('#seat', 'dragend', function(ev){
 		dx += ev.x;
@@ -55,7 +104,7 @@ $(function(){
 	});
 	$('#seat').find('.seat_yes').click(function(){
 		if($(this).hasClass('selected')){
-			alert('已选');
+			alert('此时间段不可选');
 		}else if($(this).hasClass('unseat')) {
 			alert('过道');
 		}else if($(this).hasClass('unOptional')) {

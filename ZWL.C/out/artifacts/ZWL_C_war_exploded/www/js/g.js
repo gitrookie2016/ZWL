@@ -107,13 +107,40 @@ window['g']['toJson'] = function toJson(arg){
 
 window['g']['getCountWidth'] = function getCountWidth(arg){
     if(arg) {
-        var sn = arg.split("-")[1];
-        var seatWidth = $(".seat-content").width();
-        var countWidth = 0 - ((Math.ceil(sn / 4) * 2 + parseInt(sn)) * parseInt(seatWidth / 9) - parseInt(seatWidth / 2)); //187.5
-        g.dx = countWidth;
-        return countWidth;
+        var seat_ul = $("#seat ul");
+        var seat_ul_width = seat_ul.width();
+        var _width = (seat_ul.parent().parent().width()- seat_ul_width) / 2 ;//保证随机座位显示在正中间
+        var countHeight;
+        g.dx = countHeight = 0 - seat_ul_width * parseInt(arg) +_width;
+        console.log(countHeight)
+        return countHeight;
     }
 }
+window['g']['getCountHeight'] = function getCountWidth(arg){
+    if(arg) {
+
+        var seat_ul = $("#seat ul li");
+        var seat_ul_height = seat_ul.height();
+        var _height = (seat_ul.parent().parent().parent().height()- seat_ul_height) / 3 ;//保证随机座位显示在正中间
+        var countHeight;
+        g.dy = countHeight = 0 - seat_ul_height * parseInt(arg)+_height;
+        console.log(_height)
+        return countHeight;
+    }
+}
+
+window['g']['Trim']  = function (str,is_global)
+{
+    var result;
+    result = str.replace(/(^\s+)|(\s+$)/g,"");
+    if(is_global.toLowerCase()=="g")
+    {
+        result = result.replace(/\s/g,"");
+    }
+    return result;
+}
+
+
 window['g']['mathRandom'] = function(n){
     n = n > 20 ? 20 : n;
     var p = Math.pow(10,n+1)

@@ -36,7 +36,7 @@
 						<dd>
 							<h2>续约时间</h2>
 							<p>起始时间：<span ng-bind="sreservationBeginTime">2016-06-08  10:45:00</span></p>
-							<p>结束时间：<a class="span_Time date pickdate" href="#open-modal1" style="width: 55%;color: #666;" ng-bind="sreservationEndTime">2016-06-08  12:00:00</a></p>
+							<p>结束时间：<a class="span_Time date pickdate dateChange" href="javaScript:void(0);" style="width: 60%;color: #666;" ng-bind="sreservationEndTime">2016-06-08 12:00:00</a></p>
 
 						</dd>
 					</dl>
@@ -50,7 +50,11 @@
 			</div>
 			<div id="open-modal1" class="modal-window">
 				<div class="row">
+
 					<div class="col v-m">
+						<div class="modal-title">
+							<a href="#modal-close" title="Close" class="modal-close"></a>
+						</div>
 						<div class="modal-title row">
 							<h2 class="col" style="padding-left:2rem;width:65%;">小时    (24小时制)</h2>
 							<p class="col" style="padding-left:4rem;text-align: left;">分钟</p>
@@ -87,7 +91,7 @@
 						</ul>
 						<div class="row" style="padding:2rem;">
 							<div class="col pick-time v-m" style="width:50%;">
-								<h2>起始时间</h2>
+								<h2>结束时间</h2>
 								<p><span id="hour">11</span>:<span id="min">20</span></p>
 							</div>
 							<div class="col" style="width:50%;vertical-align: bottom;">

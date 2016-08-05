@@ -22,8 +22,48 @@ $(function(){
 			var _this_text = _this.text();
 			_this.text(_this_text.substring(0,11)+" "+hour +":"+$("#min").text()+":00");
 		}else{
-			_this.text(hour +":"+$("#min").text()+":00");
+			_this.text(hour+":"+$("#min").text()+":00");
 		}
 		_this = null;
 	})
+
+	$(".dateChange").click(function(){
+
+		var _date = g.Trim($(this).text(),"g");
+
+		if(_date){
+			if( _date.indexOf("-") > -1){
+				var _dateTime = _date.substring(10,16);
+				if(_dateTime.indexOf(":") > -1){
+					var _dateTimes = _dateTime.split(":");
+					$("#hour").text(_dateTimes[0]);
+					$("#min").text(_dateTimes[1]);
+
+					var _hour = $(".hour span");
+					if(_hour.length > 0){
+						for(var h = 0 ; h < _hour.length ; h++){
+							var _hour_This = _hour.eq(h);
+							if(_hour_This.text() == _dateTimes[0]){
+								_hour_This.addClass("active");
+							}
+						}
+					}
+
+					var _minute = $(".minute span");
+					if(_minute.length > 0){
+						for(var m = 0 ; m < _minute.length ; m++){
+							var _minute_This = _minute.eq(m);
+							if(_minute_This.text() == _dateTimes[1]){
+								_minute_This.addClass("active");
+							}
+						}
+					}
+
+				}
+
+			}
+		}
+
+		window.location = "#open-modal1";
+	});
 })

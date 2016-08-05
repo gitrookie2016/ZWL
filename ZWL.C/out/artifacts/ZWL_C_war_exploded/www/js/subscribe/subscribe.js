@@ -174,7 +174,7 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
         subscribeService.rr_bean.beginTime = $(".date #start")[0].innerHTML;
         subscribeService.rr_bean.endTime = $(".date #end")[0].innerHTML;
 
-        var LibraryName = $("#LibraryName").text();
+        var LibraryName = $("#LibraryName option:selected").text();
         subscribeService.rr_bean.LibraryName = LibraryName;
         var roomed = subscribeService.rr_bean.roomed;
 
@@ -191,6 +191,11 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
         if(!totalPeople){
             subscribeService.alertError("请填写预约总人数！");
             return false;
+        }else{
+            if(isNaN(parseInt(totalPeople))){
+                subscribeService.alertError("总人数应为数字！");
+                return false;
+            }
         }
 
         if(parseInt(totalPeople) > parseInt(si.maxPeople)){
@@ -216,12 +221,12 @@ subscribeApp.controller("ChooseSeatCtrl",function ($scope,subscribeService) {
 
         var serviceArg = subscribeService.rr_bean;
         var apire = Api.addReservationResearch(serviceArg.roomed,serviceArg.totalPeople,serviceArg.reservationDate,serviceArg.beginTime,serviceArg.endTime);//roomed,totalPeople,reservationDate,beginTime,endTime
-        if(apire.success){
-
-            window.location = "index.html";
-
-        }else if(!apire.success){
-            alert(apire.message);
+        if(apire){
+            if(apire.success){
+                window.location = "index.html";
+            }else if(!apire.success){
+                alert(apire.message);
+            }
         }
 
     }
@@ -410,8 +415,8 @@ subscribeApp.factory("subscribeService",function () {
            bean.reservationDate = Day_year + "-" + factory.day ;
            bean.reservationDay =  factory.day ;
 
-           var Library = $("#LibraryName");
-           var studyLounge = $("#studyLoungeName");
+           var Library = $("#LibraryName option:selected");
+           var studyLounge = $("#studyLoungeName option:selected");
 
            var LibraryName = Library.text();
            var LibraryVal = Library.val();
